@@ -1,0 +1,102 @@
+# Reconstruction_loss_validation
+```{r, echo = F, message=F, warning=F}
+library(data.table)
+library(dplyr)
+library(stringr)
+library(kableExtra)
+library(ggplot2)
+
+dt <- data.table()
+logs_DIR <- "../logs"
+
+for(model_id in list.files("../logs/")){
+    #print(model_id)
+    timestamp <- list.files(paste0(logs_DIR, "/", model_id))
+    if(length(timestamp)>1){
+        timestamp <- max(as.numeric(timestamp))
+        #print(paste0("mutliple time stamps exits, use:", timestamp))
+    }
+    fullname <- paste0(logs_DIR, "/", model_id, "/", timestamp)
+    if(file.exists(paste0(fullname, "/metrics.csv"))){
+        logs <- fread(paste0(fullname, "/metrics.csv"))
+    }else{
+        next;
+    }
+    #parse metadata
+    name <- str_split(model_id, "_")
+    method <- name[[1]][1]
+    epoch <- name[[1]][2] %>% str_replace(., "ep", "") %>% as.numeric()
+    nlv <- name[[1]][3] %>% str_replace(., "nlv", "") %>% as.numeric()
+    bs <- name[[1]][4] %>% str_replace(., "bs", "") %>% as.numeric()
+    lr <- name[[1]][5] %>% str_replace(., "lr", "") %>% as.numeric()
+    train_size <- name[[1]][7] %>% str_replace(., "size", "") %>% as.numeric()
+    # parse method
+    if(method == "ETM"){
+        pip <- NA
+        klbeta <- NA
+        seed <- name[[1]][8] %>% str_replace(., "seed", "") %>% as.numeric()
+    }else{
+        pip <- name[[1]][8] %>% str_replace(., "pip", "") %>% as.numeric()
+        klbeta <- name[[1]][9] %>% str_replace(., "klbeta", "") %>% as.numeric()
+        seed <- name[[1]][10] %>% str_replace(., "seed", "") %>% as.numeric()
+    }
+    # append to datatable
+    logs$pip <- rep(pip, nrow(logs))
+    logs$klbeta <- rep(klbeta, nrow(logs))
+    logs$seed <- rep(seed, nrow(logs))
+    logs$method <- rep(method, nrow(logs))
+    logs$epoch_max <- rep(epoch, nrow(logs))
+    logs$nlv <- rep(nlv, nrow(logs))
+    logs$bs <- rep(bs, nrow(logs))
+    logs$lr <- rep(lr, nrow(logs))
+    logs$train_size <- rep(train_size, nrow(logs))
+    dt <- rbindlist(list(dt, logs), fill = TRUE)
+    dt
+}
+
+dt_to_plot <- dt[epoch_max == 1000 & train_size == 0.9 & method %in% c("BETM", "DeltaTopic", "BETMunspliced")]
+
+table_out <- dt_to_plot[, .(mean_S= mean(reconstruction_loss_spliced_validation,na.rm =T), 
+               mean_U = mean(reconstruction_loss_unspliced_validation, na.rm = T),
+               se_S= sd(reconstruction_loss_spliced_validation,na.rm =T)/sqrt(.N), 
+               se_U = sd(reconstruction_loss_unspliced_validation, na.rm = T)/sqrt(.N)
+               ), by = .(method, nlv, pip)]
+
+table_unspliced <- table_out[method == "BETMunspliced"]
+table_out <- table_out[method != "BETMunspliced"]
+
+table_unspliced[, "mean_S"] -> table_unspliced[, "mean_U"]
+table_unspliced[, "mean_S"] <- 0
+table_unspliced[, "se_S"] -> table_unspliced[, "se_U"]
+table_unspliced[, "se_S"] <- 0
+
+table_out <- rbind(table_out, table_unspliced)
+table_out %>%
+  kbl() %>%
+  kable_styling()
+```
+
+```{r ploting, echo=F, message=F, warning=F}
+
+p_unspliced <- table_out[method %in% c("BETMunspliced", "DeltaTopic")] %>% 
+ggplot(aes(x = factor(pip), y = mean_U, ymax = mean_U+1.96*se_U, ymin = mean_U-1.96*se_U,
+color = as.factor(nlv))) + 
+geom_point(position=position_dodge(width=0.5), size = 2.5) + 
+geom_linerange(position=position_dodge(width=0.5), size =0.5) +  theme_bw()  + 
+facet_grid(~method) + ggtitle("Reconstruction loss validated on Unspliced") + 
+labs( y="Loss", x="Pip", color = "Number of Topics") +
+theme(plot.title = element_text(size = 12,face="bold" )) + 
+    theme(axis.title=element_text(size="12") ,axis.text=element_text(size=12)) 
+ggsave("./loss_unspliced.pdf", p_unspliced)
+
+p_spliced <- table_out[method %in% c("BETM", "DeltaTopic")] %>% 
+ggplot(aes(x = factor(pip), y = mean_S, ymax = mean_S+1.96*se_S, ymin = mean_S-1.96*se_S,
+color = as.factor(nlv))) + 
+geom_point(position=position_dodge(width=0.5), size = 2.5) + 
+geom_linerange(position=position_dodge(width=0.5), size =0.5) +  theme_bw()  + 
+facet_grid(~method) + labs( y="Loss", x="Pip", color = "Number of Topics") +
+theme(plot.title = element_text(size = 12,face="bold" )) + 
+    theme(axis.title=element_text(size="12") ,axis.text=element_text(size=12)) +
+ggtitle("Reconstruction loss validated on Spliced")
+ggsave("./loss_spliced.pdf", p_spliced)
+```
