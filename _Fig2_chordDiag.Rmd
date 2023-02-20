@@ -1,0 +1,89 @@
+---
+title: "Figure 2: Chord Diagram"
+author: "Yichen Zhang"
+output:
+  html_document:
+    self_contained: true
+    keep_md: true
+---
+
+```{r setup, echo = F, message=F}
+source("util.R")
+source("util_analysis.R")
+library(ggplot2)
+library(data.table)
+library(magrittr)
+library(reshape2)
+library(dplyr)
+library(patchwork)
+library(RColorBrewer)
+library(grDevices)
+library(circlize)
+```
+
+
+```{r load topics, echo=F}
+Save_Path <- "models/BDeltaTopic_allgenes_ep2000_nlv32_bs1024_combinebyadd_lr0.01_train_size1.0_pip0rho_0.1_pip0delta_0.1_klbeta_10.0v1"
+topics <- fread(paste0(Save_Path, "/topics.csv"))
+K <- ncol(topics)-1
+colnames(topics) <- c("V1", 1:K)
+
+.dt.deltaTopic <- as.data.table(reshape2::melt(topics, id.vars=1)) %>%
+    mutate(col = V1, row = variable, weight = value) %>%
+    col.order(rev(1:K), ret.tab=TRUE) %>%
+    as.data.table
+
+Save_Path1 <- "models/BETM_spliced_ep2000_nlv32_bs1024_lr0.01_train_size0.9_pip0rho_0.1_klbeta_10.0v1"
+topics <- fread(paste0(Save_Path1, "/topics.csv.gz"))
+K <- ncol(topics)-1
+colnames(topics) <- c("V1", 1:K)
+
+.dt.BETM_spliced <- as.data.table(reshape2::melt(topics, id.vars=1)) %>%
+    mutate(col = V1, row = variable, weight = value) %>%
+    col.order(rev(1:K), ret.tab=TRUE) %>%
+    as.data.table
+
+Save_Path2 <- "models/BETM_unspliced_ep2000_nlv32_bs1024_lr0.01_train_size0.9_pip0rho_0.1_klbeta_10.0v1"
+topics <- fread(paste0(Save_Path2, "/topics.csv.gz"))
+K <- ncol(topics)-1
+colnames(topics) <- c("V1", 1:K)
+
+.dt.BETM_unspliced <- as.data.table(reshape2::melt(topics, id.vars=1)) %>%
+    mutate(col = V1, row = variable, weight = value) %>%
+    col.order(rev(1:K), ret.tab=TRUE) %>%
+    as.data.table
+```
+
+```{r chorddiagm, echo=F}
+.dt.deltaTopic[, .SD[which.max(weight)], by = V1] -> x1
+.dt.BETM_spliced[, .SD[which.max(weight)], by = V1] -> x2
+.dt.BETM_unspliced[, .SD[which.max(weight)], by = V1] -> x3
+out <- table(x1$row, x2$row)
+
+rownames(out) <- paste0("D", rownames(out))
+colnames(out) <- paste0("E", colnames(out))
+
+out2 <- table(x1$row, x3$row)
+
+rownames(out2) <- paste0("D", rownames(out2))
+colnames(out2) <- paste0("E", colnames(out2))
+
+pdf(paste0("figures/chordDiag_deltaETMspliced.pdf"))
+set.seed(123)
+circos.par(start.degree = 0)
+chordDiagram(out, reduce = 0.005, big.gap = 20)
+title("Topic Correspondence\ndeltaTopic and ETM(spliced)")
+abline(h = 0, lty = 2, col = "#00000080")
+dev.off()
+circos.clear()
+
+pdf(paste0("figures/chordDiag_deltaETMunspliced.pdf"))
+set.seed(123)
+circos.par(start.degree = 0)
+chordDiagram(out2, reduce = 0.005, big.gap = 20)
+title("Topic Correspondence\ndeltaTopic and ETM(unspliced)")
+abline(h = 0, lty = 2, col = "#00000080")
+dev.off()
+circos.clear()
+```
+

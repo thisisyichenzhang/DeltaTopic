@@ -1,0 +1,104 @@
+---
+title: "Figure 1: Structure plot of topics"
+author: "Yichen Zhang"
+output:
+  html_document:
+    self_contained: true
+    keep_md: true
+---
+
+```{r setup, echo = F, message=F}
+source("util.R")
+source("util_analysis.R")
+library(ggplot2)
+library(data.table)
+library(magrittr)
+library(reshape2)
+library(dplyr)
+library(patchwork)
+library(RColorBrewer)
+library(grDevices)
+library(ggrastr)
+```
+
+```{r load topics, echo=F}
+Save_Path <- "models/BDeltaTopic_allgenes_ep2000_nlv32_bs1024_combinebyadd_lr0.01_train_size1.0_pip0rho_0.1_pip0delta_0.1_klbeta_10.0v1"
+topics <- fread(paste0(Save_Path, "/topics.csv"))
+K <- ncol(topics)-1
+colnames(topics) <- c("V1", 1:K)
+
+.dt.deltaTopic <- as.data.table(reshape2::melt(topics, id.vars=1)) %>%
+    mutate(col = V1, row = variable, weight = value) %>%
+    col.order(rev(1:K), ret.tab=TRUE) %>%
+    as.data.table
+
+Save_Path1 <- "models/BETM_spliced_ep2000_nlv32_bs1024_lr0.01_train_size0.9_pip0rho_0.1_klbeta_10.0v1"
+topics <- fread(paste0(Save_Path1, "/topics.csv.gz"))
+K <- ncol(topics)-1
+colnames(topics) <- c("V1", 1:K)
+
+.dt.BETM_spliced <- as.data.table(reshape2::melt(topics, id.vars=1)) %>%
+    mutate(col = V1, row = variable, weight = value) %>%
+    col.order(rev(1:K), ret.tab=TRUE) %>%
+    as.data.table
+
+Save_Path2 <- "models/BETM_unspliced_ep2000_nlv32_bs1024_lr0.01_train_size0.9_pip0rho_0.1_klbeta_10.0v1"
+topics <- fread(paste0(Save_Path2, "/topics.csv.gz"))
+K <- ncol(topics)-1
+colnames(topics) <- c("V1", 1:K)
+
+.dt.BETM_unspliced <- as.data.table(reshape2::melt(topics, id.vars=1)) %>%
+    mutate(col = V1, row = variable, weight = value) %>%
+    col.order(rev(1:K), ret.tab=TRUE) %>%
+    as.data.table
+```
+
+```{r structure_delta, echo=F}
+mycolors <- colorRampPalette(brewer.pal(12, "Paired"))(K)
+# structure plot
+plt.deltaTopic <- 
+    ggplot(.dt.deltaTopic, aes(x=`col`, y=`weight`, fill=as.factor(`variable`), color=as.factor(`variable`))) +
+    xlab("cells") + ylab("topic proportion") +
+    theme(legend.position = "top", 
+          axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.ticks.x=element_blank()) +
+    rasterise(geom_bar(stat="identity", position="stack", size=0), dpi=300) +
+    scale_fill_manual(values=mycolors) +
+    scale_color_manual(values=mycolors)
+
+.ggsave(paste0("figures/structure_deltaTopic.pdf"), plot=plt.deltaTopic,
+        width=7, height=3)
+```
+
+```{r structure_BETM_spliced, echo=F}
+plt.BETM_spliced <- 
+    ggplot(.dt.BETM_spliced, aes(x=`col`, y=`weight`, fill=as.factor(`variable`), color=as.factor(`variable`))) +
+    xlab("cells") + ylab("topic proportion") +
+    theme(legend.position = "none", 
+          axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.ticks.x=element_blank()) +
+    rasterise(geom_bar(stat="identity", position="stack", size=0), dpi=300) +
+    scale_fill_manual(values=mycolors) +
+    scale_color_manual(values=mycolors)
+
+.ggsave(paste0("figures/structure_BETM_spliced.pdf"), plot=plt.BETM_spliced,
+        width=7, height=3)
+```
+
+```{r structure_BETM_unspliced, echo=F}
+plt.BETM_unspliced <- 
+    ggplot(.dt.BETM_unspliced, aes(x=`col`, y=`weight`, fill=as.factor(`variable`), color=as.factor(`variable`))) +
+    xlab("cells") + ylab("topic proportion") +
+    theme(legend.position = "none", 
+          axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.ticks.x=element_blank()) +
+    rasterise(geom_bar(stat="identity", position="stack", size=0), dpi=300) +
+    scale_fill_manual(values=mycolors) +
+    scale_color_manual(values=mycolors)
+
+.ggsave(paste0("figures/structure_BETM_unspliced.pdf"), plot=plt.BETM_unspliced,
+        width=7, height=3)
+```

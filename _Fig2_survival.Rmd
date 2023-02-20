@@ -1,0 +1,164 @@
+---
+title: "Figure 2B & 2C: Survival analysis of PDAC patients"
+author: "Yichen Zhang"
+output:
+  html_document:
+    self_contained: true
+    keep_md: true
+---
+
+```{r setup, echo=F, message=F}
+library(survival)
+library(survminer)
+library(EnsDb.Hsapiens.v79)
+library(msigdbi)
+library(data.table)
+library(dplyr)
+library(ggrepel)
+library(ggplot2)
+source("util.R")
+```
+
+```{r KM and coxph, echo=F, warning=F}
+TCGA_data_DIR <- "data/PDAC/"
+
+for(location in c("CA", "AU", "US")){
+    if(location == "US"){
+        exp_seq <- fread(paste0(TCGA_data_DIR, "exp_seq.", location, ".tsv.gz"))
+        donor <- fread(paste0(TCGA_data_DIR, "donor.", location, ".tsv.gz"))
+    }else{
+        # load TCGA PDAC expression and meta data
+        exp_seq <- fread(paste0(TCGA_data_DIR, "exp_seq.", location, ".tsv.gz"))
+        donor <- fread(paste0(TCGA_data_DIR, "donor.", location, ".tsv.gz"))
+        # create mapping betwwen ensembl id and gene symbol
+        ensembl.genes <- exp_seq$gene_id
+        geneID <- ensembldb::select(EnsDb.Hsapiens.v79, keys= ensembl.genes, keytype = "GENEID", columns <- c("SYMBOL","GENEID"))
+        colnames(geneID) <- c("gene", "gene_id")
+        exp_seq <- dplyr::left_join(exp_seq, geneID,  by = 'gene_id')
+        exp_seq <- exp_seq[, gene_id := gene]
+    }
+    # creat time-to-event and status
+    donor[is.na(donor), ] <- 0
+    donor[, time := donor_survival_time + donor_interval_of_last_followup]
+    donor$status  <- ifelse(donor$donor_vital_status == "alive", 0,
+            ifelse(donor$donor_vital_status == "deceased", 1, NA))
+    donor <- donor[!is.na(status),]
+
+    for(target in c("delta", "rho", "ETM")){
+        ## load weights
+        sc.file <- paste0("./", target, "_weight.csv.gz")
+        weight <- fread(sc.file) 
+        weight.dt <- t(weight[,-c("V1")]) %>% as.data.frame(); colnames(weight.dt) <- weight$V1; weight.dt$gene <- rownames(weight.dt)
+
+        # inner join on the common genes
+        exp_seq_wide <- exp_seq[, gene:= gene_id] %>% dcast(gene ~ icgc_donor_id, value.var = "raw_read_count", fun.aggregate = sum) %>% data.table()
+        merged.dt <- exp_seq_wide[weight.dt, on = .(gene), nomatch = NULL]
+        ## create weight matrix
+        weight.mat <- merged.dt %>% dplyr::select(paste0(1:32)) %>% as.matrix()
+        colnames(weight.mat) <- paste0("topic", 1:32)
+        
+        # create expression matrix
+        exp.mat <- merged.dt %>% dplyr::select(-c("gene", paste0(1:32))) %>% as.matrix()
+        exp.mat <- scale(exp.mat) # zscore expression matrix
+        colnames(exp.mat) <- merged.dt %>% dplyr::select(-c("gene", paste0(1:32))) %>% colnames()
+        weight.prop.hat <- t(exp.mat) %*% weight.mat
+        weight.prop.hat.2 <- weight.prop.hat %>% as.data.table() %>% mutate(icgc_donor_id := rownames(weight.prop.hat))
+        merged.meta.hat <- weight.prop.hat.2[donor, on = .(icgc_donor_id), nomatch = NULL] 
+
+        # fit coxph model
+        res_cox_summary <- data.frame()
+        for(i in 1:32) {
+            f <- as.formula(paste0("Surv(time, status) ~ topic", i))
+            res.cox <- coxph(f, data =  merged.meta.hat)
+            print(paste("Topic", i, summary(res.cox)$coefficients[1,5]))
+            res_cox_summary <- rbind(res_cox_summary, data.frame(summary(res.cox)$coefficients))
+        }
+        colnames(res_cox_summary)[5] <- "wald_p"
+        res_cox_summary$topic <- rownames(res_cox_summary)
+        res_cox_summary <- res_cox_summary %>% data.table()
+        res_cox_summary$location <- location
+        res_cox_summary[wald_p < 0.1]$topic
+
+        file = paste0("survival/", "coxph_res_", location, "_", target, ".txt")
+        if(!exists(file)){
+            fwrite(res_cox_summary, file = file)
+        }
+        # fit survival model
+        for(topic in paste0("topic", 1:32)) {
+            # set Z-scale cut-offs for high and low and (mid) expression
+            highExpr <- 1.0
+            lowExpr <- -1.0
+            merged.meta.hat[[paste0(topic,"_2group")]] <- ifelse(scale(merged.meta.hat[[topic]]) >= 0, 'UP','DOWN')
+            # fit survival model
+            f_2group <- as.formula(paste0("Surv(time, status) ~ ", topic, "_2group"))
+            fit_2group <- surv_fit(f_2group, data = merged.meta.hat)
+            # Drawing survival curves
+            plt_2group <- ggsurvplot(fit_2group, 
+                    conf.int=TRUE, 
+                    pval=TRUE, risk.table=TRUE, 
+                    legend.labs=c("DOWN", "UP"), 
+                    legend.title=topic,  
+                    title="Kaplan-Meier Curve for PDAC Survival", 
+                    risk.table.height=.25)
+            pdf(paste0("survival/figures/KM/", "KM_", topic,"_2group_",location,"_", target,".pdf"))
+            print(plt_2group, newpage = FALSE)
+            dev.off()
+        }
+    }
+}
+```
+
+```{r aggregate_cox_results, echo = F, warning=F}
+coef_meta_combined <- c()
+p_meta_combined <- c()
+for(target in c("delta", "rho", "ETM")){
+        coxph_res_AU <- fread(paste0("survival/coxph_res_AU_", target,".txt"))
+        coxph_res_CA <- fread(paste0("survival/coxph_res_CA_", target,".txt"))
+        coxph_res_US <- fread(paste0("survival/coxph_res_US_", target,".txt"))
+
+        weighed_average <- with(coxph_res_AU, (1/se.coef.)^2 * coef) + with(coxph_res_US, (1/se.coef.)^2 * coef) + with(coxph_res_CA, (1/se.coef.)^2 * coef)
+        sum_of_squares <- coxph_res_AU$se.coef.^(-2) + coxph_res_US$se.coef.^(-2) + coxph_res_CA$se.coef.^(-2)
+        z_meta <- weighed_average / sqrt(sum_of_squares)
+        coef_meta <- weighed_average/sum_of_squares
+        p_meta <- 2 * pnorm(-abs(z_meta), 0, 1, lower.tail = T)
+
+        coef_meta_combined <- c(coef_meta_combined, coef_meta)
+        p_meta_combined <- c(p_meta_combined, p_meta)
+}
+coef_meta_combined <- matrix(coef_meta_combined, ncol = 3, byrow = F)
+rownames(coef_meta_combined) <- paste0("topic", 1:32)
+colnames(coef_meta_combined) <- c("delta", "rho", "ETM")
+p_meta_combined <- matrix(p_meta_combined, ncol = 3, byrow = F)
+rownames(p_meta_combined) <- paste0("topic", 1:32)
+colnames(p_meta_combined) <- c("delta", "rho", "ETM")
+```
+
+```{r volcano plot, echo = F, warning=F}
+p_melt <- p_meta_combined %>% melt(variable.name = "method", value.name = "p") %>%
+dplyr::rename(topic = Var1, method = Var2)
+
+coef_melt <- coef_meta_combined %>% melt(variable.name = "method", value.name = "coef") %>%
+dplyr::rename(topic = Var1, method = Var2)
+
+df_meta <- merge(p_melt, coef_melt)
+
+df_meta$diffexpressed <- "Not Significant"
+df_meta$diffexpressed[df_meta$coef > 0.0015 & df_meta$p < 0.05] <- "Down-survival Topic"
+df_meta$diffexpressed[df_meta$coef < -0.0015 & df_meta$p < 0.05] <- "Up-survival Topic"
+
+p <- ggplot(data= df_meta, aes(x=coef, y=-log10(p), col=diffexpressed, label=topic)) + 
+        geom_point() + 
+        theme_classic() +
+        geom_text_repel() +
+        facet_wrap(~ method) +
+        scale_color_manual(values=c("blue", "black", "red")) +
+        geom_vline(xintercept=c(-0.0015, 0.0015), col="red") +
+        geom_hline(yintercept=-log10(0.05), col="red")+
+        scale_x_continuous(labels = function(x) format(x, scientific = TRUE)) +
+        theme(panel.spacing = unit(2, "lines")) +
+        xlab("Harzard ratio") + ylab("Significance(-log10)") + ggtitle("PDAC survival analysis
+across three different cohorts
+")
+p
+ggsave(paste0("survival/figures/meta_volcano.pdf"), p)
+```

@@ -1,0 +1,90 @@
+---
+title: "Figure 2: Top genes in DeltaTopic and ETM"
+output:
+  html_document:
+    self_contained: true
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+library(data.table)
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+library(ComplexHeatmap)
+library(stringr)
+```
+
+```{r deltatop, echo=F}
+# grab the topic from the saved model
+SaveFolderPath = "models/BDeltaTopic_allgenes_ep2000_nlv32_bs1024_combinebyadd_lr0.01_train_size1.0_pip0rho_0.1_pip0delta_0.1_klbeta_10.0v1"
+topics_df <- fread(paste0(SaveFolderPath, "/topics.csv"))
+rownames(topics_df) <- topics_df$V1
+topics_df = topics_df[, -1]
+topics_df$topics <- colnames(topics_df)[apply(topics_df, 1, which.max)]
+
+dt.delta <- readRDS(paste0(SaveFolderPath, "/dt_delta.rds"))
+
+# top 10 genes
+dt.delta.top <- dt.delta %>% arrange(desc(weight)) %>%
+  group_by(Var1) %>%
+  slice(1:10) %>%
+  select(c("Var1", "weight", "variable"))
+
+# survival-significant topics
+topics_to_show <- c(4, 7, 11, 26, 29, 6, 10)
+
+topics_to_show_df <- dt.delta %>%
+                  arrange(desc(weight)) %>%
+                  group_by(Var1) %>%
+                  slice(1:10) %>%
+                  filter(Var1 %in% topics_to_show)
+top_genes <- topics_to_show_df$variable %>% unique()
+
+# weight matrix
+heatmap_df_delta  <- dt.delta %>% filter(variable %in% top_genes) %>% filter(Var1 %in% topics_to_show) %>% select(c("Var1", "weight", "variable"))
+heatmap_df_delta <- heatmap_df_delta %>% reshape(idvar = "variable", timevar = "Var1", direction = "wide")
+heatmap_mat_delta <- heatmap_df_delta %>% select(-c("variable")) %>% data.matrix()
+rownames(heatmap_mat_delta) <- heatmap_df_delta$variable
+colnames(heatmap_mat_delta) <- str_replace(colnames(heatmap_mat_delta), "weight.", "topic")
+
+
+pdf(paste0("figures/topgenes_delta.pdf"))
+ht_delta <- Heatmap(heatmap_mat_delta, show_column_dend = FALSE, show_row_dend = FALSE,name = "weight")
+ht_delta
+dev.off()
+```
+
+```{r ETMtop, echo = FALSE}
+# top genes in ETM
+dt.ETM<- readRDS(paste0("models/BETM_spliced_ep2000_nlv32_bs1024_lr0.01_train_size0.9_pip0rho_0.1_klbeta_10.0v1", "/dt_rho.rds"))
+
+#topics_to_show <- c(9, 10, 17, 18, 23) # 4, 7, 11, 26, 29
+
+# BETM topics matched with significant deltaTopics
+topics_to_show <- c(4, 21, 8)
+topics_to_show_df <- dt.ETM %>%
+                  arrange(desc(weight)) %>%
+                  group_by(Var1) %>%
+                  slice(1:10) %>%
+                  filter(Var1 %in% topics_to_show)
+#top_genes <- topics_to_show_df$variable %>% unique()
+# use the same top genes as DeltaTopic without recomputing
+# weight matrix
+heatmap_df_ETM  <- dt.ETM %>% filter(variable %in% top_genes) %>% filter(Var1 %in% topics_to_show) %>% select(c("Var1", "weight", "variable"))
+heatmap_df_ETM <- heatmap_df_ETM %>% reshape(idvar = "variable", timevar = "Var1", direction = "wide")
+heatmap_mat_ETM <- heatmap_df_ETM %>% select(-c("variable")) %>% data.matrix()
+rownames(heatmap_mat_ETM) <- heatmap_df_ETM$variable
+colnames(heatmap_mat_ETM) <- str_replace(colnames(heatmap_mat_ETM), "weight.", "topic")
+
+pdf(paste0("figures/topgenes_ETM.pdf"))
+ht_ETM <- Heatmap(heatmap_mat_ETM, cluster_rows = F, cluster_columns = FALSE, show_column_dend = FALSE, show_row_dend = FALSE,name = "weight")
+ht_ETM
+dev.off()
+```
+
+```{r mathced_combined, echo = FALSE}
+pdf(paste0("figures/matched_topgenes.pdf"))
+ht_delta + ht_ETM
+dev.off()
+```
