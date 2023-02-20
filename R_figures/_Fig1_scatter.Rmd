@@ -1,5 +1,5 @@
 ---
-title: "Figure 1: phase portrait"
+title: "Figure 1: Scatter plot"
 output:
   html_document:
     self_contained: true
@@ -12,12 +12,36 @@ library(ggplot2)
 library(dplyr)
 library(patchwork)
 library(stringr)
+library(Matrix)
 ```
 
 ```{r, echo = F}
 ##### scatter plot
 U <- readRDS('../data/scatter_data/data_top_u.rds')
 S <- readRDS('../data/scatter_data/data_top_s.rds')
+
+saveDIR <- "./output/scatter"
+if (!dir.exists(saveDIR)){
+  dir.create(saveDIR)
+}else{
+  print(paste0("dir exists at", saveDIR))
+}
+```
+
+
+```{r, echo=F}
+SaveFolderPath <- "../data/models/DeltaTopic"
+dt.delta <- readRDS(paste0(SaveFolderPath, "/dt_delta.rds"))
+topics_df <- fread(paste0(SaveFolderPath, "/topics.csv"))
+rownames(topics_df) <- topics_df$V1
+topics_df <- topics_df[, -1]
+topics_df$topics <- colnames(topics_df)[apply(topics_df, 1, which.max)]
+
+# top 10 genes
+dt.delta.top <- dt.delta %>% arrange(desc(weight)) %>%
+  group_by(Var1) %>%
+  slice(1:10) %>%
+  select(c("Var1", "weight", "variable"))
 ```
 
 ```{r scatter, echo = F}
@@ -47,16 +71,6 @@ for(i in 1:32){
   if(nrow(DT_topic)>0){
     DT_topic[, .SD[.N > 100], by = .(topic, gene)]-> DT_topic_plot
   }
-  if(nrow(DT_topic_plot)>0){
-      p <- ggplot(DT_topic_plot, aes(x = S, y = U)) +
-            geom_hex(bins = 50) +#35393a
-            facet_wrap(~gene, ncol = 3) +
-            scale_fill_gradient(low="lightblue1",high="darkblue",trans="log10") + 
-            geom_abline(intercept = 0, slope = 1, colour = "red") +
-            theme_classic() +
-            ggtitle(paste0("Top Genes In Topic ", Var1))
-      ggsave(paste0('figures/fig2a_hex_scatter/Topic',Var1,"_",'TopGenes.pdf'), p)
-    }
     topgenes <- DT_topic_plot$gene %>% unique()
     for(mygene in topgenes){
       DT_topic_gene_plot <- DT_topic_plot %>% filter(gene == mygene)
@@ -72,7 +86,7 @@ for(i in 1:32){
         if(nrow(DT_topic_gene_plot[(S>0)&(U>0),,]) > 20){
           p0 <- p0 + geom_density_2d(mapping = aes(x = S, y = U), data = DT_topic_gene_plot[(S>0)&(U>0),,], color = "black", alpha = 0.25) 
         }
-        ggsave(paste0('figures/scatter_same_range/Topic',Var1,"_",mygene,'.pdf'), p0)
+        ggsave(paste0('./output/scatter/Topic',Var1,"_",mygene,'.pdf'), p0)
       }
     }
 }

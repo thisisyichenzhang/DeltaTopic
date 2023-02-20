@@ -16,6 +16,13 @@ library(dplyr)
 library(ggrepel)
 library(ggplot2)
 source("util.R")
+
+saveDIR <- "./output/survival/figures/KM"
+if (!dir.exists(saveDIR)){
+  dir.create(saveDIR)
+}else{
+  print(paste0("dir exists at", saveDIR))
+}
 ```
 
 ```{r KM and coxph, echo=F, warning=F}
