@@ -1,0 +1,11 @@
+# ignore all data files and logs
+/data/
+# ignore all output files
+/R_figures/output/*
+# ignore Rmd output files
+/R_figures/*_files/*
+/R_figures/*.html
+/R_figures/*.md
+# generically ignore all files with these extensions
+*.gz
+*.txt

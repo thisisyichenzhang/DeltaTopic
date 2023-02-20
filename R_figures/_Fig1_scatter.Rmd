@@ -16,8 +16,8 @@ library(stringr)
 
 ```{r, echo = F}
 ##### scatter plot
-U <- readRDS('data/scatter_data/data_top_u.rds')
-S <- readRDS('data/scatter_data/data_top_s.rds')
+U <- readRDS('../data/scatter_data/data_top_u.rds')
+S <- readRDS('../data/scatter_data/data_top_s.rds')
 ```
 
 ```{r scatter, echo = F}

@@ -19,7 +19,7 @@ source("util.R")
 ```
 
 ```{r KM and coxph, echo=F, warning=F}
-TCGA_data_DIR <- "data/PDAC/"
+TCGA_data_DIR <- "../data/PDAC/"
 
 for(location in c("CA", "AU", "US")){
     if(location == "US"){
@@ -45,7 +45,7 @@ for(location in c("CA", "AU", "US")){
 
     for(target in c("delta", "rho", "ETM")){
         ## load weights
-        sc.file <- paste0("./", target, "_weight.csv.gz")
+        sc.file <- paste0("../data/", target, "_weight.csv.gz")
         weight <- fread(sc.file) 
         weight.dt <- t(weight[,-c("V1")]) %>% as.data.frame(); colnames(weight.dt) <- weight$V1; weight.dt$gene <- rownames(weight.dt)
 
@@ -78,7 +78,7 @@ for(location in c("CA", "AU", "US")){
         res_cox_summary$location <- location
         res_cox_summary[wald_p < 0.1]$topic
 
-        file = paste0("survival/", "coxph_res_", location, "_", target, ".txt")
+        file = paste0("./output/survival/", "coxph_res_", location, "_", target, ".txt")
         if(!exists(file)){
             fwrite(res_cox_summary, file = file)
         }
@@ -99,7 +99,7 @@ for(location in c("CA", "AU", "US")){
                     legend.title=topic,  
                     title="Kaplan-Meier Curve for PDAC Survival", 
                     risk.table.height=.25)
-            pdf(paste0("survival/figures/KM/", "KM_", topic,"_2group_",location,"_", target,".pdf"))
+            pdf(paste0("./output/survival/figures/KM/", "KM_", topic,"_2group_",location,"_", target,".pdf"))
             print(plt_2group, newpage = FALSE)
             dev.off()
         }
@@ -111,9 +111,9 @@ for(location in c("CA", "AU", "US")){
 coef_meta_combined <- c()
 p_meta_combined <- c()
 for(target in c("delta", "rho", "ETM")){
-        coxph_res_AU <- fread(paste0("survival/coxph_res_AU_", target,".txt"))
-        coxph_res_CA <- fread(paste0("survival/coxph_res_CA_", target,".txt"))
-        coxph_res_US <- fread(paste0("survival/coxph_res_US_", target,".txt"))
+        coxph_res_AU <- fread(paste0("./output/survival/coxph_res_AU_", target,".txt"))
+        coxph_res_CA <- fread(paste0("./output/survival/coxph_res_CA_", target,".txt"))
+        coxph_res_US <- fread(paste0("./output/survival/coxph_res_US_", target,".txt"))
 
         weighed_average <- with(coxph_res_AU, (1/se.coef.)^2 * coef) + with(coxph_res_US, (1/se.coef.)^2 * coef) + with(coxph_res_CA, (1/se.coef.)^2 * coef)
         sum_of_squares <- coxph_res_AU$se.coef.^(-2) + coxph_res_US$se.coef.^(-2) + coxph_res_CA$se.coef.^(-2)
@@ -159,5 +159,5 @@ p <- ggplot(data= df_meta, aes(x=coef, y=-log10(p), col=diffexpressed, label=top
 across three different cohorts
 ")
 p
-ggsave(paste0("survival/figures/meta_volcano.pdf"), p)
+ggsave(paste0("./output/meta_volcano.pdf"), p)
 ```

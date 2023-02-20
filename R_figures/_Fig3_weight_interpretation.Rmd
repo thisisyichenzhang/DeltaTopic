@@ -1,6 +1,5 @@
 ---
 title: "Figure 3: Weight Interpretation and Gene Set Enrichment Analysis"
-author: "Yichen Zhang"
 output:
   html_document:
     self_contained: true
@@ -28,7 +27,7 @@ knitr::opts_chunk$set(results = "asis")
 ```
 
 ```{r readpath, echo=FALSE}
-Save_Path <- "models/DeltaTopic"
+Save_Path <- "../data/models/DeltaTopic"
 ```
 
 ```{r read genes, echo=FALSE}
@@ -36,7 +35,7 @@ Save_Path <- "models/DeltaTopic"
 .genes <- fread(paste0(Save_Path, "/var_names.csv.gz"), header = F)
 setnames(.genes, "V1", "gene")
 # Cell type marker genes from Peng et al 2019
-.db = readxl::read_xls("data/cell_type_markers/cell_markers_Peng2019.xls")
+.db = readxl::read_xls("../data/cell_type_markers/cell_markers_Peng2019.xls")
 setnames(.db, "Gene", "gene")
 setnames(.db, "Cell type", "cell type")
 .db <- as.data.table(.db)
@@ -86,7 +85,7 @@ cutoff_rho <- 4
 
 plt <- celltype_heatmap(param.dt.rho, .db[`p value` <=0, tail(.SD, 70) ,by = `cell type`], cutoff_rho)
 print(plt)
-.ggsave(paste0(Save_Path,"/figures/sparse_marker_genes_rho.pdf"), plot=plt,
+.ggsave(paste0("./output/sparse_marker_genes_rho.pdf"), plot=plt,
         width=9, height=10)   
 ```
 
@@ -115,7 +114,7 @@ p <-
     scale_y_discrete(breaks = topgenes_match$Group.1, labels = paste0(topgenes_match$Group.1, ", ", topgenes_match$x))
     
 print(p)
-.ggsave(paste0(Save_Path,"/figures/sparse_heatmap_genes_rho.pdf"), plot=p,
+.ggsave(paste0("./output/sparse_heatmap_genes_rho.pdf"), plot=p,
         width=9, height=5)
 ```
 
@@ -145,7 +144,7 @@ p <-
 
 print(p)
 
-.ggsave(paste0(Save_Path,"/figures/sparse_heatmap_genes_delta.pdf"), plot=p,
+.ggsave(paste0("./output/sparse_heatmap_genes_delta.pdf"), plot=p,
         width=9, height=5)
 ```
 
@@ -210,7 +209,7 @@ topics_with_sig_enrichment <- fgsea_result$topic[fgsea_result$padj < p_cutoff]
 plt <- geneset_heatmap(param.dt.delta[row %in% topics_with_sig_enrichment], .db_IMMUNESIG_to_plot, weight_cutoff = 3)
 print(plt)
 
-.ggsave(paste0(Save_Path,"/figures/heatmap_delta_immunesig.pdf"), plot=plt,
+.ggsave(paste0("./output/heatmap_delta_immunesig.pdf"), plot=plt,
         width=9, height=5)
 ```
 
@@ -240,7 +239,7 @@ topics_with_sig_enrichment <- fgsea_result$topic[fgsea_result$padj < p_cutoff]
 plt <- geneset_heatmap(param.dt.delta[row %in% topics_with_sig_enrichment], .db_HALLMARK_to_plot, 3)
 print(plt)
 
-.ggsave(paste0(Save_Path,"/figures/heatmap_delta_hallmark.pdf"), plot=plt,
+.ggsave(paste0("./output/heatmap_delta_hallmark.pdf"), plot=plt,
         width=9, height=5)
 ```
 
@@ -270,7 +269,7 @@ topics_with_sig_enrichment <- fgsea_result$topic[fgsea_result$padj < p_cutoff]
 plt <- geneset_heatmap(param.dt.delta[row %in% topics_with_sig_enrichment], .db_KEGG_to_plot, 2.5)
 print(plt)
 
-.ggsave(paste0(Save_Path,"/figures/heatmap_delta_kegg.pdf"), plot=plt,
+.ggsave(paste0("./output/heatmap_delta_kegg.pdf"), plot=plt,
         width=9, height=5)
 ```
 
@@ -301,7 +300,7 @@ present.fgsea.result.alltopics(result_IMMUNESIG_rho, N_pathways = 1, N_genes = 3
 plt <- geneset_heatmap(param.dt.rho, .db_IMMUNESIG, cutoff_rho)
 print(plt)
 
-.ggsave(paste0(Save_Path,"/figures/heatmap_rho_immunesig.pdf"), plot=plt,
+.ggsave(paste0("./output/heatmap_rho_immunesig.pdf"), plot=plt,
         width=9, height=5)
 ```
 
@@ -320,7 +319,7 @@ present.fgsea.result.alltopics(result_HALLMARK, N_pathways = 1, N_genes = 3) %>%
 plt <- geneset_heatmap(param.dt.rho, .db_HALLMARK, cutoff_rho)
 print(plt)
 
-.ggsave(paste0(Save_Path,"/figures/heatmap_rho_hallmark.pdf"), plot=plt,
+.ggsave(paste0("./output/heatmap_rho_hallmark.pdf"), plot=plt,
         width=9, height=5)
 ```
 
@@ -340,7 +339,7 @@ present.fgsea.result.alltopics(result_KEGG, N_pathways = 1, N_genes = 3) %>% kni
 plt <- geneset_heatmap(param.dt.rho, .db_KEGG, cutoff_rho)
 print(plt)
 
-.ggsave(paste0(Save_Path,"/figures/heatmap_rho_kegg.pdf"), plot=plt,
+.ggsave(paste0("./output/heatmap_rho_kegg.pdf"), plot=plt,
         width=9, height=5)
 ```
 
@@ -367,7 +366,7 @@ p <- ggplot(freq_table, aes(y = log10(freq), x = topic)) +
         scale_x_discrete(limits = rev(topic_order)) +
         coord_flip()
 p
-.ggsave(paste0(Save_Path,"/figures/topic_freq_rho_cell.pdf"), plot=p,
+.ggsave(paste0("./output/topic_freq_rho_cell.pdf"), plot=p,
         width=5, height=9)
 
 ```
@@ -384,7 +383,7 @@ p <- ggplot(freq_table, aes(y = log10(freq), x = topic)) +
         scale_x_discrete(limits = rev(topic_order)) +
         coord_flip()
 p
-.ggsave(paste0(Save_Path,"/figures/topic_freq_delta_immune.pdf"), plot=p,
+.ggsave(paste0("./output/topic_freq_delta_immune.pdf"), plot=p,
         width=5, height=5)
 
 ```
@@ -402,7 +401,7 @@ p <- ggplot(freq_table, aes(y = log10(freq), x = topic)) +
         scale_x_discrete(limits = rev(topic_order)) +
         coord_flip()
 p
-.ggsave(paste0(Save_Path,"/figures/topic_freq_delta_KEGG.pdf"), plot=p,
+.ggsave(paste0("./output/topic_freq_delta_KEGG.pdf"), plot=p,
         width=5, height=5)
 
 ```
@@ -420,6 +419,6 @@ p <- ggplot(freq_table, aes(y = log10(freq), x = topic)) +
         scale_x_discrete(limits = rev(topic_order)) +
         coord_flip()
 p
-.ggsave(paste0(Save_Path,"/figures/topic_freq_delta_HALLMARK.pdf"), plot=p,
+.ggsave(paste0("./output/topic_freq_delta_HALLMARK.pdf"), plot=p,
         width=5, height=5)
 ```

@@ -22,7 +22,7 @@ library(circlize)
 
 
 ```{r load topics, echo=F}
-Save_Path <- "models/DeltaTopic"
+Save_Path <- "../data/models/DeltaTopic"
 topics <- fread(paste0(Save_Path, "/topics.csv"))
 K <- ncol(topics)-1
 colnames(topics) <- c("V1", 1:K)
@@ -32,7 +32,7 @@ colnames(topics) <- c("V1", 1:K)
     col.order(rev(1:K), ret.tab=TRUE) %>%
     as.data.table
 
-Save_Path1 <- "models/BETM_spliced"
+Save_Path1 <- "../data/models/BETM_spliced"
 topics <- fread(paste0(Save_Path1, "/topics.csv.gz"))
 K <- ncol(topics)-1
 colnames(topics) <- c("V1", 1:K)
@@ -42,7 +42,7 @@ colnames(topics) <- c("V1", 1:K)
     col.order(rev(1:K), ret.tab=TRUE) %>%
     as.data.table
 
-Save_Path2 <- "models/BETM_unspliced"
+Save_Path2 <- "../data/models/BETM_unspliced"
 topics <- fread(paste0(Save_Path2, "/topics.csv.gz"))
 K <- ncol(topics)-1
 colnames(topics) <- c("V1", 1:K)
@@ -67,7 +67,7 @@ out2 <- table(x1$row, x3$row)
 rownames(out2) <- paste0("D", rownames(out2))
 colnames(out2) <- paste0("E", colnames(out2))
 
-pdf(paste0("figures/chordDiag_deltaETMspliced.pdf"))
+pdf(paste0("output/chordDiag_deltaETMspliced.pdf"))
 set.seed(123)
 circos.par(start.degree = 0)
 chordDiagram(out, reduce = 0.005, big.gap = 20)
@@ -76,7 +76,7 @@ abline(h = 0, lty = 2, col = "#00000080")
 dev.off()
 circos.clear()
 
-pdf(paste0("figures/chordDiag_deltaETMunspliced.pdf"))
+pdf(paste0("output/chordDiag_deltaETMunspliced.pdf"))
 set.seed(123)
 circos.par(start.degree = 0)
 chordDiagram(out2, reduce = 0.005, big.gap = 20)

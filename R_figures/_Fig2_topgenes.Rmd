@@ -17,7 +17,7 @@ library(stringr)
 
 ```{r deltatop, echo=F}
 # grab the topic from the saved model
-SaveFolderPath = "models/DeltaTopic"
+SaveFolderPath = "../data/models/DeltaTopic"
 topics_df <- fread(paste0(SaveFolderPath, "/topics.csv"))
 rownames(topics_df) <- topics_df$V1
 topics_df = topics_df[, -1]
@@ -49,7 +49,7 @@ rownames(heatmap_mat_delta) <- heatmap_df_delta$variable
 colnames(heatmap_mat_delta) <- str_replace(colnames(heatmap_mat_delta), "weight.", "topic")
 
 
-pdf(paste0("figures/topgenes_delta.pdf"))
+pdf(paste0("./output/topgenes_delta.pdf"))
 ht_delta <- Heatmap(heatmap_mat_delta, show_column_dend = FALSE, show_row_dend = FALSE,name = "weight")
 ht_delta
 dev.off()
@@ -57,7 +57,7 @@ dev.off()
 
 ```{r ETMtop, echo = FALSE}
 # top genes in ETM
-dt.ETM<- readRDS(paste0("models/BETM_spliced", "/dt_rho.rds"))
+dt.ETM<- readRDS(paste0("../data/models/BETM_spliced", "/dt_rho.rds"))
 
 # BETM topics matched with significant deltaTopics
 topics_to_show <- c(4, 21, 8)
@@ -73,14 +73,14 @@ heatmap_mat_ETM <- heatmap_df_ETM %>% select(-c("variable")) %>% data.matrix()
 rownames(heatmap_mat_ETM) <- heatmap_df_ETM$variable
 colnames(heatmap_mat_ETM) <- str_replace(colnames(heatmap_mat_ETM), "weight.", "topic")
 
-pdf(paste0("figures/topgenes_ETM.pdf"))
+pdf(paste0("./output/topgenes_ETM.pdf"))
 ht_ETM <- Heatmap(heatmap_mat_ETM, cluster_rows = F, cluster_columns = FALSE, show_column_dend = FALSE, show_row_dend = FALSE,name = "weight")
 ht_ETM
 dev.off()
 ```
 
 ```{r mathced_combined, echo = FALSE}
-pdf(paste0("figures/matched_topgenes.pdf"))
+pdf(paste0("./output/matched_topgenes.pdf"))
 ht_delta + ht_ETM
 dev.off()
 ```

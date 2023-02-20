@@ -1,4 +1,11 @@
-# Reconstruction_loss_validation
+---
+title: "Reconstruction loss validated on spliced and unsliced"
+output:
+  html_document:
+    self_contained: true
+    keep_md: true
+---
+
 ```{r, echo = F, message=F, warning=F}
 library(data.table)
 library(dplyr)
@@ -7,9 +14,9 @@ library(kableExtra)
 library(ggplot2)
 
 dt <- data.table()
-logs_DIR <- "../logs"
+logs_DIR <- "../data/logs"
 
-for(model_id in list.files("../logs/")){
+for(model_id in list.files("../data/logs/")){
     #print(model_id)
     timestamp <- list.files(paste0(logs_DIR, "/", model_id))
     if(length(timestamp)>1){
@@ -74,10 +81,12 @@ table_out <- rbind(table_out, table_unspliced)
 table_out %>%
   kbl() %>%
   kable_styling()
+
+fwrite(table_out, "./output/val_loss.csv", row.names = F)
 ```
 
-```{r ploting, echo=F, message=F, warning=F}
 
+```{r ploting, echo=F, message=F, warning=F}
 p_unspliced <- table_out[method %in% c("BETMunspliced", "DeltaTopic")] %>% 
 ggplot(aes(x = factor(pip), y = mean_U, ymax = mean_U+1.96*se_U, ymin = mean_U-1.96*se_U,
 color = as.factor(nlv))) + 
@@ -87,7 +96,7 @@ facet_grid(~method) + ggtitle("Reconstruction loss validated on Unspliced") +
 labs( y="Loss", x="Pip", color = "Number of Topics") +
 theme(plot.title = element_text(size = 12,face="bold" )) + 
     theme(axis.title=element_text(size="12") ,axis.text=element_text(size=12)) 
-ggsave("./loss_unspliced.pdf", p_unspliced)
+ggsave("./output/loss_unspliced.pdf", p_unspliced)
 
 p_spliced <- table_out[method %in% c("BETM", "DeltaTopic")] %>% 
 ggplot(aes(x = factor(pip), y = mean_S, ymax = mean_S+1.96*se_S, ymin = mean_S-1.96*se_S,
@@ -98,5 +107,5 @@ facet_grid(~method) + labs( y="Loss", x="Pip", color = "Number of Topics") +
 theme(plot.title = element_text(size = 12,face="bold" )) + 
     theme(axis.title=element_text(size="12") ,axis.text=element_text(size=12)) +
 ggtitle("Reconstruction loss validated on Spliced")
-ggsave("./loss_spliced.pdf", p_spliced)
+ggsave("./output/loss_spliced.pdf", p_spliced)
 ```

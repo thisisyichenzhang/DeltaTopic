@@ -1,6 +1,5 @@
 ---
 title: "Figure 4 Vector fields and cell type annotation"
-author: "Yichen Zhang"
 output:
   html_document:
     self_contained: true
@@ -29,7 +28,7 @@ knitr::opts_chunk$set(results = "asis")
 ```
 
 ```{r readpath, echo=FALSE}
-Save_Path <- "models/DeltaTopic"
+Save_Path <- "../data/models/DeltaTopic"
 ```
 
 ```{r read genes, echo=FALSE}
@@ -37,7 +36,7 @@ Save_Path <- "models/DeltaTopic"
 .genes <- fread(paste0(Save_Path, "/var_names.csv.gz"), header = F)
 setnames(.genes, "V1", "gene")
 # Cell type marker genes from Peng et al 2019
-.db = readxl::read_xls("data/cell_type_markers/cell_markers_Peng2019.xls")
+.db = readxl::read_xls("../data/cell_type_markers/cell_markers_Peng2019.xls")
 setnames(.db, "Gene", "gene")
 setnames(.db, "Cell type", "cell type")
 .db <- as.data.table(.db)
@@ -93,17 +92,12 @@ weight.mat.rho %>% data.matrix() -> weight.mat.rho
 rownames(weight.mat.rho) <- weight.mat.rho[,1]
 weight.mat.rho <- weight.mat.rho[, 2:ncol(weight.mat.rho)]
 
-#write.csv(weight.mat.rho, file=paste0(Save_Path, "/rho_weight.csv"))
-#gzip(paste0(Save_Path, "/rho_weight.csv"), paste0(Save_Path, "/rho_weight.csv.gz"))
-
 ## delta weight
 dcast(param.dt.delta, row  ~ col, value.var = "weight") -> weight.mat.delta
 weight.mat.delta %>% data.matrix() -> weight.mat.delta
 rownames(weight.mat.delta) <- weight.mat.delta[,1]
 weight.mat.delta <- weight.mat.delta[, 2:ncol(weight.mat.delta)]
 
-#write.csv(weight.mat.delta, file=paste0(Save_Path, "/delta_weight.csv"))
-#gzip(paste0(Save_Path, "/delta_weight.csv"), paste0(Save_Path, "/delta_weight.csv.gz"))
 
 #1. svd on rho = U * D * V^T with rank 2
 rsvd(t(weight.mat.rho), k = 2) -> svd.rho
@@ -137,7 +131,7 @@ rownames(theta) <- cell_order
 cell_v <- theta %*% svd.rho$v
 cell_w <- theta %*% W
 # load cell type annotation results
-load("mmultiR_annot_pancreas_marker.Rdata")
+load("../data/cell_type_markers/mmultiR_annot_pancreas_marker.Rdata")
 
 df_to_plot_cell <- data.frame(
     V1 = cell_v[, 1],
@@ -174,7 +168,7 @@ p_surv <- ggplot(df_to_plot_cell %>% sample_frac(0.03), aes(x = V1, y = V2)) +
 
 p_surv
 
-.ggsave(paste0(Save_Path,"/figures/2D_vector_field_cell_surv.pdf"), plot=p_surv,
+.ggsave(paste0("./output/2D_vector_field_cell_surv.pdf"), plot=p_surv,
         width=18, height=9)
 
 df_to_plot_cell_final <- df_to_plot_cell %>% group_by(B_cell) %>% sample_n(1000)
@@ -255,8 +249,8 @@ p_cell <- (p_T_cell/p_Stellate_cell/p_B_cell/p_Acinar_cell)|(p_Macrophage/p_Duct
 
 p_cell
 
-.ggsave(paste0(Save_Path,"/figures/2D_vector_field_topic.pdf"), plot=p_topic,
+.ggsave(paste0("./output/2D_vector_field_topic.pdf"), plot=p_topic,
         width=18, height=9)
-.ggsave(paste0(Save_Path,"/figures/2D_vector_field_cell.pdf"), plot=p_cell,
+.ggsave(paste0("./output/2D_vector_field_cell.pdf"), plot=p_cell,
         width=18, height=9)
 ```

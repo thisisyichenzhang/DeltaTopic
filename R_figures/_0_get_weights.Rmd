@@ -16,9 +16,9 @@ knitr::opts_chunk$set(results = "asis")
 ```
 
 ```{r readpath, echo=FALSE}
-DeltaTopic_Save_Path <- "data/models/DeltaTopic"
-BETM_spliced_Save_Path <- "data/models/BETM_spliced"
-BETM_unspliced_Save_Path <- "data/models/BETM_unspliced"
+DeltaTopic_Save_Path <- "../data/models/DeltaTopic"
+BETM_spliced_Save_Path <- "../data/models/BETM_spliced"
+BETM_unspliced_Save_Path <- "../data/models/BETM_unspliced"
 ```
 
 ```{r helper fucntion to get full weights, echo=FALSE}
@@ -51,7 +51,7 @@ for(target in c("rho", "delta")){
         param.dt <- readRDS(file)
 
         # save matrix as csv file
-        weight_csv_file <- paste0("./",target,"_weight.csv")
+        weight_csv_file <- paste0("../data/",target,"_weight.csv")
 
         if(!file.exists(weight_csv_file)){
                 dcast(param.dt, row  ~ col, value.var = "weight") -> weight.mat
@@ -87,7 +87,7 @@ for(Save_Path in c(BETM_spliced_Save_Path, BETM_unspliced_Save_Path)){
         param.dt <- readRDS(file)
 
         # save matrix as csv file
-        weight_csv_file <- paste0("./ETM_weight.csv")
+        weight_csv_file <- paste0("../data/ETM_weight.csv")
 
         if(!file.exists(weight_csv_file)){
                 dcast(param.dt, row  ~ col, value.var = "weight") -> weight.mat
