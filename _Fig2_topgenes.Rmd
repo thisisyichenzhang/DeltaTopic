@@ -17,7 +17,7 @@ library(stringr)
 
 ```{r deltatop, echo=F}
 # grab the topic from the saved model
-SaveFolderPath = "models/BDeltaTopic_allgenes_ep2000_nlv32_bs1024_combinebyadd_lr0.01_train_size1.0_pip0rho_0.1_pip0delta_0.1_klbeta_10.0v1"
+SaveFolderPath = "models/DeltaTopic"
 topics_df <- fread(paste0(SaveFolderPath, "/topics.csv"))
 rownames(topics_df) <- topics_df$V1
 topics_df = topics_df[, -1]
@@ -57,9 +57,7 @@ dev.off()
 
 ```{r ETMtop, echo = FALSE}
 # top genes in ETM
-dt.ETM<- readRDS(paste0("models/BETM_spliced_ep2000_nlv32_bs1024_lr0.01_train_size0.9_pip0rho_0.1_klbeta_10.0v1", "/dt_rho.rds"))
-
-#topics_to_show <- c(9, 10, 17, 18, 23) # 4, 7, 11, 26, 29
+dt.ETM<- readRDS(paste0("models/BETM_spliced", "/dt_rho.rds"))
 
 # BETM topics matched with significant deltaTopics
 topics_to_show <- c(4, 21, 8)
@@ -68,8 +66,6 @@ topics_to_show_df <- dt.ETM %>%
                   group_by(Var1) %>%
                   slice(1:10) %>%
                   filter(Var1 %in% topics_to_show)
-#top_genes <- topics_to_show_df$variable %>% unique()
-# use the same top genes as DeltaTopic without recomputing
 # weight matrix
 heatmap_df_ETM  <- dt.ETM %>% filter(variable %in% top_genes) %>% filter(Var1 %in% topics_to_show) %>% select(c("Var1", "weight", "variable"))
 heatmap_df_ETM <- heatmap_df_ETM %>% reshape(idvar = "variable", timevar = "Var1", direction = "wide")

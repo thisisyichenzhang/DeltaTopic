@@ -29,7 +29,7 @@ knitr::opts_chunk$set(results = "asis")
 ```
 
 ```{r readpath, echo=FALSE}
-Save_Path <- "models/BDeltaTopic_allgenes_ep2000_nlv32_bs1024_combinebyadd_lr0.01_train_size1.0_pip0rho_0.1_pip0delta_0.1_klbeta_10.0v1"
+Save_Path <- "models/DeltaTopic"
 ```
 
 ```{r read genes, echo=FALSE}

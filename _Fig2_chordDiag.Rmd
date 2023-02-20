@@ -1,6 +1,5 @@
 ---
 title: "Figure 2: Chord Diagram"
-author: "Yichen Zhang"
 output:
   html_document:
     self_contained: true
@@ -23,7 +22,7 @@ library(circlize)
 
 
 ```{r load topics, echo=F}
-Save_Path <- "models/BDeltaTopic_allgenes_ep2000_nlv32_bs1024_combinebyadd_lr0.01_train_size1.0_pip0rho_0.1_pip0delta_0.1_klbeta_10.0v1"
+Save_Path <- "models/DeltaTopic"
 topics <- fread(paste0(Save_Path, "/topics.csv"))
 K <- ncol(topics)-1
 colnames(topics) <- c("V1", 1:K)
@@ -33,7 +32,7 @@ colnames(topics) <- c("V1", 1:K)
     col.order(rev(1:K), ret.tab=TRUE) %>%
     as.data.table
 
-Save_Path1 <- "models/BETM_spliced_ep2000_nlv32_bs1024_lr0.01_train_size0.9_pip0rho_0.1_klbeta_10.0v1"
+Save_Path1 <- "models/BETM_spliced"
 topics <- fread(paste0(Save_Path1, "/topics.csv.gz"))
 K <- ncol(topics)-1
 colnames(topics) <- c("V1", 1:K)
@@ -43,7 +42,7 @@ colnames(topics) <- c("V1", 1:K)
     col.order(rev(1:K), ret.tab=TRUE) %>%
     as.data.table
 
-Save_Path2 <- "models/BETM_unspliced_ep2000_nlv32_bs1024_lr0.01_train_size0.9_pip0rho_0.1_klbeta_10.0v1"
+Save_Path2 <- "models/BETM_unspliced"
 topics <- fread(paste0(Save_Path2, "/topics.csv.gz"))
 K <- ncol(topics)-1
 colnames(topics) <- c("V1", 1:K)

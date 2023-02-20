@@ -1,6 +1,5 @@
 ---
-title: "Compute weights For DeltaTopic and BETM from spike and slab parameters"
-author: "Yichen Zhang"
+title: "Compute Weights For DeltaTopic and BETM from spike and slab parameters"
 output:
   html_document:
     self_contained: true
@@ -17,8 +16,9 @@ knitr::opts_chunk$set(results = "asis")
 ```
 
 ```{r readpath, echo=FALSE}
-DeltaTopic_Save_Path <- "models/BDeltaTopic_allgenes_ep2000_nlv32_bs1024_combinebyadd_lr0.01_train_size1.0_pip0rho_0.1_pip0delta_0.1_klbeta_10.0v1"
-BETM_Save_Path <- "models/BETM_spliced_ep2000_nlv32_bs1024_lr0.01_train_size0.9_pip0rho_0.1_klbeta_10.0v1"
+DeltaTopic_Save_Path <- "data/models/DeltaTopic"
+BETM_spliced_Save_Path <- "data/models/BETM_spliced"
+BETM_unspliced_Save_Path <- "data/models/BETM_unspliced"
 ```
 
 ```{r helper fucntion to get full weights, echo=FALSE}
@@ -35,7 +35,6 @@ readDT_melt <- function(Save_Path, parameter, target){
 for(target in c("rho", "delta")){
         Save_Path <- DeltaTopic_Save_Path
         file <- paste0(Save_Path, "/dt_", target,".rds")
-
         if(!file.exists(file)){
                 .genes <- fread(paste0(Save_Path, "/var_names.csv"), header = F)
                 setnames(.genes, "V1", "gene")
@@ -71,36 +70,37 @@ for(target in c("rho", "delta")){
 ```
         
 ```{r get weights from BETM, echo=FALSE}  
-Save_Path <- BETM_Save_Path
-file <- paste0(Save_Path, "/dt_rho.rds")
-target <- "rho"
-if(!file.exists(file)){
-        param.dt <- readDT_melt(Save_Path, "slab_mean", target) %>%
-        merge(readDT_melt(Save_Path, "slab_lnvar", target), allow.cartesian = TRUE) %>%
-        merge(readDT_melt(Save_Path, "spike_logit", target), allow.cartesian = TRUE) %>%
-        merge(.genes, by.x = "variable", by.y = "gene", allow.cartesian = TRUE) %>%
-        mutate(pip = 1/(1 + exp(-spike_logit))) %>%
-        mutate(row = `Var1`, col = `variable`, weight = slab_mean * pip) %>%
-        mutate(parameter := target)
-        saveRDS(param.dt, file)
-        cat(file)
-}
-param.dt <- readRDS(file)
+for(Save_Path in c(BETM_spliced_Save_Path, BETM_unspliced_Save_Path)){
+        file <- paste0(Save_Path, "/dt_rho.rds")
+        target <- "rho"
+        if(!file.exists(file)){
+                param.dt <- readDT_melt(Save_Path, "slab_mean", target) %>%
+                merge(readDT_melt(Save_Path, "slab_lnvar", target), allow.cartesian = TRUE) %>%
+                merge(readDT_melt(Save_Path, "spike_logit", target), allow.cartesian = TRUE) %>%
+                merge(.genes, by.x = "variable", by.y = "gene", allow.cartesian = TRUE) %>%
+                mutate(pip = 1/(1 + exp(-spike_logit))) %>%
+                mutate(row = `Var1`, col = `variable`, weight = slab_mean * pip) %>%
+                mutate(parameter := target)
+                saveRDS(param.dt, file)
+                cat(file)
+        }
+        param.dt <- readRDS(file)
 
-# save matrix as csv file
-weight_csv_file <- paste0("./ETM_weight.csv")
+        # save matrix as csv file
+        weight_csv_file <- paste0("./ETM_weight.csv")
 
-if(!file.exists(weight_csv_file)){
-        dcast(param.dt, row  ~ col, value.var = "weight") -> weight.mat
-        weight.mat %>% data.matrix() -> weight.mat
-        rownames(weight.mat) <- weight.mat[,1]
-        weight.mat <- weight.mat[, 2:ncol(weight.mat)]
-        write.csv(weight.mat, file=weight_csv_file)
-        cat(weight_csv_file)
-}
-# compress csv file if not exist
-if(!file.exists(paste0(weight_csv_file, ".gz"))){
-gzip(weight_csv_file, paste0(weight_csv_file, ".gz"))
-cat(paste0(weight_csv_file, ".gz"))
+        if(!file.exists(weight_csv_file)){
+                dcast(param.dt, row  ~ col, value.var = "weight") -> weight.mat
+                weight.mat %>% data.matrix() -> weight.mat
+                rownames(weight.mat) <- weight.mat[,1]
+                weight.mat <- weight.mat[, 2:ncol(weight.mat)]
+                write.csv(weight.mat, file=weight_csv_file)
+                cat(weight_csv_file)
+        }
+        # compress csv file if not exist
+        if(!file.exists(paste0(weight_csv_file, ".gz"))){
+        gzip(weight_csv_file, paste0(weight_csv_file, ".gz"))
+        cat(paste0(weight_csv_file, ".gz"))
+        }
 }
 ```

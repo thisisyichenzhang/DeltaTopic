@@ -1,6 +1,5 @@
 ---
 title: "Figure 2B & 2C: Survival analysis of PDAC patients"
-author: "Yichen Zhang"
 output:
   html_document:
     self_contained: true

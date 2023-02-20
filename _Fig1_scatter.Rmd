@@ -1,0 +1,79 @@
+---
+title: "Figure 1: phase portrait"
+output:
+  html_document:
+    self_contained: true
+    keep_md: true
+---
+```{r setup, include=FALSE}
+# the scatter plot of genes (spliced versus unspliced) topic specific
+library(data.table)
+library(ggplot2)
+library(dplyr)
+library(patchwork)
+library(stringr)
+```
+
+```{r, echo = F}
+##### scatter plot
+U <- readRDS('data/scatter_data/data_top_u.rds')
+S <- readRDS('data/scatter_data/data_top_s.rds')
+```
+
+```{r scatter, echo = F}
+for(i in 1:32){
+  subset_exp <- dt.delta.top %>% filter(Var1 == i)
+  Var1 <- i
+  print(paste0("topic-", Var1))
+  plots <- list()
+  # loop over all top genes in each topic
+  df_topic <- data.frame()
+  for(j in 1:nrow(subset_exp)){
+    my_gene <- subset_exp$variable[j]
+    print(my_gene)
+    df <- data.frame(S = S[, my_gene], U = U[, my_gene], gene = my_gene)
+    df <- cbind(df, topics_df)
+    df <- df %>% filter(topics == paste0('topic_', Var1 - 1)) %>% select(c("S","U","gene"))
+    # filter out (S,U) = (0,0)
+    df <- df %>% filter(S > 0 | U > 0)
+    # 95 quantile of S and U
+    df <- df %>% filter(U >= quantile(df$U, 0.025) & U <= quantile(df$U, 0.975)) %>% filter(S >= quantile(df$S, 0.025) & S <= quantile(df$S, 0.975))
+    if(nrow(df) > 0){
+      df$topic <- paste0('topic_', Var1)
+      df_topic <- rbind(df_topic, df)
+    }
+  }
+  DT_topic <- df_topic %>% data.table()
+  if(nrow(DT_topic)>0){
+    DT_topic[, .SD[.N > 100], by = .(topic, gene)]-> DT_topic_plot
+  }
+  if(nrow(DT_topic_plot)>0){
+      p <- ggplot(DT_topic_plot, aes(x = S, y = U)) +
+            geom_hex(bins = 50) +#35393a
+            facet_wrap(~gene, ncol = 3) +
+            scale_fill_gradient(low="lightblue1",high="darkblue",trans="log10") + 
+            geom_abline(intercept = 0, slope = 1, colour = "red") +
+            theme_classic() +
+            ggtitle(paste0("Top Genes In Topic ", Var1))
+      ggsave(paste0('figures/fig2a_hex_scatter/Topic',Var1,"_",'TopGenes.pdf'), p)
+    }
+    topgenes <- DT_topic_plot$gene %>% unique()
+    for(mygene in topgenes){
+      DT_topic_gene_plot <- DT_topic_plot %>% filter(gene == mygene)
+      if(nrow(DT_topic_gene_plot)>0){
+        max_val <- max(max(DT_topic_gene_plot$U), max(DT_topic_gene_plot$S))
+        p0 <- ggplot(DT_topic_gene_plot, aes(x = S, y = U)) +
+              geom_hex(bins = 50) +#35393a
+              scale_fill_gradient(low="lightblue1",high="darkblue",trans="log10") + 
+              geom_abline(intercept = 0, slope = 1, colour = "red") +
+              theme_classic() +
+              xlim(0, max_val) + ylim(0, max_val) + # U and S are in the same range
+              ggtitle(paste0("Topic ", Var1, "-", mygene))
+        if(nrow(DT_topic_gene_plot[(S>0)&(U>0),,]) > 20){
+          p0 <- p0 + geom_density_2d(mapping = aes(x = S, y = U), data = DT_topic_gene_plot[(S>0)&(U>0),,], color = "black", alpha = 0.25) 
+        }
+        ggsave(paste0('figures/scatter_same_range/Topic',Var1,"_",mygene,'.pdf'), p0)
+      }
+    }
+}
+```
