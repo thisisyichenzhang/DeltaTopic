@@ -8,6 +8,10 @@ all: $(HTML_FILES)
 %.html: %.Rmd
 	Rscript -e "rmarkdown::render('$<')"
 
+# remove HTML and MD files
 clean:
 	rm -f $(HTML_FILES)
 	rm -r $(MD_FILES)
+# remove output files
+cleanoutput:
+	rm -rf output/*
