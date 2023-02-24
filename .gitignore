@@ -5,7 +5,8 @@
 # ignore Rmd output files
 /R_figures/*_files/*
 /R_figures/*.html
-/R_figures/*.md
+/R_figures/_Fig*.md
+/R_figures/_0_get_weights.md
 # generically ignore all files with these extensions
 *.gz
 *.txt
