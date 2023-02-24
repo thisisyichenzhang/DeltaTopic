@@ -13,6 +13,7 @@ library(dplyr)
 library(patchwork)
 library(ComplexHeatmap)
 library(stringr)
+source("util.R")
 ```
 
 ```{r deltatop, echo=F}
@@ -46,15 +47,30 @@ heatmap_df_delta  <- dt.delta %>% filter(variable %in% top_genes) %>% filter(Var
 heatmap_df_delta <- heatmap_df_delta %>% reshape(idvar = "variable", timevar = "Var1", direction = "wide")
 heatmap_mat_delta <- heatmap_df_delta %>% select(-c("variable")) %>% data.matrix()
 rownames(heatmap_mat_delta) <- heatmap_df_delta$variable
-colnames(heatmap_mat_delta) <- str_replace(colnames(heatmap_mat_delta), "weight.", "topic")
+colnames(heatmap_mat_delta) <- str_replace(colnames(heatmap_mat_delta), "weight.", "")
 
-
-pdf(paste0("./output/topgenes_delta.pdf"))
-ht_delta <- Heatmap(heatmap_mat_delta, show_column_dend = FALSE, show_row_dend = FALSE,name = "weight")
+pdf(paste0("./output/topgenes_delta.pdf"), width = 4, height = 10)
+ht_delta <- Heatmap(heatmap_mat_delta, show_column_dend = FALSE, show_row_dend = FALSE,name = "weight", column_order = c("26", "10", "7", "29", "11", "4", "6"), row_names_side = "left")
 ht_delta
 dev.off()
 ```
 
+```{r rho_heatmap, echo = FALSE}
+dt.rho <- readRDS(paste0(SaveFolderPath, "/dt_rho.rds"))
+heatmap_df_rho  <- dt.rho %>% filter(variable %in% top_genes) %>% filter(Var1 %in% topics_to_show) %>% select(c("Var1", "weight", "variable"))
+heatmap_df_rho <- heatmap_df_rho %>% reshape(idvar = "variable", timevar = "Var1", direction = "wide")
+heatmap_mat_rho <- heatmap_df_rho %>% select(-c("variable")) %>% data.matrix()
+rownames(heatmap_mat_rho) <- heatmap_df_rho$variable
+colnames(heatmap_mat_rho) <- str_replace(colnames(heatmap_mat_rho), "weight.", "")
+
+pdf(paste0("./output/topgenes_rho.pdf"), width = 4, height = 10)
+ht_rho <- Heatmap(heatmap_mat_rho, show_column_dend = FALSE, show_row_dend = FALSE,name = "weight", column_order = c("26", "10", "7", "29", "11", "4", "6"), row_names_side = "left")
+ht_rho
+dev.off()
+```
+
+
+```
 ```{r ETMtop, echo = FALSE}
 # top genes in ETM
 dt.ETM<- readRDS(paste0("../data/models/BETM_spliced", "/dt_rho.rds"))
@@ -71,16 +87,17 @@ heatmap_df_ETM  <- dt.ETM %>% filter(variable %in% top_genes) %>% filter(Var1 %i
 heatmap_df_ETM <- heatmap_df_ETM %>% reshape(idvar = "variable", timevar = "Var1", direction = "wide")
 heatmap_mat_ETM <- heatmap_df_ETM %>% select(-c("variable")) %>% data.matrix()
 rownames(heatmap_mat_ETM) <- heatmap_df_ETM$variable
-colnames(heatmap_mat_ETM) <- str_replace(colnames(heatmap_mat_ETM), "weight.", "topic")
+colnames(heatmap_mat_ETM) <- str_replace(colnames(heatmap_mat_ETM), "weight.", "")
 
-pdf(paste0("./output/topgenes_ETM.pdf"))
+pdf(paste0("./output/topgenes_ETM.pdf"), width = 4, height = 10)
 ht_ETM <- Heatmap(heatmap_mat_ETM, cluster_rows = F, cluster_columns = FALSE, show_column_dend = FALSE, show_row_dend = FALSE,name = "weight")
 ht_ETM
 dev.off()
 ```
 
 ```{r mathced_combined, echo = FALSE}
-pdf(paste0("./output/matched_topgenes.pdf"))
-ht_delta + ht_ETM
+ht_ETM <- Heatmap(heatmap_mat_ETM, cluster_rows = F, cluster_columns = FALSE, show_column_dend = FALSE, show_row_dend = FALSE,name = "weight", show_row_names = FALSE)
+pdf(paste0("./output/matched_topgenes.pdf"), width = 10, height = 10)
+ht_delta + ht_rho + ht_ETM
 dev.off()
 ```
