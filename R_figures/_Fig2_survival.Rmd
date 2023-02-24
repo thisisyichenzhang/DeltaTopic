@@ -158,11 +158,11 @@ p <- ggplot(data= df_meta, aes(x=coef, y=-log10(p), col=diffexpressed, label=top
         geom_text_repel() +
         facet_wrap(~ method) +
         scale_color_manual(values=c("blue", "black", "red")) +
-        geom_vline(xintercept=c(-0.0015, 0.0015), col="red") +
-        geom_hline(yintercept=-log10(0.05), col="red")+
-        scale_x_continuous(labels = function(x) format(x, scientific = TRUE)) +
+        geom_vline(xintercept=c(-0.0015, 0.0015), col="grey", linetype = "dotted") +
+        geom_hline(yintercept=-log10(0.05), col="grey", linetype = "dotted")+
+        scale_x_continuous(labels = function(x) 1000*x) +
         theme(panel.spacing = unit(2, "lines")) +
-        xlab("Harzard ratio") + ylab("Significance(-log10)") + ggtitle("PDAC survival analysis
+        xlab("Harzard ratio (1e-3)") + ylab("Significance(-log10)") + ggtitle("PDAC survival analysis
 across three different cohorts
 ")
 p
