@@ -7,6 +7,7 @@
 /R_figures/*.html
 /R_figures/_Fig*.md
 /R_figures/_0_get_weights.md
+/logs/
 # generically ignore all files with these extensions
 *.gz
 *.txt
