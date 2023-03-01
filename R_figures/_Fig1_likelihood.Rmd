@@ -88,24 +88,26 @@ fwrite(table_out, "./output/val_loss.csv", row.names = F)
 
 ```{r ploting, echo=F, message=F, warning=F}
 p_unspliced <- table_out[method %in% c("BETMunspliced", "DeltaTopic")] %>% 
-ggplot(aes(x = factor(pip), y = mean_U, ymax = mean_U+1.96*se_U, ymin = mean_U-1.96*se_U,
+ggplot(aes(x = factor(pip), y = -mean_U, ymax = -mean_U-1.96*se_U, ymin = -mean_U+1.96*se_U,
 color = as.factor(nlv))) + 
 geom_point(position=position_dodge(width=0.5), size = 2.5) + 
-geom_linerange(position=position_dodge(width=0.5), size =0.5) +  theme_bw()  + 
-facet_grid(~method) + ggtitle("Reconstruction loss validated on Unspliced") + 
-labs( y="Loss", x="Pip", color = "Number of Topics") +
+geom_linerange(position=position_dodge(width=0.5), size =0.5) + 
+theme_void()  + 
+facet_grid(~method) + ggtitle("Held-out log data likelihood on Unspliced") + 
+labs( y="Log likelihood", x="Pip", color = "Number of Topics") +
 theme(plot.title = element_text(size = 12,face="bold" )) + 
     theme(axis.title=element_text(size="12") ,axis.text=element_text(size=12)) 
-ggsave("./output/loss_unspliced.pdf", p_unspliced)
+p_unspliced
+ggsave("./output/liklihood_unspliced.pdf", p_unspliced)
 
 p_spliced <- table_out[method %in% c("BETM", "DeltaTopic")] %>% 
-ggplot(aes(x = factor(pip), y = mean_S, ymax = mean_S+1.96*se_S, ymin = mean_S-1.96*se_S,
+ggplot(aes(x = factor(pip), y = -mean_S, ymax = -mean_S-1.96*se_S, ymin = -mean_S+1.96*se_S,
 color = as.factor(nlv))) + 
 geom_point(position=position_dodge(width=0.5), size = 2.5) + 
-geom_linerange(position=position_dodge(width=0.5), size =0.5) +  theme_bw()  + 
-facet_grid(~method) + labs( y="Loss", x="Pip", color = "Number of Topics") +
+geom_linerange(position=position_dodge(width=0.5), size =0.5) + theme_void()  + 
+facet_grid(~method) + labs( y="Log likelihood", x="Pip", color = "Number of Topics") +
 theme(plot.title = element_text(size = 12,face="bold" )) + 
     theme(axis.title=element_text(size="12") ,axis.text=element_text(size=12)) +
-ggtitle("Reconstruction loss validated on Spliced")
-ggsave("./output/loss_spliced.pdf", p_spliced)
+ggtitle("Held-out log data likelihood on Spliced") 
+ggsave("./output/liklihood_spliced.pdf", p_spliced)
 ```
