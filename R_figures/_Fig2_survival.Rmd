@@ -28,6 +28,7 @@ if (!dir.exists(saveDIR)){
 ```{r KM and coxph, echo=F, warning=F}
 TCGA_data_DIR <- "../data/PDAC/"
 
+df <- data.frame(lovation = character(), target = character(), topic = character(), p_val = numeric())
 for(location in c("CA", "AU", "US")){
     if(location == "US"){
         exp_seq <- fread(paste0(TCGA_data_DIR, "exp_seq.", location, ".tsv.gz"))
@@ -97,6 +98,12 @@ for(location in c("CA", "AU", "US")){
             merged.meta.hat[[paste0(topic,"_2group")]] <- ifelse(scale(merged.meta.hat[[topic]]) >= 0, 'UP','DOWN')
             # fit survival model
             f_2group <- as.formula(paste0("Surv(time, status) ~ ", topic, "_2group"))
+            # computes the log-rank test p-value
+            diff <- survdiff(f_2group, data = merged.meta.hat) 
+            p_val <- pchisq(diff$chisq, length(diff$n)-1, lower.tail = FALSE)
+            dt_tmp <- data.frame(location = location, target = target, topic = topic, p_val = p_val)
+            df <- rbind(df, dt_tmp)
+
             fit_2group <- surv_fit(f_2group, data = merged.meta.hat)
             # Drawing survival curves
             plt_2group <- ggsurvplot(fit_2group, 
@@ -112,6 +119,15 @@ for(location in c("CA", "AU", "US")){
         }
     }
 }
+```
+
+```{r sig count, echo=F, include=F, eval=F}
+KM_DT <- as.data.table(df)
+
+KM_DT[, .(count_01 = sum(p_val <= 0.1),
+        count_005 = sum(p_val <= 0.05),
+        count_001 = sum(p_val <= 0.01)), by = .(target, location)]
+
 ```
 
 ```{r aggregate_cox_results, echo = F, warning=F}
