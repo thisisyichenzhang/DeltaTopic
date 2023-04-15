@@ -1,20 +1,27 @@
-## DeltaTopic: Dynamically-Encoded Latent Transcriptomic pattern Analysis by Topic modeling
+# DeltaTopic: Dynamically-Encoded Latent Transcriptomic pattern Analysis by Topic modeling
 
+## Installation
 
+```
+python setup.py build
+python setup.py install
+```
 
-### Prerequisites
+## Dependencies
 
-* python - numpy, pandas, anndata, pytorch, pytorch_lightning
+* python - pandas, anndata, pytorch, pytorch_lightning
+
+To replicate the analysis in the paper, R packages (Optional):
+
 * R - data.table, dplyr, msigdbr, goseq, fgsea, ggplot2, ComplexHeatmap, circlize
 
-### Example code for training BALSAM and DeltaTopic models
+## Example code for training BALSAM and DeltaTopic models
 
-
-```python
+```
 # train BALASM model on the spliced count data
-python BALSAM.py --nLV 32 --EPOCHS 5 
+BALSAM --nLV 32 --EPOCHS 5 
 # train deltaTopic model
-python DeltaTopic.py --nLV 32 --EPOCHS 5 
+DeltaTopic --nLV 32 --EPOCHS 5 
 ```
 
 ### Analysis Rmd code for reproduce figures in the paper

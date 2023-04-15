@@ -15,7 +15,7 @@ from typing import Optional, Union, Literal, Sequence, Tuple, Dict
 
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping 
-from pytorch_lightning.loggers import LightningLoggerBase
+from pytorch_lightning.loggers import Logger
 from pytorch_lightning.utilities import rank_zero_only
 
 from nn.dataloader_util import AnnDataLoader
@@ -679,15 +679,11 @@ class Trainer(pl.Trainer):
         Number of gpus to train on (int) or which GPUs to train on (list or str) applied per node
     benchmark
         If true enables cudnn.benchmark, which improves speed when inputs are fixed size
-    flush_logs_every_n_steps
-        How often to flush logs to disk. By default, flushes after training complete.
     check_val_every_n_epoch
         Check val every n train epochs. By default, val is not checked, unless `early_stopping` is `True`.
     max_epochs
         Stop training once this number of epochs is reached.
-    checkpoint_callback
-        If `True`, enable checkpointing. It will configure a default ModelCheckpoint
-        callback if there is no user-defined ModelCheckpoint in `callbacks`.
+    
     num_sanity_val_steps
         Sanity check runs n validation batches before starting the training routine.
         Set it to -1 to run all batches in all validation dataloaders.
@@ -724,12 +720,11 @@ class Trainer(pl.Trainer):
         self,
         gpus: Union[int, str] = 1,
         benchmark: bool = True,
-        flush_logs_every_n_steps=np.inf,
         check_val_every_n_epoch: Optional[int] = None,
         max_epochs: int = 400,
-        checkpoint_callback: bool = False,
+        #checkpoint_callback: bool = False,
         num_sanity_val_steps: int = 0,
-        weights_summary: Optional[Literal["top", "full"]] = None,
+        #weights_summary: Optional[Literal["top", "full"]] = None,
         early_stopping: bool = False,
         early_stopping_monitor: Literal[
             "elbo_validation", "reconstruction_loss_validation", "kl_local_validation"
@@ -737,9 +732,9 @@ class Trainer(pl.Trainer):
         early_stopping_min_delta: float = 0.00,
         early_stopping_patience: int = 45,
         early_stopping_mode: Literal["min", "max"] = "min",
-        progress_bar_refresh_rate: int = 1,
+        #progress_bar_refresh_rate: int = 1,
         simple_progress_bar: bool = True,
-        logger: Union[Optional[LightningLoggerBase], bool] = None,
+        logger: Union[Optional[Logger], bool] = None,
         **kwargs
     ):
 
@@ -769,14 +764,13 @@ class Trainer(pl.Trainer):
         super().__init__(
             gpus=gpus,
             benchmark=benchmark,
-            flush_logs_every_n_steps=flush_logs_every_n_steps,
             check_val_every_n_epoch=check_val_every_n_epoch,
             max_epochs=max_epochs,
-            checkpoint_callback=checkpoint_callback,
+            #checkpoint_callback=checkpoint_callback,
             num_sanity_val_steps=num_sanity_val_steps,
-            weights_summary=weights_summary,
+            #weights_summary=weights_summary,
             logger=logger,
-            progress_bar_refresh_rate=progress_bar_refresh_rate,
+            #progress_bar_refresh_rate=progress_bar_refresh_rate,
             **kwargs,
         )
 
@@ -798,7 +792,7 @@ class Trainer(pl.Trainer):
             )
             super().fit(*args, **kwargs)
 
-class SimpleLogger(LightningLoggerBase):
+class SimpleLogger(Logger):
     def __init__(self):
         super().__init__()
         self._data = {}
