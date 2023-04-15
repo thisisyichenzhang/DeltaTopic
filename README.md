@@ -20,6 +20,8 @@ To replicate the analysis in the paper, R packages (Optional):
 ```
 # train BALASM model on the spliced count data
 BALSAM --nLV 32 --EPOCHS 5 
+```
+```
 # train deltaTopic model
 DeltaTopic --nLV 32 --EPOCHS 5 
 ```
