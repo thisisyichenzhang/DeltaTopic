@@ -9,8 +9,8 @@ setup(
     description="Packages to implement BALSAM and DeltaTopic as described in the paper: Unraveling dynamically-encoded latent transcriptomic patterns in pancreatic cancer cells by topic modelling",
     url="https://github.com/causalpathlab/deltaTopic",
     entry_points={'console_scripts':
-        ['BALSAM = run.BALSAM:main',
-        'DeltaTopic = run.DeltaTopic:main']
+        ['BALSAM = DeltaTopic.run.BALSAM:main',
+        'DeltaTopic = DeltaTopic.run.DeltaTopic:main']
     },
     install_requires=['pandas==1.4.1',
                       'torch', 

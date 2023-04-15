@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeltaTopic.nn package &mdash; deltaTopic  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DeltaTopic.run package" href="DeltaTopic.run.html" />
+    <link rel="prev" title="DeltaTopic package" href="DeltaTopic.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            deltaTopic
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">DeltaTopic</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="DeltaTopic.html">DeltaTopic package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="DeltaTopic.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">DeltaTopic.nn package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="DeltaTopic.run.html">DeltaTopic.run package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="DeltaTopic.html#module-DeltaTopic">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">deltaTopic</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">DeltaTopic</a></li>
+          <li class="breadcrumb-item"><a href="DeltaTopic.html">DeltaTopic package</a></li>
+      <li class="breadcrumb-item active">DeltaTopic.nn package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/DeltaTopic.nn.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="deltatopic-nn-package">
+<h1>DeltaTopic.nn package<a class="headerlink" href="#deltatopic-nn-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-DeltaTopic.nn.TrainingPlan">
+<span id="deltatopic-nn-trainingplan-module"></span><h2>DeltaTopic.nn.TrainingPlan module<a class="headerlink" href="#module-DeltaTopic.nn.TrainingPlan" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.TrainingPlan.TrainingPlan">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.TrainingPlan.</span></span><span class="sig-name descname"><span class="pre">TrainingPlan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/TrainingPlan.html#TrainingPlan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LightningModule</span></code></p>
+<p>Lightning module task to train scvi-tools modules.</p>
+<section id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>module</dt><dd><p>A module instance from class <code class="docutils literal notranslate"><span class="pre">BaseModuleClass</span></code>.</p>
+</dd>
+<dt>lr</dt><dd><p>Learning rate used for optimization.</p>
+</dd>
+<dt>weight_decay</dt><dd><p>Weight decay used in optimizatoin.</p>
+</dd>
+<dt>eps</dt><dd><p>eps used for optimization.</p>
+</dd>
+<dt>optimizer</dt><dd><p>One of “Adam” (<code class="xref py py-class docutils literal notranslate"><span class="pre">Adam</span></code>), “AdamW” (<code class="xref py py-class docutils literal notranslate"><span class="pre">AdamW</span></code>).</p>
+</dd>
+<dt>n_steps_kl_warmup</dt><dd><p>Number of training steps (minibatches) to scale weight on KL divergences from 0 to 1.
+Only activated when <cite>n_epochs_kl_warmup</cite> is set to None.</p>
+</dd>
+<dt>n_epochs_kl_warmup</dt><dd><p>Number of epochs to scale weight on KL divergences from 0 to 1.
+Overrides <cite>n_steps_kl_warmup</cite> when both are not <cite>None</cite>.</p>
+</dd>
+<dt>reduce_lr_on_plateau</dt><dd><p>Whether to monitor validation loss and reduce learning rate when validation set
+<cite>lr_scheduler_metric</cite> plateaus.</p>
+</dd>
+<dt>lr_factor</dt><dd><p>Factor to reduce learning rate.</p>
+</dd>
+<dt>lr_patience</dt><dd><p>Number of epochs with no improvement after which learning rate will be reduced.</p>
+</dd>
+<dt>lr_threshold</dt><dd><p>Threshold for measuring the new optimum.</p>
+</dd>
+<dt>lr_scheduler_metric</dt><dd><p>Which metric to track for learning rate reduction.</p>
+</dd>
+<dt>lr_min</dt><dd><p>Minimum learning rate allowed</p>
+</dd>
+<dt><a href="#id1"><span class="problematic" id="id2">**</span></a>loss_kwargs</dt><dd><p>Keyword args to pass to the loss method of the <cite>module</cite>.
+<cite>kl_weight</cite> should not be passed here and is handled automatically.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.TrainingPlan.TrainingPlan.configure_optimizers">
+<span class="sig-name descname"><span class="pre">configure_optimizers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/TrainingPlan.html#TrainingPlan.configure_optimizers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan.configure_optimizers" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.TrainingPlan.TrainingPlan.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/TrainingPlan.html#TrainingPlan.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Passthrough to <cite>model.forward()</cite>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.TrainingPlan.TrainingPlan.kl_weight">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">kl_weight</span></span><a class="headerlink" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan.kl_weight" title="Permalink to this definition"></a></dt>
+<dd><p>Scaling factor on KL divergence during training.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.TrainingPlan.TrainingPlan.n_obs_training">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_obs_training</span></span><a class="headerlink" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan.n_obs_training" title="Permalink to this definition"></a></dt>
+<dd><p>Number of observations in the training set.</p>
+<p>This will update the loss kwargs for loss rescaling.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.TrainingPlan.TrainingPlan.training_epoch_end">
+<span class="sig-name descname"><span class="pre">training_epoch_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/TrainingPlan.html#TrainingPlan.training_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan.training_epoch_end" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.TrainingPlan.TrainingPlan.training_step">
+<span class="sig-name descname"><span class="pre">training_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/TrainingPlan.html#TrainingPlan.training_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan.training_step" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.TrainingPlan.TrainingPlan.validation_epoch_end">
+<span class="sig-name descname"><span class="pre">validation_epoch_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/TrainingPlan.html#TrainingPlan.validation_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan.validation_epoch_end" title="Permalink to this definition"></a></dt>
+<dd><p>Aggregate validation step information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.TrainingPlan.TrainingPlan.validation_step">
+<span class="sig-name descname"><span class="pre">validation_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/TrainingPlan.html#TrainingPlan.validation_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan.validation_step" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-DeltaTopic.nn.base_components">
+<span id="deltatopic-nn-base-components-module"></span><h2>DeltaTopic.nn.base_components module<a class="headerlink" href="#module-DeltaTopic.nn.base_components" title="Permalink to this heading"></a></h2>
+<p>base components for VAE, ETM, pathway-guided connection</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">BALSAMDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Decoder for Bayesian ETM model</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder.forward" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder.get_beta">
+<span class="sig-name descname"><span class="pre">get_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spike_logit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_mean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_lnvar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias_d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder.get_beta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder.get_beta" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder.get_rho">
+<span class="sig-name descname"><span class="pre">get_rho</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder.get_rho"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder.get_rho" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder.soft_max">
+<span class="sig-name descname"><span class="pre">soft_max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder.soft_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder.soft_max" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder.sparse_kl_loss">
+<span class="sig-name descname"><span class="pre">sparse_kl_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logit_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lnvar_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spike_logit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_lnvar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder.sparse_kl_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder.sparse_kl_loss" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMEncoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">BALSAMEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#BALSAMEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMEncoder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>BayesianETM Encoder</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMEncoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cat_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#BALSAMEncoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMEncoder.forward" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">DeltaTopicDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<blockquote>
+<div><p>The decoder for DeltaTopic model
+- Model the topic specific post-transcription factor for each gene between spliced and unplisced transcripts</p>
+<p>Testing script:</p>
+</div></blockquote>
+<p>import torch
+from nn.base_components import DeltaETMDecoder
+test_decoder = DeltaETMDecoder(n_input=10, n_output=100)
+input = torch.randn(2, 10) # batch_size 2, 10 LVs
+output = test_decoder(input, 0)</p>
+<p>log_beta = test_decoder.beta(test_decoder.rho.expand([test_decoder.n_input,-1]))
+hh = test_decoder.hid(input)
+pr = torch.mm(torch.exp(hh),torch.exp(log_beta))</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.forward" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder.get_beta">
+<span class="sig-name descname"><span class="pre">get_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spike_logit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_mean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_lnvar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias_gene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder.get_beta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.get_beta" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder.get_rho_delta">
+<span class="sig-name descname"><span class="pre">get_rho_delta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder.get_rho_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.get_rho_delta" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder.soft_max">
+<span class="sig-name descname"><span class="pre">soft_max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder.soft_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.soft_max" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder.sparse_kl_loss">
+<span class="sig-name descname"><span class="pre">sparse_kl_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logit_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lnvar_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spike_logit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_lnvar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder.sparse_kl_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.sparse_kl_loss" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicEncoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">DeltaTopicEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#DeltaTopicEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicEncoder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Maksed latent encoder with two input heads –&gt; one shared latent space
+Options to incorporate categorical variables as one-hot vectors</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicEncoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cat_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#DeltaTopicEncoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicEncoder.forward" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.FCLayers">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">FCLayers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#FCLayers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.FCLayers" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>A helper class to build fully-connected layers for a neural network.</p>
+<section id="id3">
+<h3>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>n_in</dt><dd><p>The dimensionality of the input</p>
+</dd>
+<dt>n_out</dt><dd><p>The dimensionality of the output</p>
+</dd>
+<dt>n_cat_list</dt><dd><p>A list containing, for each category of interest,
+the number of categories. Each category will be
+included using a one-hot encoding.</p>
+</dd>
+<dt>n_layers</dt><dd><p>The number of fully-connected hidden layers</p>
+</dd>
+<dt>n_hidden</dt><dd><p>The number of nodes per hidden layer</p>
+</dd>
+<dt>dropout_rate</dt><dd><p>Dropout rate to apply to each of the hidden layers</p>
+</dd>
+<dt>use_batch_norm</dt><dd><p>Whether to have <cite>BatchNorm</cite> layers or not</p>
+</dd>
+<dt>use_layer_norm</dt><dd><p>Whether to have <cite>LayerNorm</cite> layers or not</p>
+</dd>
+<dt>use_activation</dt><dd><p>Whether to have layer activation or not</p>
+</dd>
+<dt>bias</dt><dd><p>Whether to learn bias in linear layers or not</p>
+</dd>
+<dt>inject_covariates</dt><dd><p>Whether to inject covariates in each layer, or just the first (default).</p>
+</dd>
+<dt>activation_fn</dt><dd><p>Which activation function to use</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.FCLayers.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cat_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#FCLayers.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.FCLayers.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Forward computation on <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
+<section id="id4">
+<h4>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h4>
+<dl class="simple">
+<dt>x</dt><dd><p>tensor of values with shape <code class="docutils literal notranslate"><span class="pre">(n_in,)</span></code></p>
+</dd>
+<dt>cat_list</dt><dd><p>list of category membership(s) for this sample</p>
+</dd>
+</dl>
+<p>x: torch.Tensor</p>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h4>
+<dl class="simple">
+<dt>py:class:<cite>torch.Tensor</cite></dt><dd><p>tensor of shape <code class="docutils literal notranslate"><span class="pre">(n_out,)</span></code></p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.FCLayers.inject_into_layer">
+<span class="sig-name descname"><span class="pre">inject_into_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_num</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#FCLayers.inject_into_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.FCLayers.inject_into_layer" title="Permalink to this definition"></a></dt>
+<dd><p>Helper to determine if covariates should be injected.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.FCLayers.set_online_update_hooks">
+<span class="sig-name descname"><span class="pre">set_online_update_hooks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hook_first_layer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#FCLayers.set_online_update_hooks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.FCLayers.set_online_update_hooks" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.MaskedLinear">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">MaskedLinear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#MaskedLinear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.MaskedLinear" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Linear</span></code></p>
+<p>same as Linear except has a configurable mask on the weights</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.MaskedLinear.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#MaskedLinear.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.MaskedLinear.forward" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.MaskedLinearLayers">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">MaskedLinearLayers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#MaskedLinearLayers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.MaskedLinearLayers" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DeltaTopic.nn.base_components.FCLayers" title="DeltaTopic.nn.base_components.FCLayers"><code class="xref py py-class docutils literal notranslate"><span class="pre">FCLayers</span></code></a></p>
+<p>This incorporates the one-hot encoding for for category input.
+A helper class to build Masked Linear layers compatible with FClayer
+Parameters
+———-
+n_in</p>
+<blockquote>
+<div><p>The dimensionality of the input</p>
+</div></blockquote>
+<dl class="simple">
+<dt>n_out</dt><dd><p>The dimensionality of the output</p>
+</dd>
+<dt>mask</dt><dd><p>The mask, should be dimension n_out * n_in</p>
+</dd>
+<dt>mask_first</dt><dd><p>wheather mask linear layer should be before or after fully-connected layers, default is true;
+False is useful to construct an decoder with the oposite strucutre (mask linear after fully connected)</p>
+</dd>
+<dt>n_cat_list</dt><dd><p>A list containing, for each category of interest,
+the number of categories. Each category will be
+included using a one-hot encoding.</p>
+</dd>
+<dt>n_layers</dt><dd><p>The number of fully-connected hidden layers</p>
+</dd>
+<dt>n_hidden</dt><dd><p>The number of nodes per hidden layer</p>
+</dd>
+<dt>dropout_rate</dt><dd><p>Dropout rate to apply to each of the hidden layers</p>
+</dd>
+<dt>use_batch_norm</dt><dd><p>Whether to have <cite>BatchNorm</cite> layers or not</p>
+</dd>
+<dt>use_layer_norm</dt><dd><p>Whether to have <cite>LayerNorm</cite> layers or not</p>
+</dd>
+<dt>use_activation</dt><dd><p>Whether to have layer activation or not</p>
+</dd>
+<dt>bias</dt><dd><p>Whether to learn bias in linear layers or not</p>
+</dd>
+<dt>inject_covariates</dt><dd><p>Whether to inject covariates in each layer, or just the first (default).</p>
+</dd>
+<dt>activation_fn</dt><dd><p>Which activation function to use</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.MaskedLinearLayers.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cat_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#MaskedLinearLayers.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.MaskedLinearLayers.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Forward computation on <code class="docutils literal notranslate"><span class="pre">x</span></code>.
+Parameters
+———-
+x</p>
+<blockquote>
+<div><p>tensor of values with shape <code class="docutils literal notranslate"><span class="pre">(n_in,)</span></code></p>
+</div></blockquote>
+<dl class="simple">
+<dt>cat_list</dt><dd><p>list of category membership(s) for this sample</p>
+</dd>
+</dl>
+<p>x: torch.Tensor
+Returns
+——-
+py:class:<cite>torch.Tensor</cite></p>
+<blockquote>
+<div><p>tensor of shape <code class="docutils literal notranslate"><span class="pre">(n_out,)</span></code></p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.identity">
+<span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#identity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.identity" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.one_hot">
+<span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">one_hot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#one_hot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.one_hot" title="Permalink to this definition"></a></dt>
+<dd><p>One hot a tensor of categories.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.reparameterize_gaussian">
+<span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">reparameterize_gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#reparameterize_gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.reparameterize_gaussian" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-DeltaTopic.nn.base_model">
+<span id="deltatopic-nn-base-model-module"></span><h2>DeltaTopic.nn.base_model module<a class="headerlink" href="#module-DeltaTopic.nn.base_model" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_model.BaseModuleClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_model.</span></span><span class="sig-name descname"><span class="pre">BaseModuleClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_model.html#BaseModuleClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_model.BaseModuleClass" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Abstract class for deltaTopic modules.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_model.BaseModuleClass.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_inference_input_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_generative_input_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inference_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generative_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#DeltaTopic.nn.base_model.LossRecorder" title="DeltaTopic.nn.base_model.LossRecorder"><span class="pre">LossRecorder</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/base_model.html#BaseModuleClass.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_model.BaseModuleClass.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Forward pass through the network.</p>
+<section id="id5">
+<h3>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>tensors</dt><dd><p>tensors to pass through</p>
+</dd>
+<dt>get_inference_input_kwargs</dt><dd><p>Keyword args for <cite>_get_inference_input()</cite></p>
+</dd>
+<dt>get_generative_input_kwargs</dt><dd><p>Keyword args for <cite>_get_generative_input()</cite></p>
+</dd>
+<dt>inference_kwargs</dt><dd><p>Keyword args for <cite>inference()</cite></p>
+</dd>
+<dt>generative_kwargs</dt><dd><p>Keyword args for <cite>generative()</cite></p>
+</dd>
+<dt>loss_kwargs</dt><dd><p>Keyword args for <cite>loss()</cite></p>
+</dd>
+<dt>compute_loss</dt><dd><p>Whether to compute loss on forward pass. This adds
+another return value.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_model.BaseModuleClass.generative">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/base_model.html#BaseModuleClass.generative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_model.BaseModuleClass.generative" title="Permalink to this definition"></a></dt>
+<dd><p>Run the generative model.</p>
+<p>This function should return the parameters associated with the likelihood of the data.
+This is typically written as <span class="math notranslate nohighlight">\(p(x|z)\)</span>.</p>
+<p>This function should return a dictionary with str keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_model.BaseModuleClass.inference">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/base_model.html#BaseModuleClass.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_model.BaseModuleClass.inference" title="Permalink to this definition"></a></dt>
+<dd><p>Run the inference (recognition) model.</p>
+<p>In the case of variational inference, this function will perform steps related to
+computing variational distribution parameters. In a VAE, this will involve running
+data through encoder networks.</p>
+<p>This function should return a dictionary with str keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_model.BaseModuleClass.loss">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#DeltaTopic.nn.base_model.LossRecorder" title="DeltaTopic.nn.base_model.LossRecorder"><span class="pre">LossRecorder</span></a></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/base_model.html#BaseModuleClass.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_model.BaseModuleClass.loss" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the loss for a minibatch of data.</p>
+<p>This function uses the outputs of the inference and generative functions to compute
+a loss. This many optionally include other penalty terms, which should be computed here.</p>
+<p>This function should return an object of type <code class="xref py py-class docutils literal notranslate"><span class="pre">LossRecorder</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_model.BaseModuleClass.sample">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_model.html#BaseModuleClass.sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_model.BaseModuleClass.sample" title="Permalink to this definition"></a></dt>
+<dd><p>Generate samples from the learned model.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_model.LossRecorder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_model.</span></span><span class="sig-name descname"><span class="pre">LossRecorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reconstruction_loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl_local</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl_global</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">torch.Tensor</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_model.html#LossRecorder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_model.LossRecorder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Loss signature for models.</p>
+<p>This class provides an organized way to record the model loss, as well as
+the components of the ELBO. This may also be used in MLE, MAP, EM methods.
+The loss is used for backpropagation during inference. The other parameters
+are used for logging/early stopping during inference.</p>
+<section id="id6">
+<h3>Parameters<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>loss</dt><dd><p>Tensor with loss for minibatch. Should be one dimensional with one value.
+Note that loss should be a <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> and not the result of <cite>.item()</cite>.</p>
+</dd>
+<dt>reconstruction_loss</dt><dd><p>Reconstruction loss for each observation in the minibatch.</p>
+</dd>
+<dt>kl_local</dt><dd><p>KL divergence associated with each observation in the minibatch.</p>
+</dd>
+<dt>kl_global</dt><dd><p>Global kl divergence term. Should be one dimensional with one value.</p>
+</dd>
+<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs</dt><dd><p>Additional metrics can be passed as keyword arguments and will
+be available as attributes of the object.</p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_model.LossRecorder.kl_global">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">kl_global</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">torch.Tensor</span></em><a class="headerlink" href="#DeltaTopic.nn.base_model.LossRecorder.kl_global" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_model.LossRecorder.kl_local">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">kl_local</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">torch.Tensor</span></em><a class="headerlink" href="#DeltaTopic.nn.base_model.LossRecorder.kl_local" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_model.LossRecorder.loss">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">torch.Tensor</span></em><a class="headerlink" href="#DeltaTopic.nn.base_model.LossRecorder.loss" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_model.LossRecorder.reconstruction_loss">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reconstruction_loss</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">torch.Tensor</span></em><a class="headerlink" href="#DeltaTopic.nn.base_model.LossRecorder.reconstruction_loss" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_model.auto_move_data">
+<span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_model.</span></span><span class="sig-name descname"><span class="pre">auto_move_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/base_model.html#auto_move_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_model.auto_move_data" title="Permalink to this definition"></a></dt>
+<dd><p>Decorator for <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> methods to move data to correct device.</p>
+<p>Input arguments are moved automatically to the correct device.
+It has no effect if applied to a method of an object that is not an instance of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> and is typically applied to <code class="docutils literal notranslate"><span class="pre">__call__</span></code>
+or <code class="docutils literal notranslate"><span class="pre">forward</span></code>.</p>
+<section id="id9">
+<h3>Parameters<a class="headerlink" href="#id9" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>fn</dt><dd><p>A nn.Module method for which the arguments should be moved to the device
+the parameters are on.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-DeltaTopic.nn.dataloader_util">
+<span id="deltatopic-nn-dataloader-util-module"></span><h2>DeltaTopic.nn.dataloader_util module<a class="headerlink" href="#module-DeltaTopic.nn.dataloader_util" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.dataloader_util.AnnDataLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.dataloader_util.</span></span><span class="sig-name descname"><span class="pre">AnnDataLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/dataloader_util.html#AnnDataLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.dataloader_util.AnnDataLoader" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code></p>
+<p>DataLoader for loading tensors from AnnData objects.</p>
+<section id="id10">
+<h3>Parameters<a class="headerlink" href="#id10" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>adata</dt><dd><p>An anndata objects</p>
+</dd>
+<dt>shuffle</dt><dd><p>Whether the data should be shuffled</p>
+</dd>
+<dt>indices</dt><dd><p>The indices of the observations in the adata to load</p>
+</dd>
+<dt>batch_size</dt><dd><p>minibatch size to load each iteration</p>
+</dd>
+<dt>data_and_attributes</dt><dd><p>Dictionary with keys representing keys in data registry (<cite>adata.uns[“deltaTopic”]</cite>)
+and value equal to desired numpy loading type (later made into torch tensor).
+If <cite>None</cite>, defaults to all registered data.</p>
+</dd>
+<dt>data_loader_kwargs</dt><dd><p>Keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code></p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.dataloader_util.AnnTorchDataset">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.dataloader_util.</span></span><span class="sig-name descname"><span class="pre">AnnTorchDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/dataloader_util.html#AnnTorchDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.dataloader_util.AnnTorchDataset" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></p>
+<p>Extension of torch dataset to get tensors from anndata.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.dataloader_util.AnnTorchDataset.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scvi_data_key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/dataloader_util.html#AnnTorchDataset.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.dataloader_util.AnnTorchDataset.get_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.dataloader_util.AnnTorchDataset.registered_keys">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">registered_keys</span></span><a class="headerlink" href="#DeltaTopic.nn.dataloader_util.AnnTorchDataset.registered_keys" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the keys of the mappings in deltaTopic data registry.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.dataloader_util.AnnTorchDataset.setup_data_attr">
+<span class="sig-name descname"><span class="pre">setup_data_attr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/dataloader_util.html#AnnTorchDataset.setup_data_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.dataloader_util.AnnTorchDataset.setup_data_attr" title="Permalink to this definition"></a></dt>
+<dd><p>Sets data attribute.</p>
+<p>Reduces number of times anndata needs to be accessed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.dataloader_util.AnnTorchDataset.setup_getitem">
+<span class="sig-name descname"><span class="pre">setup_getitem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/dataloader_util.html#AnnTorchDataset.setup_getitem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.dataloader_util.AnnTorchDataset.setup_getitem" title="Permalink to this definition"></a></dt>
+<dd><p>Sets up the __getitem__ function used by Pytorch.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.dataloader_util.BatchSampler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.dataloader_util.</span></span><span class="sig-name descname"><span class="pre">BatchSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/dataloader_util.html#BatchSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.dataloader_util.BatchSampler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sampler</span></code></p>
+<p>Custom torch Sampler that returns a list of indices of size batch_size.</p>
+<section id="id11">
+<h3>Parameters<a class="headerlink" href="#id11" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>indices</dt><dd><p>list of indices to sample from</p>
+</dd>
+<dt>batch_size</dt><dd><p>batch size of each iteration</p>
+</dd>
+<dt>shuffle</dt><dd><p>if <code class="docutils literal notranslate"><span class="pre">True</span></code>, shuffles indices before sampling</p>
+</dd>
+<dt>drop_last</dt><dd><p>if int, drops the last batch if its length is less than drop_last.
+if drop_last == True, drops last non-full batch.
+if drop_last == False, iterate over all batches.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="DeltaTopic.nn.dataloader_util.get_from_registry">
+<span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.dataloader_util.</span></span><span class="sig-name descname"><span class="pre">get_from_registry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/dataloader_util.html#get_from_registry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.dataloader_util.get_from_registry" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the object in AnnData associated with the key in <code class="docutils literal notranslate"><span class="pre">.uns['deltaTopic']['data_registry']</span></code>.</p>
+<section id="id12">
+<h3>Parameters<a class="headerlink" href="#id12" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>adata</dt><dd><p>anndata object already setup with <cite>setup_anndata()</cite></p>
+</dd>
+<dt>key</dt><dd><p>key of object to get from <code class="docutils literal notranslate"><span class="pre">adata.uns['deltaTopic]['data_registry']</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="id13">
+<h3>Returns<a class="headerlink" href="#id13" title="Permalink to this heading"></a></h3>
+<p>The requested data</p>
+</section>
+<section id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h3>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-DeltaTopic.nn.modelhub">
+<span id="deltatopic-nn-modelhub-module"></span><h2>DeltaTopic.nn.modelhub module<a class="headerlink" href="#module-DeltaTopic.nn.modelhub" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.BALSAM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.modelhub.</span></span><span class="sig-name descname"><span class="pre">BALSAM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata_seq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_latent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">model_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/modelhub.html#BALSAM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.modelhub.BALSAM" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DeltaTopic.nn.util.BaseModelClass" title="DeltaTopic.nn.util.BaseModelClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModelClass</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.BALSAM.get_latent_representation">
+<span class="sig-name descname"><span class="pre">get_latent_representation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_softmax_z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#DeltaTopic.nn.modelhub.BALSAM.get_latent_representation" title="Permalink to this definition"></a></dt>
+<dd><p>Return the latent space embedding for each dataset, 
+Parameters
+———-
+adatas</p>
+<blockquote>
+<div><p>List of adata_spliced and adata_unspliced.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>deterministic</dt><dd><p>If true, use the mean of the encoder instead of a Gaussian sample.</p>
+</dd>
+<dt>output_softmax_z</dt><dd><p>if true, output probability, otherwise output z.</p>
+</dd>
+<dt>batch_size</dt><dd><p>Minibatch size for data loading into model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.BALSAM.get_parameters">
+<span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#DeltaTopic.nn.modelhub.BALSAM.get_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>return the spike logit, slab mean, slab lnvar for rho</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.BALSAM.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_anndata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">anndata_write_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/modelhub.html#BALSAM.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.modelhub.BALSAM.save" title="Permalink to this definition"></a></dt>
+<dd><p>Save the state of the model.
+Neither the trainer optimizer state nor the trainer history are saved.
+Model files are not expected to be reproducibly saved and loaded across versions
+until we reach version 1.0.
+Parameters
+———-
+dir_path</p>
+<blockquote>
+<div><p>Path to a directory.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>overwrite</dt><dd><p>Overwrite existing data or not. If <cite>False</cite> and directory
+already exists at <cite>dir_path</cite>, error will be raised.</p>
+</dd>
+<dt>save_anndata</dt><dd><p>If True, also saves the anndata</p>
+</dd>
+<dt>anndata_write_kwargs</dt><dd><p>Kwargs for anndata write function</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.BALSAM.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_steps_kl_warmup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs_kl_warmup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/modelhub.html#BALSAM.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.modelhub.BALSAM.train" title="Permalink to this definition"></a></dt>
+<dd><p>Trains the model using amortized variational inference.
+Parameters
+———-
+max_epochs</p>
+<blockquote>
+<div><p>Number of passes through the dataset.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>lr</dt><dd><p>Learning rate for optimization.</p>
+</dd>
+<dt>use_gpu</dt><dd><p>Use default GPU if available (if None or True), or index of GPU to use (if int),
+or name of GPU (if str, e.g., <cite>‘cuda:0’</cite>), or use CPU (if False).</p>
+</dd>
+<dt>train_size</dt><dd><p>Size of training set in the range [0.0, 1.0].</p>
+</dd>
+<dt>validation_size</dt><dd><p>Size of the test set. If <cite>None</cite>, defaults to 1 - <cite>train_size</cite>. If
+<cite>train_size + validation_size &lt; 1</cite>, the remaining cells belong to a test set.</p>
+</dd>
+<dt>batch_size</dt><dd><p>Minibatch size to use during training.</p>
+</dd>
+<dt>n_steps_kl_warmup</dt><dd><p>Number of training steps (minibatches) to scale weight on KL divergences from 0 to 1.
+Only activated when <cite>n_epochs_kl_warmup</cite> is set to None. If <cite>None</cite>, defaults
+to <cite>floor(0.75 * adata.n_obs)</cite>.</p>
+</dd>
+<dt>n_epochs_kl_warmup</dt><dd><p>Number of epochs to scale weight on KL divergences from 0 to 1.
+Overrides <cite>n_steps_kl_warmup</cite> when both are not <cite>None</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.DeltaTopic">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.modelhub.</span></span><span class="sig-name descname"><span class="pre">DeltaTopic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata_seq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_latent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">model_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/modelhub.html#DeltaTopic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.modelhub.DeltaTopic" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DeltaTopic.nn.util.BaseModelClass" title="DeltaTopic.nn.util.BaseModelClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModelClass</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.DeltaTopic.get_latent_representation">
+<span class="sig-name descname"><span class="pre">get_latent_representation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_softmax_z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#DeltaTopic.nn.modelhub.DeltaTopic.get_latent_representation" title="Permalink to this definition"></a></dt>
+<dd><p>Return the latent space embedding for each dataset, i.e., spliced and unspliced</p>
+<section id="id14">
+<h3>Parameters<a class="headerlink" href="#id14" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>adatas</dt><dd><p>List of adata_spliced and adata_unspliced.</p>
+</dd>
+<dt>deterministic</dt><dd><p>If true, use the mean of the encoder instead of a Gaussian sample.</p>
+</dd>
+<dt>output_softmax_z</dt><dd><p>if true, output probability, otherwise output z.</p>
+</dd>
+<dt>batch_size</dt><dd><p>Minibatch size for data loading into model.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.DeltaTopic.get_parameters">
+<span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#DeltaTopic.nn.modelhub.DeltaTopic.get_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>return the spike logit, slab mean, slab lnvar for rho and delta</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.DeltaTopic.get_reconstruction_error">
+<span class="sig-name descname"><span class="pre">get_reconstruction_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#DeltaTopic.nn.modelhub.DeltaTopic.get_reconstruction_error" title="Permalink to this definition"></a></dt>
+<dd><p>Return the reconstruction error for the data.</p>
+<p>This is typically written as <span class="math notranslate nohighlight">\(p(x \mid z)\)</span>, the likelihood term given one posterior sample.
+Note, this is not the negative likelihood, higher is better.</p>
+<section id="id15">
+<h3>Parameters<a class="headerlink" href="#id15" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>adata</dt><dd><p>AnnData object with equivalent structure to initial AnnData. If <cite>None</cite>, defaults to the
+AnnData object used to initialize the model.</p>
+</dd>
+<dt>batch_size</dt><dd><p>Minibatch size for data loading into model.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.DeltaTopic.get_weights">
+<span class="sig-name descname"><span class="pre">get_weights</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#DeltaTopic.nn.modelhub.DeltaTopic.get_weights" title="Permalink to this definition"></a></dt>
+<dd><p>Return the latent space embedding for each dataset, i.e., spliced and unspliced</p>
+<section id="id16">
+<h3>Parameters<a class="headerlink" href="#id16" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>adatas</dt><dd><p>List of adata_spliced and adata_unspliced.</p>
+</dd>
+<dt>batch_size</dt><dd><p>Minibatch size for data loading into model.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.DeltaTopic.load">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adata_seq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/modelhub.html#DeltaTopic.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.modelhub.DeltaTopic.load" title="Permalink to this definition"></a></dt>
+<dd><p>Instantiate a model from the saved output.</p>
+<section id="id17">
+<h3>Parameters<a class="headerlink" href="#id17" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>adata_seq</dt><dd><p>AnnData organized in the same way as data used to train model.
+It is not necessary to run <code class="xref py py-func docutils literal notranslate"><span class="pre">setup_anndata()</span></code>,
+as AnnData is validated against the saved <cite>scvi</cite> setup dictionary.
+AnnData must be registered via <code class="xref py py-func docutils literal notranslate"><span class="pre">setup_anndata()</span></code>.</p>
+</dd>
+<dt>dir_path</dt><dd><p>Path to saved outputs.</p>
+</dd>
+<dt>use_gpu</dt><dd><p>Load model on default GPU if available (if None or True),
+or index of GPU to use (if int), or name of GPU (if str), or use CPU (if False).</p>
+</dd>
+</dl>
+</section>
+<section id="id18">
+<h3>Returns<a class="headerlink" href="#id18" title="Permalink to this heading"></a></h3>
+<p>Model with loaded state dictionaries.</p>
+</section>
+<section id="id19">
+<h3>Examples<a class="headerlink" href="#id19" title="Permalink to this heading"></a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vae</span> <span class="o">=</span> <span class="n">GIMVI</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">adata_seq</span><span class="p">,</span> <span class="n">adata_spatial</span><span class="p">,</span> <span class="n">save_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vae</span><span class="o">.</span><span class="n">get_latent_representation</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.DeltaTopic.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_anndata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">anndata_write_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/modelhub.html#DeltaTopic.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.modelhub.DeltaTopic.save" title="Permalink to this definition"></a></dt>
+<dd><p>Save the state of the model.</p>
+<p>Neither the trainer optimizer state nor the trainer history are saved.
+Model files are not expected to be reproducibly saved and loaded across versions
+until we reach version 1.0.</p>
+<section id="id20">
+<h3>Parameters<a class="headerlink" href="#id20" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dir_path</dt><dd><p>Path to a directory.</p>
+</dd>
+<dt>overwrite</dt><dd><p>Overwrite existing data or not. If <cite>False</cite> and directory
+already exists at <cite>dir_path</cite>, error will be raised.</p>
+</dd>
+<dt>save_anndata</dt><dd><p>If True, also saves the anndata</p>
+</dd>
+<dt>anndata_write_kwargs</dt><dd><p>Kwargs for anndata write function</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.DeltaTopic.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_steps_kl_warmup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs_kl_warmup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plan_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/modelhub.html#DeltaTopic.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.modelhub.DeltaTopic.train" title="Permalink to this definition"></a></dt>
+<dd><p>Trains the model using amortized variational inference.</p>
+<section id="id21">
+<h3>Parameters<a class="headerlink" href="#id21" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>max_epochs</dt><dd><p>Number of passes through the dataset.</p>
+</dd>
+<dt>lr</dt><dd><p>Learning rate for optimization.</p>
+</dd>
+<dt>use_gpu</dt><dd><p>Use default GPU if available (if None or True), or index of GPU to use (if int),
+or name of GPU (if str, e.g., <cite>‘cuda:0’</cite>), or use CPU (if False).</p>
+</dd>
+<dt>train_size</dt><dd><p>Size of training set in the range [0.0, 1.0].</p>
+</dd>
+<dt>validation_size</dt><dd><p>Size of the test set. If <cite>None</cite>, defaults to 1 - <cite>train_size</cite>. If
+<cite>train_size + validation_size &lt; 1</cite>, the remaining cells belong to a test set.</p>
+</dd>
+<dt>batch_size</dt><dd><p>Minibatch size to use during training.</p>
+</dd>
+<dt>n_steps_kl_warmup</dt><dd><p>Number of training steps (minibatches) to scale weight on KL divergences from 0 to 1.
+Only activated when <cite>n_epochs_kl_warmup</cite> is set to None. If <cite>None</cite>, defaults
+to <cite>floor(0.75 * adata.n_obs)</cite>.</p>
+</dd>
+<dt>n_epochs_kl_warmup</dt><dd><p>Number of epochs to scale weight on KL divergences from 0 to 1.
+Overrides <cite>n_steps_kl_warmup</cite> when both are not <cite>None</cite>.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-DeltaTopic.nn.module">
+<span id="deltatopic-nn-module-module"></span><h2>DeltaTopic.nn.module module<a class="headerlink" href="#module-DeltaTopic.nn.module" title="Permalink to this heading"></a></h2>
+<p>Main module.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.module.</span></span><span class="sig-name descname"><span class="pre">BALSAM_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#BALSAM_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DeltaTopic.nn.base_model.BaseModuleClass" title="DeltaTopic.nn.base_model.BaseModuleClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModuleClass</span></code></a></p>
+<p>The BETM module</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module.dir_llik">
+<span class="sig-name descname"><span class="pre">dir_llik</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#BALSAM_module.dir_llik"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module.dir_llik" title="Permalink to this definition"></a></dt>
+<dd><p># Dirichlet log-likelihood:
+# lgamma(sum a) - lgamma(sum a + x)
+# sum lgamma(a + x) - lgamma(a)
+# &#64;param xx [batch_size, n_genes]
+# &#64;param aa [batch_size, n_genes]
+# &#64;return log-likelihood</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module.generative">
+<span class="sig-name descname"><span class="pre">generative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#BALSAM_module.generative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module.generative" title="Permalink to this definition"></a></dt>
+<dd><p>Run the generative model.</p>
+<p>This function should return the parameters associated with the likelihood of the data.
+This is typically written as <span class="math notranslate nohighlight">\(p(x|z)\)</span>.</p>
+<p>This function should return a dictionary with str keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module.get_reconstruction_loss">
+<span class="sig-name descname"><span class="pre">get_reconstruction_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#BALSAM_module.get_reconstruction_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module.get_reconstruction_loss" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the 
+Parameters
+———-
+x</p>
+<blockquote>
+<div><p>tensor of values with shape <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">n_input)</span></code></p>
+</div></blockquote>
+<section id="id22">
+<h3>Returns<a class="headerlink" href="#id22" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>type</dt><dd><p>tensor of means of the scaled frequencies</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#BALSAM_module.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module.inference" title="Permalink to this definition"></a></dt>
+<dd><p>Run the inference (recognition) model.</p>
+<p>In the case of variational inference, this function will perform steps related to
+computing variational distribution parameters. In a VAE, this will involve running
+data through encoder networks.</p>
+<p>This function should return a dictionary with str keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inference_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generative_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#BALSAM_module.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module.loss" title="Permalink to this definition"></a></dt>
+<dd><p>Return the reconstruction loss and the Kullback divergences.
+Parameters
+———-
+x</p>
+<blockquote>
+<div><p>tensor of values with shape <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">n_input)</span></code>
+or <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">n_input_fish)</span></code> depending on the mode</p>
+</div></blockquote>
+<dl class="simple">
+<dt>local_l_mean</dt><dd><p>tensor of means of the prior distribution of latent variable l
+with shape (batch_size, 1)</p>
+</dd>
+<dt>local_l_var</dt><dd><p>tensor of variances of the prior distribution of latent variable l
+with shape (batch_size, 1)</p>
+</dd>
+<dt>batch_index</dt><dd><p>array that indicates which batch the cells belong to with shape <code class="docutils literal notranslate"><span class="pre">batch_size</span></code></p>
+</dd>
+<dt>y</dt><dd><p>tensor of cell-types labels with shape (batch_size, n_labels)</p>
+</dd>
+<dt>mode</dt><dd><p>indicates which head/tail to use in the joint network</p>
+</dd>
+</dl>
+<section id="id23">
+<h3>Returns<a class="headerlink" href="#id23" title="Permalink to this heading"></a></h3>
+<p>the reconstruction loss and the Kullback divergences</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module.sample_from_posterior_z">
+<span class="sig-name descname"><span class="pre">sample_from_posterior_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_softmax_z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#BALSAM_module.sample_from_posterior_z"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module.sample_from_posterior_z" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.module.</span></span><span class="sig-name descname"><span class="pre">DeltaTopic_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#DeltaTopic_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DeltaTopic.nn.base_model.BaseModuleClass" title="DeltaTopic.nn.base_model.BaseModuleClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModuleClass</span></code></a></p>
+<p>BayesianETM module.
+Parameters
+———-
+n_genes</p>
+<blockquote>
+<div><p>number of genes</p>
+</div></blockquote>
+<dl class="simple">
+<dt>n_latent</dt><dd><p>dimension of latent space</p>
+</dd>
+<dt>n_layers_encoder_individual</dt><dd><p>number of individual layers in the encoder</p>
+</dd>
+<dt>dim_hidden_encoder</dt><dd><p>dimension of the hidden layers in the encoder</p>
+</dd>
+<dt>pip0_rho</dt><dd><p>default 0.1</p>
+</dd>
+<dt>pip0_delta</dt><dd><p>default 0.1</p>
+</dd>
+<dt>kl_weight_beta: </dt><dd><p>default 1.0</p>
+</dd>
+<dt>log_variational</dt><dd><p>Log(data+1) prior to encoding for numerical stability. Not normalization.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module.dir_llik">
+<span class="sig-name descname"><span class="pre">dir_llik</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#DeltaTopic_module.dir_llik"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module.dir_llik" title="Permalink to this definition"></a></dt>
+<dd><p># Dirichlet log-likelihood:
+# lgamma(sum a) - lgamma(sum a + x)
+# sum lgamma(a + x) - lgamma(a)
+# &#64;param xx [batch_size, n_genes]
+# &#64;param aa [batch_size, n_genes]
+# &#64;return log-likelihood</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module.generative">
+<span class="sig-name descname"><span class="pre">generative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#DeltaTopic_module.generative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module.generative" title="Permalink to this definition"></a></dt>
+<dd><p>Run the generative model.</p>
+<p>This function should return the parameters associated with the likelihood of the data.
+This is typically written as <span class="math notranslate nohighlight">\(p(x|z)\)</span>.</p>
+<p>This function should return a dictionary with str keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module.get_reconstruction_loss">
+<span class="sig-name descname"><span class="pre">get_reconstruction_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#DeltaTopic_module.get_reconstruction_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module.get_reconstruction_loss" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the</p>
+<section id="id24">
+<h3>Parameters<a class="headerlink" href="#id24" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>x</dt><dd><p>tensor of values with shape <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">n_input)</span></code></p>
+</dd>
+</dl>
+</section>
+<section id="id25">
+<h3>Returns<a class="headerlink" href="#id25" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>type</dt><dd><p>tensor of means of the scaled frequencies</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#DeltaTopic_module.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module.inference" title="Permalink to this definition"></a></dt>
+<dd><p>Run the inference (recognition) model.</p>
+<p>In the case of variational inference, this function will perform steps related to
+computing variational distribution parameters. In a VAE, this will involve running
+data through encoder networks.</p>
+<p>This function should return a dictionary with str keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inference_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generative_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl_weight_beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#DeltaTopic_module.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module.loss" title="Permalink to this definition"></a></dt>
+<dd><p>Return the reconstruction loss and the Kullback divergences.</p>
+<section id="id26">
+<h3>Parameters<a class="headerlink" href="#id26" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>x</dt><dd><p>tensor of values with shape <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">n_input)</span></code>
+or <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">n_input_fish)</span></code> depending on the mode</p>
+</dd>
+<dt>local_l_mean</dt><dd><p>tensor of means of the prior distribution of latent variable l
+with shape (batch_size, 1)</p>
+</dd>
+<dt>local_l_var</dt><dd><p>tensor of variances of the prior distribution of latent variable l
+with shape (batch_size, 1)</p>
+</dd>
+<dt>batch_index</dt><dd><p>array that indicates which batch the cells belong to with shape <code class="docutils literal notranslate"><span class="pre">batch_size</span></code></p>
+</dd>
+<dt>y</dt><dd><p>tensor of cell-types labels with shape (batch_size, n_labels)</p>
+</dd>
+<dt>mode</dt><dd><p>indicates which head/tail to use in the joint network</p>
+</dd>
+</dl>
+</section>
+<section id="id27">
+<h3>Returns<a class="headerlink" href="#id27" title="Permalink to this heading"></a></h3>
+<p>the reconstruction loss and the Kullback divergences</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module.sample_from_posterior_z">
+<span class="sig-name descname"><span class="pre">sample_from_posterior_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_softmax_z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/module.html#DeltaTopic_module.sample_from_posterior_z"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module.sample_from_posterior_z" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-DeltaTopic.nn.util">
+<span id="deltatopic-nn-util-module"></span><h2>DeltaTopic.nn.util module<a class="headerlink" href="#module-DeltaTopic.nn.util" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.BaseModelClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.util.</span></span><span class="sig-name descname"><span class="pre">BaseModelClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#BaseModelClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.BaseModelClass" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract class for deltaTopic models.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.BaseModelClass.device">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">device</span></span><a class="headerlink" href="#DeltaTopic.nn.util.BaseModelClass.device" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.BaseModelClass.history">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">history</span></span><a class="headerlink" href="#DeltaTopic.nn.util.BaseModelClass.history" title="Permalink to this definition"></a></dt>
+<dd><p>Returns computed metrics during training.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.BaseModelClass.is_trained">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_trained</span></span><a class="headerlink" href="#DeltaTopic.nn.util.BaseModelClass.is_trained" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.BaseModelClass.load">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#BaseModelClass.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.BaseModelClass.load" title="Permalink to this definition"></a></dt>
+<dd><p>Instantiate a model from the saved output.</p>
+<section id="id28">
+<h3>Parameters<a class="headerlink" href="#id28" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dir_path</dt><dd><p>Path to saved outputs.</p>
+</dd>
+<dt>adata</dt><dd><p>AnnData organized in the same way as data used to train model.</p>
+</dd>
+<dt>use_gpu</dt><dd><p>Load model on default GPU if available (if None or True),
+or index of GPU to use (if int), or name of GPU (if str), or use CPU (if False).</p>
+</dd>
+</dl>
+</section>
+<section id="id29">
+<h3>Returns<a class="headerlink" href="#id29" title="Permalink to this heading"></a></h3>
+<p>Model with loaded state dictionaries.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.BaseModelClass.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_anndata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">anndata_write_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#BaseModelClass.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.BaseModelClass.save" title="Permalink to this definition"></a></dt>
+<dd><p>Save the state of the model.</p>
+<p>Neither the trainer optimizer state nor the trainer history are saved.
+Model files are not expected to be reproducibly saved and loaded across versions
+until we reach version 1.0.</p>
+<section id="id30">
+<h3>Parameters<a class="headerlink" href="#id30" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>dir_path</dt><dd><p>Path to a directory.</p>
+</dd>
+<dt>overwrite</dt><dd><p>Overwrite existing data or not. If <cite>False</cite> and directory
+already exists at <cite>dir_path</cite>, error will be raised.</p>
+</dd>
+<dt>save_anndata</dt><dd><p>If True, also saves the anndata</p>
+</dd>
+<dt>anndata_write_kwargs</dt><dd><p>Kwargs for <code class="xref py py-meth docutils literal notranslate"><span class="pre">write()</span></code></p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.BaseModelClass.test_indices">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_indices</span></span><a class="headerlink" href="#DeltaTopic.nn.util.BaseModelClass.test_indices" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.BaseModelClass.to_device">
+<span class="sig-name descname"><span class="pre">to_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#BaseModelClass.to_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.BaseModelClass.to_device" title="Permalink to this definition"></a></dt>
+<dd><p>Move model to device.</p>
+<section id="id31">
+<h3>Parameters<a class="headerlink" href="#id31" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>device</dt><dd><p>Device to move model to. Options: ‘cpu’ for CPU, integer GPU index (eg. 0),
+or ‘cuda:X’ where X is the GPU index (eg. ‘cuda:0’). See torch.device for more info.</p>
+</dd>
+</dl>
+</section>
+<section id="id32">
+<h3>Examples<a class="headerlink" href="#id32" title="Permalink to this heading"></a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>      <span class="c1"># moves model to CPU</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="s1">&#39;cuda:0&#39;</span><span class="p">)</span>   <span class="c1"># moves model to GPU 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>          <span class="c1"># also moves model to GPU 0</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.BaseModelClass.train">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#BaseModelClass.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.BaseModelClass.train" title="Permalink to this definition"></a></dt>
+<dd><p>Trains the model.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.BaseModelClass.train_indices">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_indices</span></span><a class="headerlink" href="#DeltaTopic.nn.util.BaseModelClass.train_indices" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.BaseModelClass.validation_indices">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validation_indices</span></span><a class="headerlink" href="#DeltaTopic.nn.util.BaseModelClass.validation_indices" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.DataSplitter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.util.</span></span><span class="sig-name descname"><span class="pre">DataSplitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#DataSplitter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.DataSplitter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LightningDataModule</span></code></p>
+<p>Creates data loaders <code class="docutils literal notranslate"><span class="pre">train_set</span></code>, <code class="docutils literal notranslate"><span class="pre">validation_set</span></code>, <code class="docutils literal notranslate"><span class="pre">test_set</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">train_size</span> <span class="pre">+</span> <span class="pre">validation_set</span> <span class="pre">&lt;</span> <span class="pre">1</span></code> then <code class="docutils literal notranslate"><span class="pre">test_set</span></code> is non-empty.</p>
+<section id="id33">
+<h3>Parameters<a class="headerlink" href="#id33" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>adata</dt><dd><p>AnnData to split into train/test/val sets</p>
+</dd>
+<dt>train_size</dt><dd><p>float, or None (default is 0.9)</p>
+</dd>
+<dt>validation_size</dt><dd><p>float, or None (default is None)</p>
+</dd>
+<dt>use_gpu</dt><dd><p>Use default GPU if available (if None or True), or index of GPU to use (if int),
+or name of GPU (if str, e.g., <cite>‘cuda:0’</cite>), or use CPU (if False).</p>
+</dd>
+<dt><a href="#id34"><span class="problematic" id="id35">**</span></a>kwargs</dt><dd><p>Keyword args for data loader.</p>
+</dd>
+</dl>
+</section>
+<section id="id36">
+<h3>Examples<a class="headerlink" href="#id36" title="Permalink to this heading"></a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">splitter</span> <span class="o">=</span> <span class="n">DataSplitter</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">splitter</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_dl</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">train_dataloader</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.DataSplitter.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#DataSplitter.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.DataSplitter.setup" title="Permalink to this definition"></a></dt>
+<dd><p>Split indices in train/test/val sets.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.DataSplitter.test_dataloader">
+<span class="sig-name descname"><span class="pre">test_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#DataSplitter.test_dataloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.DataSplitter.test_dataloader" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.DataSplitter.train_dataloader">
+<span class="sig-name descname"><span class="pre">train_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#DataSplitter.train_dataloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.DataSplitter.train_dataloader" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.DataSplitter.val_dataloader">
+<span class="sig-name descname"><span class="pre">val_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#DataSplitter.val_dataloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.DataSplitter.val_dataloader" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.SimpleLogger">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.util.</span></span><span class="sig-name descname"><span class="pre">SimpleLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#SimpleLogger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.SimpleLogger" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Logger</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.SimpleLogger.experiment">
+<span class="sig-name descname"><span class="pre">experiment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#SimpleLogger.experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.SimpleLogger.experiment" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.SimpleLogger.history">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">history</span></span><a class="headerlink" href="#DeltaTopic.nn.util.SimpleLogger.history" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.SimpleLogger.log_hyperparams">
+<span class="sig-name descname"><span class="pre">log_hyperparams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DeltaTopic.nn.util.SimpleLogger.log_hyperparams" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.SimpleLogger.log_metrics">
+<span class="sig-name descname"><span class="pre">log_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#DeltaTopic.nn.util.SimpleLogger.log_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Record metrics.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.SimpleLogger.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#DeltaTopic.nn.util.SimpleLogger.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.SimpleLogger.version">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">version</span></span><a class="headerlink" href="#DeltaTopic.nn.util.SimpleLogger.version" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.TrainRunner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.util.</span></span><span class="sig-name descname"><span class="pre">TrainRunner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#DeltaTopic.nn.util.BaseModelClass" title="DeltaTopic.nn.util.BaseModelClass"><span class="pre">BaseModelClass</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_plan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pytorch_lightning.LightningModule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_splitter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#DeltaTopic.nn.util.DataSplitter" title="DeltaTopic.nn.util.DataSplitter"><span class="pre">DataSplitter</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">trainer_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#TrainRunner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.TrainRunner" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>TrainRunner calls Trainer.fit() and handles pre and post training procedures.</p>
+<section id="id37">
+<h3>Parameters<a class="headerlink" href="#id37" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>model</dt><dd><p>model to train</p>
+</dd>
+<dt>training_plan</dt><dd><p>initialized TrainingPlan</p>
+</dd>
+<dt>data_splitter</dt><dd><p>initialized class:<cite>DataSplitter</cite></p>
+</dd>
+<dt>max_epochs</dt><dd><p>max_epochs to train for</p>
+</dd>
+<dt>use_gpu</dt><dd><p>Use default GPU if available (if None or True), or index of GPU to use (if int),
+or name of GPU (if str, e.g., <cite>‘cuda:0’</cite>), or use CPU (if False).</p>
+</dd>
+<dt>trainer_kwargs</dt><dd><p>Extra kwargs for <a class="reference internal" href="#DeltaTopic.nn.util.Trainer" title="DeltaTopic.nn.util.Trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></a></p>
+</dd>
+</dl>
+</section>
+<section id="id38">
+<h3>Examples<a class="headerlink" href="#id38" title="Permalink to this heading"></a></h3>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Following code should be within a subclass of BaseModelClass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data_splitter</span> <span class="o">=</span> <span class="n">DataSplitter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">training_plan</span> <span class="o">=</span> <span class="n">TrainingPlan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_splitter</span><span class="o">.</span><span class="n">train_idx</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">runner</span> <span class="o">=</span> <span class="n">TrainRunner</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="bp">self</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">training_plan</span><span class="o">=</span><span class="n">trianing_plan</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">data_splitter</span><span class="o">=</span><span class="n">data_splitter</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">max_epochs</span><span class="o">=</span><span class="n">max_epochs</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">runner</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.Trainer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.util.</span></span><span class="sig-name descname"><span class="pre">Trainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#Trainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.Trainer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></p>
+<p>Lightweight wrapper of Pytorch Lightning Trainer.</p>
+<section id="id39">
+<h3>Parameters<a class="headerlink" href="#id39" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>gpus</dt><dd><p>Number of gpus to train on (int) or which GPUs to train on (list or str) applied per node</p>
+</dd>
+<dt>benchmark</dt><dd><p>If true enables cudnn.benchmark, which improves speed when inputs are fixed size</p>
+</dd>
+<dt>check_val_every_n_epoch</dt><dd><p>Check val every n train epochs. By default, val is not checked, unless <cite>early_stopping</cite> is <cite>True</cite>.</p>
+</dd>
+<dt>max_epochs</dt><dd><p>Stop training once this number of epochs is reached.</p>
+</dd>
+<dt>num_sanity_val_steps</dt><dd><p>Sanity check runs n validation batches before starting the training routine.
+Set it to -1 to run all batches in all validation dataloaders.</p>
+</dd>
+<dt>weights_summary</dt><dd><p>Prints a summary of the weights when training begins.</p>
+</dd>
+<dt>early_stopping</dt><dd><p>Whether to perform early stopping with respect to the validation set. This
+automatically adds a <code class="xref py py-class docutils literal notranslate"><span class="pre">EarlyStopping</span></code>
+instance. A custom instance can be passed by using the callbacks argument and
+setting this to <cite>False</cite>.</p>
+</dd>
+<dt>early_stopping_monitor</dt><dd><p>Metric logged during validation set epoch. The available metrics will depend on
+the training plan class used. We list the most common options here in the typing.</p>
+</dd>
+<dt>early_stopping_min_delta</dt><dd><p>Minimum change in the monitored quantity to qualify as an improvement,
+i.e. an absolute change of less than min_delta, will count as no improvement.</p>
+</dd>
+<dt>early_stopping_patience</dt><dd><p>Number of validation epochs with no improvement after which training will be stopped.</p>
+</dd>
+<dt>early_stopping_mode</dt><dd><p>In ‘min’ mode, training will stop when the quantity monitored has stopped decreasing
+and in ‘max’ mode it will stop when the quantity monitored has stopped increasing.</p>
+</dd>
+<dt>progress_bar_refresh_rate</dt><dd><p>How often to refresh progress bar (in steps). Value 0 disables progress bar.</p>
+</dd>
+<dt>simple_progress_bar</dt><dd><p>Use  simple progress bar (per epoch rather than per batch)</p>
+</dd>
+<dt>logger</dt><dd><p>A valid pytorch lightning logger. Defaults to a simple dictionary logger.
+If <cite>True</cite>, defaults to the default pytorch lightning logger.</p>
+</dd>
+<dt><a href="#id40"><span class="problematic" id="id41">**</span></a>kwargs</dt><dd><p>Other keyword args for <code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.Trainer.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#Trainer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.Trainer.fit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.parse_use_gpu_arg">
+<span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.util.</span></span><span class="sig-name descname"><span class="pre">parse_use_gpu_arg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#parse_use_gpu_arg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.parse_use_gpu_arg" title="Permalink to this definition"></a></dt>
+<dd><p>Parses the use_gpu arg in codebase.</p>
+<p>Returned gpus are is compatible with PytorchLightning’s gpus arg.
+If return_device is True, will also return the device.</p>
+<section id="id42">
+<h3>Parameters<a class="headerlink" href="#id42" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>use_gpu</dt><dd><p>Use default GPU if available (if None or True), or index of GPU to use (if int),
+or name of GPU (if str, e.g., <cite>‘cuda:0’</cite>), or use CPU (if False).</p>
+</dd>
+<dt>return_device</dt><dd><p>If True, will return the torch.device of use_gpu.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.setup_anndata">
+<span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.util.</span></span><span class="sig-name descname"><span class="pre">setup_anndata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unspliced_obsm_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unspliced_names_uns_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">anndata.AnnData</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#setup_anndata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.setup_anndata" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.validate_data_split">
+<span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.util.</span></span><span class="sig-name descname"><span class="pre">validate_data_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#validate_data_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.validate_data_split" title="Permalink to this definition"></a></dt>
+<dd><p>Check data splitting parameters and return n_train and n_val.</p>
+<section id="id43">
+<h3>Parameters<a class="headerlink" href="#id43" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>n_samples</dt><dd><p>Number of samples to split</p>
+</dd>
+<dt>train_size</dt><dd><p>Size of train set. Need to be: 0 &lt; train_size &lt;= 1.</p>
+</dd>
+<dt>validation_size</dt><dd><p>Size of validation set. Need to be 0 &lt;= validation_size &lt; 1</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-DeltaTopic.nn">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-DeltaTopic.nn" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="DeltaTopic.html" class="btn btn-neutral float-left" title="DeltaTopic package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="DeltaTopic.run.html" class="btn btn-neutral float-right" title="DeltaTopic.run package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Yichen Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeltaTopic.nn.module &mdash; deltaTopic  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            deltaTopic
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">DeltaTopic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">deltaTopic</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">DeltaTopic.nn.module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for DeltaTopic.nn.module</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Main module.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.distributions</span> <span class="kn">import</span> <span class="n">Normal</span>
+<span class="kn">from</span> <span class="nn">torch.distributions</span> <span class="kn">import</span> <span class="n">kl_divergence</span> <span class="k">as</span> <span class="n">kl</span>
+<span class="kn">from</span> <span class="nn">DeltaTopic.nn.util</span> <span class="kn">import</span> <span class="n">_CONSTANTS</span>
+<span class="kn">from</span> <span class="nn">DeltaTopic.nn.base_model</span> <span class="kn">import</span> <span class="n">BaseModuleClass</span><span class="p">,</span> <span class="n">LossRecorder</span><span class="p">,</span> <span class="n">auto_move_data</span>
+<span class="kn">from</span> <span class="nn">DeltaTopic.nn.base_components</span> <span class="kn">import</span> <span class="n">DeltaTopicEncoder</span><span class="p">,</span> <span class="n">BALSAMDecoder</span><span class="p">,</span> <span class="n">BALSAMEncoder</span><span class="p">,</span> <span class="n">DeltaTopicDecoder</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="BALSAM_module"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.BALSAM_module">[docs]</a><span class="k">class</span> <span class="nc">BALSAM_module</span><span class="p">(</span><span class="n">BaseModuleClass</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The BETM module</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n_genes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">n_latent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="n">n_layers_encoder_individual</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">dim_hidden_encoder</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="n">log_variational</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">pip0_rho</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">kl_weight_beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>        
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_input</span> <span class="o">=</span> <span class="n">n_genes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_latent</span> <span class="o">=</span> <span class="n">n_latent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_variational</span> <span class="o">=</span> <span class="n">log_variational</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pip0_rho</span> <span class="o">=</span> <span class="n">pip0_rho</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kl_weight_beta</span> <span class="o">=</span> <span class="n">kl_weight_beta</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">z_encoder</span> <span class="o">=</span> <span class="n">BALSAMEncoder</span><span class="p">(</span>
+            <span class="n">n_input</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_input</span><span class="p">,</span>
+            <span class="n">n_output</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_latent</span><span class="p">,</span>
+            <span class="n">n_hidden</span><span class="o">=</span><span class="n">dim_hidden_encoder</span><span class="p">,</span>
+            <span class="n">n_layers_individual</span><span class="o">=</span><span class="n">n_layers_encoder_individual</span><span class="p">,</span>
+            <span class="n">log_variational</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_variational</span><span class="p">,</span>    
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">BALSAMDecoder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_latent</span> <span class="p">,</span> 
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">n_input</span><span class="p">,</span> 
+                                    <span class="n">pip0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pip0_rho</span><span class="p">,</span>
+                                    <span class="p">)</span>
+
+<div class="viewcode-block" id="BALSAM_module.dir_llik"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.BALSAM_module.dir_llik">[docs]</a>    <span class="k">def</span> <span class="nf">dir_llik</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                 <span class="n">xx</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> 
+                 <span class="n">aa</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        # Dirichlet log-likelihood:</span>
+<span class="sd">        # lgamma(sum a) - lgamma(sum a + x)</span>
+<span class="sd">        # sum lgamma(a + x) - lgamma(a)</span>
+<span class="sd">        # @param xx [batch_size, n_genes]</span>
+<span class="sd">        # @param aa [batch_size, n_genes]</span>
+<span class="sd">        # @return log-likelihood</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">reconstruction_loss</span> <span class="o">=</span> <span class="kc">None</span> 
+        
+        <span class="n">term1</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">lgamma</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">aa</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">lgamma</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">aa</span> <span class="o">+</span> <span class="n">xx</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)))</span> <span class="c1">#[n_batch]</span>
+        <span class="n">term2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">xx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">lgamma</span><span class="p">(</span><span class="n">aa</span> <span class="o">+</span> <span class="n">xx</span><span class="p">)</span> <span class="o">-</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">lgamma</span><span class="p">(</span><span class="n">aa</span><span class="p">),</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">xx</span><span class="p">)),</span>
+                            <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#[n_batch</span>
+        <span class="n">reconstruction_loss</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="c1">#[n_batch</span>
+        <span class="k">return</span> <span class="n">reconstruction_loss</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_get_inference_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">tensors</span><span class="p">[</span><span class="n">_CONSTANTS</span><span class="o">.</span><span class="n">X_KEY</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_get_generative_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensors</span><span class="p">,</span> <span class="n">inference_outputs</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">inference_outputs</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BALSAM_module.inference"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.BALSAM_module.inference">[docs]</a>    <span class="nd">@auto_move_data</span>
+    <span class="k">def</span> <span class="nf">inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">x_</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="n">qz_m</span><span class="p">,</span> <span class="n">qz_v</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_encoder</span><span class="p">(</span><span class="n">x_</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">qz_m</span><span class="o">=</span><span class="n">qz_m</span><span class="p">,</span> <span class="n">qz_v</span><span class="o">=</span><span class="n">qz_v</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BALSAM_module.generative"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.BALSAM_module.generative">[docs]</a>    <span class="nd">@auto_move_data</span>
+    <span class="k">def</span> <span class="nf">generative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+        <span class="n">rho</span><span class="p">,</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">theta</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rho</span> <span class="o">=</span> <span class="n">rho</span><span class="p">,</span> <span class="n">rho_kl</span> <span class="o">=</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="BALSAM_module.sample_from_posterior_z"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.BALSAM_module.sample_from_posterior_z">[docs]</a>    <span class="k">def</span> <span class="nf">sample_from_posterior_z</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> 
+        <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">output_softmax_z</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+    <span class="p">):</span>
+        <span class="n">inference_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inference</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">deterministic</span><span class="p">:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">inference_out</span><span class="p">[</span><span class="s2">&quot;qz_m&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">inference_out</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">output_softmax_z</span><span class="p">:</span>
+            <span class="n">generative_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generative</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">generative_outputs</span><span class="p">[</span><span class="s2">&quot;theta&quot;</span><span class="p">]</span>      
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="BALSAM_module.get_reconstruction_loss"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.BALSAM_module.get_reconstruction_loss">[docs]</a>    <span class="nd">@auto_move_data</span>
+    <span class="k">def</span> <span class="nf">get_reconstruction_loss</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x</span>
+<span class="sd">            tensor of values with shape ``(batch_size, n_input)``</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        type</span>
+<span class="sd">            tensor of means of the scaled frequencies</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inference_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inference</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">inference_out</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
+        <span class="n">gen_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generative</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">gen_out</span><span class="p">[</span><span class="s2">&quot;theta&quot;</span><span class="p">]</span>
+               
+        <span class="n">rho</span> <span class="o">=</span> <span class="n">gen_out</span><span class="p">[</span><span class="s2">&quot;rho&quot;</span><span class="p">]</span>
+        <span class="n">log_aa</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">rho</span><span class="p">),</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">aa</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_aa</span><span class="p">)</span>
+        
+        <span class="n">reconstruction_loss</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_llik</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">aa</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">reconstruction_loss</span></div>
+
+<div class="viewcode-block" id="BALSAM_module.loss"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.BALSAM_module.loss">[docs]</a>    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tensors</span><span class="p">,</span>
+        <span class="n">inference_outputs</span><span class="p">,</span>
+        <span class="n">generative_outputs</span><span class="p">,</span> <span class="c1"># this is important to include</span>
+        <span class="n">kl_weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="c1">#kl_weight_beta = 1.0,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the reconstruction loss and the Kullback divergences.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x</span>
+<span class="sd">            tensor of values with shape ``(batch_size, n_input)``</span>
+<span class="sd">            or ``(batch_size, n_input_fish)`` depending on the mode</span>
+<span class="sd">        local_l_mean</span>
+<span class="sd">            tensor of means of the prior distribution of latent variable l</span>
+<span class="sd">            with shape (batch_size, 1)</span>
+<span class="sd">        local_l_var</span>
+<span class="sd">            tensor of variances of the prior distribution of latent variable l</span>
+<span class="sd">            with shape (batch_size, 1)</span>
+<span class="sd">        batch_index</span>
+<span class="sd">            array that indicates which batch the cells belong to with shape ``batch_size``</span>
+<span class="sd">        y</span>
+<span class="sd">            tensor of cell-types labels with shape (batch_size, n_labels)</span>
+<span class="sd">        mode</span>
+<span class="sd">            indicates which head/tail to use in the joint network</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        the reconstruction loss and the Kullback divergences</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kl_weight_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kl_weight_beta</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="n">_CONSTANTS</span><span class="o">.</span><span class="n">X_KEY</span><span class="p">]</span>
+        <span class="n">qz_m</span> <span class="o">=</span> <span class="n">inference_outputs</span><span class="p">[</span><span class="s2">&quot;qz_m&quot;</span><span class="p">]</span>
+        <span class="n">qz_v</span> <span class="o">=</span> <span class="n">inference_outputs</span><span class="p">[</span><span class="s2">&quot;qz_v&quot;</span><span class="p">]</span>
+        <span class="n">rho_kl</span> <span class="o">=</span> <span class="n">generative_outputs</span><span class="p">[</span><span class="s2">&quot;rho_kl&quot;</span><span class="p">]</span>
+        
+        <span class="c1"># [batch_size]</span>
+        <span class="n">reconstruction_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reconstruction_loss</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># KL Divergence for z [batch_size]</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">qz_m</span><span class="p">)</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">qz_v</span><span class="p">)</span>
+        <span class="n">kl_divergence_z</span> <span class="o">=</span> <span class="n">kl</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="n">qz_m</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">qz_v</span><span class="p">)),</span> <span class="n">Normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">scale</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+            <span class="n">dim</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span> <span class="c1"># suming over all the latent dimensinos</span>
+        <span class="c1"># kl_divergence for beta, rho_kl, tensor of torch.size([]) &lt;- torch.sum([N_topics, N_genes])</span>
+        <span class="n">kl_divergence_beta</span> <span class="o">=</span> <span class="n">rho_kl</span>
+        <span class="n">kl_local</span> <span class="o">=</span> <span class="n">kl_divergence_z</span>
+        
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">reconstruction_loss</span> <span class="o">+</span> <span class="n">kl_weight</span> <span class="o">*</span> <span class="n">kl_local</span><span class="p">)</span> <span class="o">+</span> <span class="n">kl_weight_beta</span> <span class="o">*</span> <span class="n">kl_divergence_beta</span><span class="o">/</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="k">return</span> <span class="n">LossRecorder</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">reconstruction_loss</span><span class="p">,</span> <span class="n">kl_local</span><span class="p">,</span>
+                            <span class="n">reconstruction_loss_spliced</span><span class="o">=</span><span class="n">reconstruction_loss</span><span class="p">,</span>
+                            <span class="n">reconstruction_loss_unspliced</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> 
+                            <span class="n">kl_beta</span> <span class="o">=</span> <span class="n">kl_divergence_beta</span><span class="p">,</span> 
+                            <span class="n">kl_rho</span> <span class="o">=</span> <span class="n">rho_kl</span><span class="p">,</span> 
+                            <span class="n">kl_delta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> </div></div>
+
+<div class="viewcode-block" id="DeltaTopic_module"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.DeltaTopic_module">[docs]</a><span class="k">class</span> <span class="nc">DeltaTopic_module</span><span class="p">(</span><span class="n">BaseModuleClass</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    BayesianETM module.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_genes</span>
+<span class="sd">        number of genes</span>
+<span class="sd">    n_latent</span>
+<span class="sd">        dimension of latent space</span>
+<span class="sd">    n_layers_encoder_individual</span>
+<span class="sd">        number of individual layers in the encoder</span>
+<span class="sd">    dim_hidden_encoder</span>
+<span class="sd">        dimension of the hidden layers in the encoder</span>
+<span class="sd">    pip0_rho</span>
+<span class="sd">        default 0.1</span>
+<span class="sd">    pip0_delta</span>
+<span class="sd">        default 0.1</span>
+<span class="sd">    kl_weight_beta: </span>
+<span class="sd">        default 1.0</span>
+<span class="sd">    log_variational</span>
+<span class="sd">        Log(data+1) prior to encoding for numerical stability. Not normalization.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">n_genes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">n_latent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">n_layers_encoder_individual</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">dim_hidden_encoder</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="n">pip0_rho</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">pip0_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">kl_weight_beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">log_variational</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="n">dim_input_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">n_genes</span><span class="p">,</span> <span class="n">n_genes</span><span class="p">]</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_input_list</span> <span class="o">=</span> <span class="n">dim_input_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_genes</span> <span class="o">=</span> <span class="n">n_genes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_latent</span> <span class="o">=</span> <span class="n">n_latent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pip0_rho</span> <span class="o">=</span> <span class="n">pip0_rho</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pip0_delta</span> <span class="o">=</span> <span class="n">pip0_delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_variational</span> <span class="o">=</span> <span class="n">log_variational</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kl_weight_beta</span> <span class="o">=</span> <span class="n">kl_weight_beta</span>
+        
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">z_encoder</span> <span class="o">=</span> <span class="n">DeltaTopicEncoder</span><span class="p">(</span>
+            <span class="n">n_input_list</span><span class="o">=</span><span class="n">dim_input_list</span><span class="p">,</span>
+            <span class="n">n_output</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_latent</span><span class="p">,</span>
+            <span class="n">n_hidden</span><span class="o">=</span><span class="n">dim_hidden_encoder</span><span class="p">,</span>
+            <span class="n">n_layers_individual</span><span class="o">=</span><span class="n">n_layers_encoder_individual</span><span class="p">,</span>
+            <span class="n">log_variational</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_variational</span><span class="p">,</span>
+             
+        <span class="p">)</span>
+        
+        <span class="c1"># TODO: use self.total_genes is dangerous, if we have dfferent sets of genes in spliced and unspliced</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span> <span class="o">=</span> <span class="n">DeltaTopicDecoder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_latent</span> <span class="p">,</span> 
+                                          <span class="bp">self</span><span class="o">.</span><span class="n">total_genes</span><span class="p">,</span> 
+                                          <span class="n">pip0_rho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pip0_rho</span><span class="p">,</span>
+                                          <span class="n">pip0_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pip0_delta</span><span class="p">,</span>
+                                        <span class="p">)</span>
+
+<div class="viewcode-block" id="DeltaTopic_module.dir_llik"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.DeltaTopic_module.dir_llik">[docs]</a>    <span class="k">def</span> <span class="nf">dir_llik</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                 <span class="n">xx</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> 
+                 <span class="n">aa</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        # Dirichlet log-likelihood:</span>
+<span class="sd">        # lgamma(sum a) - lgamma(sum a + x)</span>
+<span class="sd">        # sum lgamma(a + x) - lgamma(a)</span>
+<span class="sd">        # @param xx [batch_size, n_genes]</span>
+<span class="sd">        # @param aa [batch_size, n_genes]</span>
+<span class="sd">        # @return log-likelihood</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">reconstruction_loss</span> <span class="o">=</span> <span class="kc">None</span> 
+        
+        <span class="n">term1</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">lgamma</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">aa</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">lgamma</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">aa</span> <span class="o">+</span> <span class="n">xx</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)))</span> <span class="c1">#[n_batch]</span>
+        <span class="n">term2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">xx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">lgamma</span><span class="p">(</span><span class="n">aa</span> <span class="o">+</span> <span class="n">xx</span><span class="p">)</span> <span class="o">-</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">lgamma</span><span class="p">(</span><span class="n">aa</span><span class="p">),</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">xx</span><span class="p">)),</span>
+                            <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#[n_batch</span>
+        <span class="n">reconstruction_loss</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="c1">#[n_batch</span>
+        <span class="k">return</span> <span class="n">reconstruction_loss</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_get_inference_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensors</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">tensors</span><span class="p">[</span><span class="n">_CONSTANTS</span><span class="o">.</span><span class="n">X_KEY</span><span class="p">],</span><span class="n">y</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="n">_CONSTANTS</span><span class="o">.</span><span class="n">PROTEIN_EXP_KEY</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_get_generative_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensors</span><span class="p">,</span> <span class="n">inference_outputs</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">inference_outputs</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DeltaTopic_module.inference"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.DeltaTopic_module.inference">[docs]</a>    <span class="nd">@auto_move_data</span>
+    <span class="k">def</span> <span class="nf">inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">x_</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">y_</span> <span class="o">=</span> <span class="n">y</span>
+
+        <span class="n">q_m</span><span class="p">,</span> <span class="n">q_v</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_encoder</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">y_</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">,</span> <span class="n">q_m</span> <span class="o">=</span> <span class="n">q_m</span><span class="p">,</span> <span class="n">q_v</span> <span class="o">=</span> <span class="n">q_v</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DeltaTopic_module.generative"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.DeltaTopic_module.generative">[docs]</a>    <span class="nd">@auto_move_data</span>
+    <span class="k">def</span> <span class="nf">generative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+        <span class="n">rho</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">delta_kl</span><span class="p">,</span> <span class="n">theta</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rho</span> <span class="o">=</span> <span class="n">rho</span><span class="p">,</span> <span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">,</span> <span class="n">rho_kl</span> <span class="o">=</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">delta_kl</span> <span class="o">=</span> <span class="n">delta_kl</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="DeltaTopic_module.sample_from_posterior_z"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.DeltaTopic_module.sample_from_posterior_z">[docs]</a>    <span class="k">def</span> <span class="nf">sample_from_posterior_z</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> 
+        <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">output_softmax_z</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+    <span class="p">):</span>
+        <span class="n">inference_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inference</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">deterministic</span><span class="p">:</span> <span class="c1"># average of the two means WITHOUT sampling</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">inference_out</span><span class="p">[</span><span class="s2">&quot;q_m&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># sampling </span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">inference_out</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">output_softmax_z</span><span class="p">:</span>
+            <span class="n">generative_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generative</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">generative_outputs</span><span class="p">[</span><span class="s2">&quot;theta&quot;</span><span class="p">]</span>      
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="DeltaTopic_module.get_reconstruction_loss"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.DeltaTopic_module.get_reconstruction_loss">[docs]</a>    <span class="nd">@auto_move_data</span>
+    <span class="k">def</span> <span class="nf">get_reconstruction_loss</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the </span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x</span>
+<span class="sd">            tensor of values with shape ``(batch_size, n_input)``</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        type</span>
+<span class="sd">            tensor of means of the scaled frequencies</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inference_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inference</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">inference_out</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
+        <span class="n">gen_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generative</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">gen_out</span><span class="p">[</span><span class="s2">&quot;theta&quot;</span><span class="p">]</span>
+               
+        <span class="n">rho</span> <span class="o">=</span> <span class="n">gen_out</span><span class="p">[</span><span class="s2">&quot;rho&quot;</span><span class="p">]</span>
+        <span class="n">log_aa_spliced</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">rho</span><span class="p">),</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">aa_spliced</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_aa_spliced</span><span class="p">)</span>
+        
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">gen_out</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span>
+        <span class="n">log_aa_unspliced</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">rho</span> <span class="o">+</span> <span class="n">delta</span><span class="p">),</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">aa_unspliced</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_aa_unspliced</span><span class="p">)</span>
+        
+        <span class="n">reconstruction_loss_spliced</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_llik</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">aa_spliced</span><span class="p">)</span>
+        <span class="n">reconstruction_loss_unspliced</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_llik</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">aa_unspliced</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">reconstruction_loss_spliced</span><span class="p">,</span> <span class="n">reconstruction_loss_unspliced</span></div>
+
+<div class="viewcode-block" id="DeltaTopic_module.loss"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.module.DeltaTopic_module.loss">[docs]</a>    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tensors</span><span class="p">,</span>
+        <span class="n">inference_outputs</span><span class="p">,</span>
+        <span class="n">generative_outputs</span><span class="p">,</span> <span class="c1"># this is important to include</span>
+        <span class="n">kl_weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">kl_weight_beta</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the reconstruction loss and the Kullback divergences.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x</span>
+<span class="sd">            tensor of values with shape ``(batch_size, n_input)``</span>
+<span class="sd">            or ``(batch_size, n_input_fish)`` depending on the mode</span>
+<span class="sd">        local_l_mean</span>
+<span class="sd">            tensor of means of the prior distribution of latent variable l</span>
+<span class="sd">            with shape (batch_size, 1)</span>
+<span class="sd">        local_l_var</span>
+<span class="sd">            tensor of variances of the prior distribution of latent variable l</span>
+<span class="sd">            with shape (batch_size, 1)</span>
+<span class="sd">        batch_index</span>
+<span class="sd">            array that indicates which batch the cells belong to with shape ``batch_size``</span>
+<span class="sd">        y</span>
+<span class="sd">            tensor of cell-types labels with shape (batch_size, n_labels)</span>
+<span class="sd">        mode</span>
+<span class="sd">            indicates which head/tail to use in the joint network</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        the reconstruction loss and the Kullback divergences</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kl_weight_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kl_weight_beta</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="n">_CONSTANTS</span><span class="o">.</span><span class="n">X_KEY</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="n">_CONSTANTS</span><span class="o">.</span><span class="n">PROTEIN_EXP_KEY</span><span class="p">]</span>
+        <span class="n">q_m</span> <span class="o">=</span> <span class="n">inference_outputs</span><span class="p">[</span><span class="s2">&quot;q_m&quot;</span><span class="p">]</span>
+        <span class="n">q_v</span> <span class="o">=</span> <span class="n">inference_outputs</span><span class="p">[</span><span class="s2">&quot;q_v&quot;</span><span class="p">]</span>
+        
+        <span class="n">rho_kl</span> <span class="o">=</span> <span class="n">generative_outputs</span><span class="p">[</span><span class="s2">&quot;rho_kl&quot;</span><span class="p">]</span>
+        <span class="n">delta_kl</span> <span class="o">=</span> <span class="n">generative_outputs</span><span class="p">[</span><span class="s2">&quot;delta_kl&quot;</span><span class="p">]</span>
+        
+        <span class="c1"># [batch_size]</span>
+        <span class="n">reconstruction_loss_spliced</span><span class="p">,</span> <span class="n">reconstruction_loss_unspliced</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reconstruction_loss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="c1"># KL Divergence for z [batch_size]</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">q_m</span><span class="p">)</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">q_v</span><span class="p">)</span>
+        <span class="n">kl_divergence</span> <span class="o">=</span> <span class="n">kl</span><span class="p">(</span><span class="n">Normal</span><span class="p">(</span><span class="n">q_m</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">q_v</span><span class="p">)),</span> <span class="n">Normal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">scale</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+            <span class="n">dim</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+
+        <span class="c1"># suming over all the topics</span>
+        <span class="c1"># kl_divergence for beta, rho_kl, tensor of torch.size([]) &lt;- torch.sum([N_topics, N_genes])</span>
+        <span class="n">kl_divergence_beta</span> <span class="o">=</span> <span class="n">rho_kl</span> <span class="o">+</span> <span class="n">delta_kl</span>
+        <span class="n">kl_local</span> <span class="o">=</span> <span class="n">kl_divergence</span>
+        <span class="n">reconstruction_loss</span> <span class="o">=</span> <span class="n">reconstruction_loss_spliced</span> <span class="o">+</span> <span class="n">reconstruction_loss_unspliced</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">reconstruction_loss</span> <span class="o">+</span> <span class="n">kl_weight</span> <span class="o">*</span> <span class="n">kl_local</span><span class="p">)</span> <span class="o">+</span> <span class="n">kl_weight_beta</span> <span class="o">*</span> <span class="n">kl_divergence_beta</span><span class="o">/</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="k">return</span> <span class="n">LossRecorder</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">reconstruction_loss</span><span class="p">,</span> <span class="n">kl_local</span><span class="p">,</span>
+                            <span class="n">reconstruction_loss_spliced</span><span class="o">=</span><span class="n">reconstruction_loss_spliced</span><span class="p">,</span>
+                            <span class="n">reconstruction_loss_unspliced</span><span class="o">=</span><span class="n">reconstruction_loss_unspliced</span><span class="p">,</span> 
+                            <span class="n">kl_beta</span> <span class="o">=</span> <span class="n">kl_divergence_beta</span><span class="p">,</span> 
+                            <span class="n">kl_rho</span> <span class="o">=</span> <span class="n">rho_kl</span><span class="p">,</span> 
+                            <span class="n">kl_delta</span> <span class="o">=</span> <span class="n">delta_kl</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Yichen Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

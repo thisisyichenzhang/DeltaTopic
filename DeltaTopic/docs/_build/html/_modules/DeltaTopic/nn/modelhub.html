@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeltaTopic.nn.modelhub &mdash; deltaTopic  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            deltaTopic
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">DeltaTopic</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">deltaTopic</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">DeltaTopic.nn.modelhub</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for DeltaTopic.nn.modelhub</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">anndata</span> <span class="kn">import</span> <span class="n">AnnData</span><span class="p">,</span> <span class="n">read</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">DeltaTopic.nn.util</span> <span class="kn">import</span> <span class="n">_get_var_names_from_setup_anndata</span><span class="p">,</span> <span class="n">parse_use_gpu_arg</span><span class="p">,</span> <span class="n">_CONSTANTS</span><span class="p">,</span> <span class="n">DataSplitter</span><span class="p">,</span> <span class="n">TrainRunner</span><span class="p">,</span> <span class="n">BaseModelClass</span>
+<span class="kn">from</span> <span class="nn">DeltaTopic.nn.TrainingPlan</span> <span class="kn">import</span> <span class="n">TrainingPlan</span>
+<span class="kn">from</span> <span class="nn">DeltaTopic.nn.module</span> <span class="kn">import</span> <span class="n">BALSAM_module</span><span class="p">,</span> <span class="n">DeltaTopic_module</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_unpack_tensors</span><span class="p">(</span><span class="n">tensors</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="n">_CONSTANTS</span><span class="o">.</span><span class="n">X_KEY</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">unspliced</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="n">_CONSTANTS</span><span class="o">.</span><span class="n">PROTEIN_EXP_KEY</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">unspliced</span>
+
+<span class="k">def</span> <span class="nf">_unpack_tensors_BETM</span><span class="p">(</span><span class="n">tensors</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="n">_CONSTANTS</span><span class="o">.</span><span class="n">X_KEY</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DeltaETM</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    adata_seq</span>
+<span class="sd">        Spliced and unspliced count AnnData object that has been registered via :func:`~scvi.data.setup_anndata`</span>
+<span class="sd">        and contains data.</span>
+<span class="sd">    adata_pathway</span>
+<span class="sd">        Pathway AnnData object that has been registered via :func:`~scvi.data.setup_anndata`</span>
+<span class="sd">        and contains pathway information. Note that genes needs to be equal to the input genes in </span>
+<span class="sd">        adata_seq</span>
+<span class="sd">    mask </span>
+<span class="sd">        Binary torch.tensor with the shape of of [n_pathways, n_genes]. Note that this option </span>
+<span class="sd">        is only avaiable when adata_pathway is None </span>
+<span class="sd">    n_hidden</span>
+<span class="sd">        Number of nodes per hidden layer.</span>
+<span class="sd">    n_latent</span>
+<span class="sd">        Dimensionality of the latent space.</span>
+<span class="sd">    **model_kwargs</span>
+<span class="sd">        Keyword args for :class:`~module.DeltaETM_module`</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; adata_seq = anndata.read_h5ad(path_to_anndata_seq)</span>
+<span class="sd">    &gt;&gt;&gt; scvi.data.setup_anndata(adata_seq)</span>
+<span class="sd">    &gt;&gt;&gt; model = TotalDeltaEMT(adata_seq adata_pathway)</span>
+<span class="sd">    &gt;&gt;&gt; model.train(n_epochs=400)</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">adata_seq</span><span class="p">:</span> <span class="n">AnnData</span><span class="p">,</span>
+        <span class="n">adata_pathway</span><span class="p">:</span> <span class="n">AnnData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">mask</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_latent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">combine_latent</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;concat&#39;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">model_kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TotalDeltaETM_decoupled</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_latent</span> <span class="o">=</span> <span class="n">n_latent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adata</span> <span class="o">=</span> <span class="n">adata_seq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scvi_setup_dicts_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s2">&quot;_scvi&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">adata_pathway</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># condition check</span>
+            <span class="n">var_names</span> <span class="o">=</span> <span class="n">_get_var_names_from_setup_anndata</span><span class="p">(</span><span class="n">adata_seq</span><span class="p">)</span>
+            <span class="n">pathway_var_names</span> <span class="o">=</span> <span class="n">_get_var_names_from_setup_anndata</span><span class="p">(</span><span class="n">adata_pathway</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">var_names</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">pathway_var_names</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;expression genes needs to be equal to pathway genes&quot;</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">summary_stats</span> <span class="o">=</span> <span class="n">adata_seq</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;_scvi&#39;</span><span class="p">][</span><span class="s2">&quot;summary_stats&quot;</span><span class="p">]</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">TotalDeltaETM_module_decoupled</span><span class="p">(</span>
+            <span class="n">dim_input_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">summary_stats</span><span class="p">[</span><span class="s2">&quot;n_vars&quot;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">summary_stats</span><span class="p">[</span><span class="s2">&quot;n_vars&quot;</span><span class="p">]],</span>
+            <span class="n">total_genes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">summary_stats</span><span class="p">[</span><span class="s2">&quot;n_vars&quot;</span><span class="p">],</span>
+            <span class="n">mask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span>
+            <span class="n">n_batch</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">summary_stats</span><span class="p">[</span><span class="s2">&quot;n_batch&quot;</span><span class="p">],</span>
+            <span class="n">n_latent</span><span class="o">=</span><span class="n">n_latent</span><span class="p">,</span>
+            <span class="n">combine_method</span> <span class="o">=</span> <span class="n">combine_latent</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">model_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_summary_string</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;TotalDelETM decpoupled Model with the following params: </span><span class="se">\n</span><span class="s2">n_latent: </span><span class="si">{}</span><span class="s2">,  n_genes: </span><span class="si">{}</span><span class="s2">, &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;n_batch: </span><span class="si">{}</span><span class="s2">, combine_latent: </span><span class="si">{}</span><span class="s2">&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_latent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">summary_stats</span><span class="p">[</span><span class="s2">&quot;n_vars&quot;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">summary_stats</span><span class="p">[</span><span class="s2">&quot;n_batch&quot;</span><span class="p">],</span> <span class="n">combine_latent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_params_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_params</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>    
+        <span class="c1">#wandb.watch(self.module.decoder, log_freq=10, log=&quot;all&quot;)</span>
+    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">max_epochs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+        <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4e-3</span><span class="p">,</span>
+        <span class="n">use_gpu</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">train_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
+        <span class="n">validation_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
+        <span class="n">early_stopping</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">check_val_every_n_epoch</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">reduce_lr_on_plateau</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">n_steps_kl_warmup</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_epochs_kl_warmup</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1">#adversarial_classifier: Optional[bool] = None,</span>
+        <span class="n">plan_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Trains the model using amortized variational inference.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        max_epochs</span>
+<span class="sd">            Number of passes through the dataset.</span>
+<span class="sd">        lr</span>
+<span class="sd">            Learning rate for optimization.</span>
+<span class="sd">        use_gpu</span>
+<span class="sd">            Use default GPU if available (if None or True), or index of GPU to use (if int),</span>
+<span class="sd">            or name of GPU (if str, e.g., `&#39;cuda:0&#39;`), or use CPU (if False).</span>
+<span class="sd">        train_size</span>
+<span class="sd">            Size of training set in the range [0.0, 1.0].</span>
+<span class="sd">        validation_size</span>
+<span class="sd">            Size of the test set. If `None`, defaults to 1 - `train_size`. If</span>
+<span class="sd">            `train_size + validation_size &lt; 1`, the remaining cells belong to a test set.</span>
+<span class="sd">        batch_size</span>
+<span class="sd">            Minibatch size to use during training.</span>
+<span class="sd">        early_stopping</span>
+<span class="sd">            Whether to perform early stopping with respect to the validation set.</span>
+<span class="sd">        check_val_every_n_epoch</span>
+<span class="sd">            Check val every n train epochs. By default, val is not checked, unless `early_stopping` is `True`</span>
+<span class="sd">            or `reduce_lr_on_plateau` is `True`. If either of the latter conditions are met, val is checked</span>
+<span class="sd">            every epoch.</span>
+<span class="sd">        reduce_lr_on_plateau</span>
+<span class="sd">            Reduce learning rate on plateau of validation metric (default is ELBO).</span>
+<span class="sd">        n_steps_kl_warmup</span>
+<span class="sd">            Number of training steps (minibatches) to scale weight on KL divergences from 0 to 1.</span>
+<span class="sd">            Only activated when `n_epochs_kl_warmup` is set to None. If `None`, defaults</span>
+<span class="sd">            to `floor(0.75 * adata.n_obs)`.</span>
+<span class="sd">        n_epochs_kl_warmup</span>
+<span class="sd">            Number of epochs to scale weight on KL divergences from 0 to 1.</span>
+<span class="sd">            Overrides `n_steps_kl_warmup` when both are not `None`.</span>
+<span class="sd">        adversarial_classifier</span>
+<span class="sd">            Whether to use adversarial classifier in the latent space. This helps mixing when</span>
+<span class="sd">            there are missing proteins in any of the batches. Defaults to `True` is missing proteins</span>
+<span class="sd">            are detected.</span>
+<span class="sd">        plan_kwargs</span>
+<span class="sd">            Keyword args for :class:`~scvi.train.AdversarialTrainingPlan`. Keyword arguments passed to</span>
+<span class="sd">            `train()` will overwrite values present in `plan_kwargs`, when appropriate.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Other keyword args for :class:`~scvi.train.Trainer`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;if adversarial_classifier is None:</span>
+<span class="sd">            imputation = (</span>
+<span class="sd">                True if &quot;totalvi_batch_mask&quot; in self.scvi_setup_dict_.keys() else False</span>
+<span class="sd">            )</span>
+<span class="sd">            adversarial_classifier = True if imputation else False</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1">#adversarial_classifier = False    </span>
+        <span class="n">n_steps_kl_warmup</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">n_steps_kl_warmup</span>
+            <span class="k">if</span> <span class="n">n_steps_kl_warmup</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.75</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">n_obs</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">reduce_lr_on_plateau</span><span class="p">:</span>
+            <span class="n">check_val_every_n_epoch</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="n">update_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="n">lr</span><span class="p">,</span>
+            <span class="c1">#&quot;adversarial_classifier&quot;: adversarial_classifier,</span>
+            <span class="s2">&quot;reduce_lr_on_plateau&quot;</span><span class="p">:</span> <span class="n">reduce_lr_on_plateau</span><span class="p">,</span>
+            <span class="s2">&quot;n_epochs_kl_warmup&quot;</span><span class="p">:</span> <span class="n">n_epochs_kl_warmup</span><span class="p">,</span>
+            <span class="s2">&quot;n_steps_kl_warmup&quot;</span><span class="p">:</span> <span class="n">n_steps_kl_warmup</span><span class="p">,</span>
+            <span class="c1">#&quot;check_val_every_n_epoch&quot;: check_val_every_n_epoch,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">plan_kwargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plan_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">update_dict</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plan_kwargs</span> <span class="o">=</span> <span class="n">update_dict</span>
+
+        <span class="k">if</span> <span class="n">max_epochs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">n_cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">n_obs</span>
+            <span class="n">max_epochs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="nb">round</span><span class="p">((</span><span class="mi">20000</span> <span class="o">/</span> <span class="n">n_cells</span><span class="p">)</span> <span class="o">*</span> <span class="mi">400</span><span class="p">),</span> <span class="mi">400</span><span class="p">])</span>
+
+        <span class="n">plan_kwargs</span> <span class="o">=</span> <span class="n">plan_kwargs</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">plan_kwargs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="n">data_splitter</span> <span class="o">=</span> <span class="n">DataSplitter</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="p">,</span>
+            <span class="n">train_size</span><span class="o">=</span><span class="n">train_size</span><span class="p">,</span>
+            <span class="n">validation_size</span><span class="o">=</span><span class="n">validation_size</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">use_gpu</span><span class="o">=</span><span class="n">use_gpu</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">training_plan</span> <span class="o">=</span> <span class="n">TrainingPlan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="o">**</span><span class="n">plan_kwargs</span><span class="p">)</span>
+        <span class="n">runner</span> <span class="o">=</span> <span class="n">TrainRunner</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">training_plan</span><span class="o">=</span><span class="n">training_plan</span><span class="p">,</span>
+            <span class="n">data_splitter</span><span class="o">=</span><span class="n">data_splitter</span><span class="p">,</span>
+            <span class="n">max_epochs</span><span class="o">=</span><span class="n">max_epochs</span><span class="p">,</span>
+            <span class="n">use_gpu</span><span class="o">=</span><span class="n">use_gpu</span><span class="p">,</span>
+            <span class="c1">#early_stopping=early_stopping,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">runner</span><span class="p">()</span>
+    
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_latent_representation</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">adata</span><span class="p">:</span> <span class="n">AnnData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="n">output_softmax_z</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the latent space embedding for each dataset, i.e., spliced and unspliced</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        adatas</span>
+<span class="sd">            List of adata_spliced and adata_unspliced.</span>
+<span class="sd">        deterministic</span>
+<span class="sd">            If true, use the mean of the encoder instead of a Gaussian sample.</span>
+<span class="sd">        batch_size</span>
+<span class="sd">            Minibatch size for data loading into model.</span>
+<span class="sd">        output_softmax_z</span>
+<span class="sd">            If true, return the softmax of the latent space embedding.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">adata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">adata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span>
+        <span class="n">scdl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_data_loader</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+        <span class="n">latent_z</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">tensors</span> <span class="ow">in</span> <span class="n">scdl</span><span class="p">:</span>
+            <span class="p">(</span>
+                <span class="n">sample_batch</span><span class="p">,</span>
+                <span class="n">sample_batch_unspliced</span><span class="p">,</span>
+                <span class="o">*</span><span class="n">_</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">_unpack_tensors</span><span class="p">(</span><span class="n">tensors</span><span class="p">)</span>
+            <span class="n">z_dict</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">sample_from_posterior_z</span><span class="p">(</span><span class="n">sample_batch</span><span class="p">,</span> <span class="n">sample_batch_unspliced</span><span class="p">,</span> <span class="n">deterministic</span><span class="o">=</span><span class="n">deterministic</span><span class="p">,</span> <span class="n">output_softmax_z</span> <span class="o">=</span> <span class="n">output_softmax_z</span><span class="p">)</span>
+            <span class="n">latent_z</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z_dict</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">])</span>                
+
+        <span class="n">latent_z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">latent_z</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deterministic: </span><span class="si">{</span><span class="n">deterministic</span><span class="si">}</span><span class="se">\n</span><span class="s1">Output_softmax_z: </span><span class="si">{</span><span class="n">output_softmax_z</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">latent_z</span>
+    
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_weights</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the latent space embedding for each dataset, i.e., spliced and unspliced</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        adatas</span>
+<span class="sd">            List of adata_spliced and adata_unspliced.</span>
+<span class="sd">       </span>
+<span class="sd">        batch_size</span>
+<span class="sd">            Minibatch size for data loading into model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">log_sftm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LogSoftmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">log_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+        <span class="n">log_rho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">rho</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+        
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_sftm</span><span class="p">(</span><span class="n">log_delta</span><span class="p">))</span>
+        <span class="n">rho</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_sftm</span><span class="p">(</span><span class="n">log_rho</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">delta</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">rho</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">log_delta</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">log_rho</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">save_anndata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">anndata_write_kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the state of the model.</span>
+
+<span class="sd">        Neither the trainer optimizer state nor the trainer history are saved.</span>
+<span class="sd">        Model files are not expected to be reproducibly saved and loaded across versions</span>
+<span class="sd">        until we reach version 1.0.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dir_path</span>
+<span class="sd">            Path to a directory.</span>
+<span class="sd">        overwrite</span>
+<span class="sd">            Overwrite existing data or not. If `False` and directory</span>
+<span class="sd">            already exists at `dir_path`, error will be raised.</span>
+<span class="sd">        save_anndata</span>
+<span class="sd">            If True, also saves the anndata</span>
+<span class="sd">        anndata_write_kwargs</span>
+<span class="sd">            Kwargs for anndata write function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get all the user attributes</span>
+        <span class="n">user_attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_user_attributes</span><span class="p">()</span>
+        <span class="c1"># only save the public attributes with _ at the very end</span>
+        <span class="n">user_attributes</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">user_attributes</span> <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;_&quot;</span><span class="p">}</span>
+        <span class="c1"># save the model state dict and the trainer state dict only</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span> <span class="ow">or</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> already exists. Please provide an unexisting directory for saving.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">dir_path</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">save_anndata</span><span class="p">:</span>
+            <span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;adata.h5ad&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+            <span class="n">varnames_save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;var_names.csv&quot;</span>
+            <span class="p">)</span>
+
+            <span class="n">var_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">var_names</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+            <span class="n">var_names</span> <span class="o">=</span> <span class="n">var_names</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">varnames_save_path</span><span class="p">,</span> <span class="n">var_names</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># saving pathways</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata_pathway</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;adata_pathways.h5ad&quot;</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">adata_pathway</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+                <span class="n">varnames_save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;var_names_pathways.csv&quot;</span>
+                <span class="p">)</span>
+                <span class="n">var_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata_pathway</span><span class="o">.</span><span class="n">var_names</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+                <span class="n">var_names</span> <span class="o">=</span> <span class="n">var_names</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">varnames_save_path</span><span class="p">,</span> <span class="n">var_names</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">model_save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;model_params.pt&quot;</span><span class="p">)</span>
+        <span class="n">attr_save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;attr.pkl&quot;</span><span class="p">)</span>
+
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">model_save_path</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">attr_save_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">user_attributes</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">adata_seq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnnData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_gpu</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiate a model from the saved output.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        adata_seq</span>
+<span class="sd">            AnnData organized in the same way as data used to train model.</span>
+<span class="sd">            It is not necessary to run :func:`~scvi.data.setup_anndata`,</span>
+<span class="sd">            as AnnData is validated against the saved `scvi` setup dictionary.</span>
+<span class="sd">            AnnData must be registered via :func:`~scvi.data.setup_anndata`.</span>
+<span class="sd">        dir_path</span>
+<span class="sd">            Path to saved outputs.</span>
+<span class="sd">        use_gpu</span>
+<span class="sd">            Load model on default GPU if available (if None or True),</span>
+<span class="sd">            or index of GPU to use (if int), or name of GPU (if str), or use CPU (if False).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Model with loaded state dictionaries.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; vae = GIMVI.load(adata_seq, adata_spatial, save_path)</span>
+<span class="sd">        &gt;&gt;&gt; vae.get_latent_representation()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;model_params.pt&quot;</span><span class="p">)</span>
+        <span class="n">setup_dict_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;attr.pkl&quot;</span><span class="p">)</span>
+        <span class="n">seq_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;adata.h5ad&quot;</span><span class="p">)</span>
+        <span class="n">path_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;adata_pathways.h5ad&quot;</span><span class="p">)</span>
+        <span class="n">seq_var_names_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;var_names.csv&quot;</span><span class="p">)</span>
+        <span class="n">path_var_names_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;var_names_pathways.csv&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">adata_seq</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">seq_data_path</span><span class="p">):</span>
+            <span class="n">adata_seq</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">seq_data_path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">adata_seq</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">seq_data_path</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Save path contains no saved anndata and no adata was passed.&quot;</span>
+            <span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path_data_path</span><span class="p">):</span>
+            <span class="n">adata_path</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">path_data_path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path_data_path</span><span class="p">):</span>
+            <span class="n">adata_path</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;no pathways saved&quot;</span><span class="p">)</span>
+
+        <span class="c1">#adatas = [adata_seq, adata_spatial]</span>
+        <span class="n">adata</span> <span class="o">=</span> <span class="n">adata_seq</span>
+        <span class="n">seq_var_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">seq_var_names_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="c1">#spatial_var_names = np.genfromtxt(</span>
+        <span class="c1">#    spatial_var_names_path, delimiter=&quot;,&quot;, dtype=str</span>
+        <span class="c1">#)</span>
+        <span class="n">var_names</span> <span class="o">=</span> <span class="n">seq_var_names</span>
+        <span class="c1">#for i, adata in enumerate(adatas):</span>
+        <span class="n">saved_var_names</span> <span class="o">=</span> <span class="n">var_names</span>
+        <span class="n">user_var_names</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">var_names</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">saved_var_names</span><span class="p">,</span> <span class="n">user_var_names</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;var_names for adata passed in does not match var_names of &quot;</span>
+                <span class="s2">&quot;adata used to train the model. For valid results, the vars &quot;</span>
+                <span class="s2">&quot;need to be the same and in the same order as the adata used to train the model.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">setup_dict_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+            <span class="n">attr_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+
+        <span class="n">scvi_setup_dicts</span> <span class="o">=</span> <span class="n">attr_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;scvi_setup_dicts_&quot;</span><span class="p">)</span>
+        <span class="n">transfer_anndata_setup</span><span class="p">(</span><span class="n">scvi_setup_dicts</span><span class="p">,</span> <span class="n">adata_seq</span><span class="p">)</span>
+      
+        <span class="c1"># get the parameters for the class init signiture</span>
+        <span class="n">init_params</span> <span class="o">=</span> <span class="n">attr_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;init_params_&quot;</span><span class="p">)</span>
+
+        <span class="c1"># new saving and loading, enable backwards compatibility</span>
+        <span class="k">if</span> <span class="s2">&quot;non_kwargs&quot;</span> <span class="ow">in</span> <span class="n">init_params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># grab all the parameters execept for kwargs (is a dict)</span>
+            <span class="n">non_kwargs</span> <span class="o">=</span> <span class="n">init_params</span><span class="p">[</span><span class="s2">&quot;non_kwargs&quot;</span><span class="p">]</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="n">init_params</span><span class="p">[</span><span class="s2">&quot;kwargs&quot;</span><span class="p">]</span>
+
+            <span class="c1"># expand out kwargs</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">j</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># grab all the parameters execept for kwargs (is a dict)</span>
+            <span class="n">non_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">init_params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">init_params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)}</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">j</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        
+        <span class="c1"># the default init require this way of loading models</span>
+        <span class="k">if</span> <span class="n">adata_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>    
+            <span class="n">model</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">adata_seq</span><span class="p">,</span> <span class="o">**</span><span class="n">non_kwargs</span><span class="p">,</span> <span class="n">adata_pathway</span><span class="o">=</span><span class="n">adata_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">adata_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">adata_seq</span><span class="p">,</span> <span class="o">**</span><span class="n">non_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">attr_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">device</span> <span class="o">=</span> <span class="n">parse_use_gpu_arg</span><span class="p">(</span><span class="n">use_gpu</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">device</span><span class="p">))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span>
+
+<div class="viewcode-block" id="BALSAM"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.modelhub.BALSAM">[docs]</a><span class="k">class</span> <span class="nc">BALSAM</span><span class="p">(</span><span class="n">BaseModelClass</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">adata_seq</span><span class="p">:</span> <span class="n">AnnData</span><span class="p">,</span>
+        <span class="n">n_latent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">model_kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BALSAM</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_latent</span> <span class="o">=</span> <span class="n">n_latent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adata</span> <span class="o">=</span> <span class="n">adata_seq</span>
+         
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">BALSAM_module</span><span class="p">(</span>
+            <span class="n">n_genes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">n_vars</span><span class="p">,</span>
+            <span class="n">n_latent</span><span class="o">=</span><span class="n">n_latent</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">model_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_summary_string</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;BALSAM with the following params: </span><span class="se">\n</span><span class="s2">n_latent: </span><span class="si">{}</span><span class="s2">,  n_genes: </span><span class="si">{}</span><span class="s2">&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_latent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">n_vars</span><span class="p">)</span>
+           
+<div class="viewcode-block" id="BALSAM.train"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.modelhub.BALSAM.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">max_epochs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+        <span class="n">use_gpu</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">train_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
+        <span class="n">validation_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="n">n_steps_kl_warmup</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_epochs_kl_warmup</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">plan_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Trains the model using amortized variational inference.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        max_epochs</span>
+<span class="sd">            Number of passes through the dataset.</span>
+<span class="sd">        lr</span>
+<span class="sd">            Learning rate for optimization.</span>
+<span class="sd">        use_gpu</span>
+<span class="sd">            Use default GPU if available (if None or True), or index of GPU to use (if int),</span>
+<span class="sd">            or name of GPU (if str, e.g., `&#39;cuda:0&#39;`), or use CPU (if False).</span>
+<span class="sd">        train_size</span>
+<span class="sd">            Size of training set in the range [0.0, 1.0].</span>
+<span class="sd">        validation_size</span>
+<span class="sd">            Size of the test set. If `None`, defaults to 1 - `train_size`. If</span>
+<span class="sd">            `train_size + validation_size &lt; 1`, the remaining cells belong to a test set.</span>
+<span class="sd">        batch_size</span>
+<span class="sd">            Minibatch size to use during training.</span>
+<span class="sd">        n_steps_kl_warmup</span>
+<span class="sd">            Number of training steps (minibatches) to scale weight on KL divergences from 0 to 1.</span>
+<span class="sd">            Only activated when `n_epochs_kl_warmup` is set to None. If `None`, defaults</span>
+<span class="sd">            to `floor(0.75 * adata.n_obs)`.</span>
+<span class="sd">        n_epochs_kl_warmup</span>
+<span class="sd">            Number of epochs to scale weight on KL divergences from 0 to 1.</span>
+<span class="sd">            Overrides `n_steps_kl_warmup` when both are not `None`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+       
+        <span class="n">n_steps_kl_warmup</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">n_steps_kl_warmup</span>
+            <span class="k">if</span> <span class="n">n_steps_kl_warmup</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.75</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">n_obs</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">update_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="n">lr</span><span class="p">,</span>
+            <span class="s2">&quot;n_epochs_kl_warmup&quot;</span><span class="p">:</span> <span class="n">n_epochs_kl_warmup</span><span class="p">,</span>
+            <span class="s2">&quot;n_steps_kl_warmup&quot;</span><span class="p">:</span> <span class="n">n_steps_kl_warmup</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">plan_kwargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plan_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">update_dict</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plan_kwargs</span> <span class="o">=</span> <span class="n">update_dict</span>
+
+        <span class="k">if</span> <span class="n">max_epochs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">n_cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">n_obs</span>
+            <span class="n">max_epochs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="nb">round</span><span class="p">((</span><span class="mi">20000</span> <span class="o">/</span> <span class="n">n_cells</span><span class="p">)</span> <span class="o">*</span> <span class="mi">400</span><span class="p">),</span> <span class="mi">400</span><span class="p">])</span>
+
+        <span class="n">plan_kwargs</span> <span class="o">=</span> <span class="n">plan_kwargs</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">plan_kwargs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="n">data_splitter</span> <span class="o">=</span> <span class="n">DataSplitter</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="p">,</span>
+            <span class="n">train_size</span><span class="o">=</span><span class="n">train_size</span><span class="p">,</span>
+            <span class="n">validation_size</span><span class="o">=</span><span class="n">validation_size</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">use_gpu</span><span class="o">=</span><span class="n">use_gpu</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">training_plan</span> <span class="o">=</span> <span class="n">TrainingPlan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="o">**</span><span class="n">plan_kwargs</span><span class="p">)</span>
+        <span class="n">runner</span> <span class="o">=</span> <span class="n">TrainRunner</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">training_plan</span><span class="o">=</span><span class="n">training_plan</span><span class="p">,</span>
+            <span class="n">data_splitter</span><span class="o">=</span><span class="n">data_splitter</span><span class="p">,</span>
+            <span class="n">max_epochs</span><span class="o">=</span><span class="n">max_epochs</span><span class="p">,</span>
+            <span class="n">use_gpu</span><span class="o">=</span><span class="n">use_gpu</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">runner</span><span class="p">()</span></div>
+    
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_latent_representation</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">adata</span><span class="p">:</span> <span class="n">AnnData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">output_softmax_z</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the latent space embedding for each dataset, </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        adatas</span>
+<span class="sd">            List of adata_spliced and adata_unspliced.</span>
+<span class="sd">        deterministic</span>
+<span class="sd">            If true, use the mean of the encoder instead of a Gaussian sample.</span>
+<span class="sd">        output_softmax_z</span>
+<span class="sd">            if true, output probability, otherwise output z.    </span>
+<span class="sd">        batch_size</span>
+<span class="sd">            Minibatch size for data loading into model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">adata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">adata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span>
+        <span class="n">scdl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_data_loader</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+        <span class="n">latent_z</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">tensors</span> <span class="ow">in</span> <span class="n">scdl</span><span class="p">:</span>
+            <span class="p">(</span>
+                <span class="n">sample_batch</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">_unpack_tensors_BETM</span><span class="p">(</span><span class="n">tensors</span><span class="p">)</span>
+            <span class="n">z_dict</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">sample_from_posterior_z</span><span class="p">(</span><span class="n">sample_batch</span><span class="p">,</span> <span class="n">deterministic</span><span class="o">=</span><span class="n">deterministic</span><span class="p">,</span> <span class="n">output_softmax_z</span><span class="o">=</span><span class="n">output_softmax_z</span><span class="p">)</span>
+            <span class="n">latent_z</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z_dict</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">])</span>                
+
+        <span class="n">latent_z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">latent_z</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deterministic: </span><span class="si">{</span><span class="n">deterministic</span><span class="si">}</span><span class="s1">, output_softmax_z: </span><span class="si">{</span><span class="n">output_softmax_z</span><span class="si">}</span><span class="s1">&#39;</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">latent_z</span>
+    
+    
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">save_dir</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+        <span class="n">overwrite</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return the spike logit, slab mean, slab lnvar for rho&quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">decoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">decoder</span>
+        
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">))</span> <span class="ow">or</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span>
+            
+        
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;spike_logit_rho.txt&quot;</span>
+            <span class="p">),</span> <span class="n">decoder</span><span class="o">.</span><span class="n">spike_logit</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        
+
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;slab_mean_rho.txt&quot;</span>
+            <span class="p">),</span> <span class="n">decoder</span><span class="o">.</span><span class="n">slab_mean</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        
+    
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;slab_lnvar_rho.txt&quot;</span>
+            <span class="p">),</span> <span class="n">decoder</span><span class="o">.</span><span class="n">slab_lnvar</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        
+ 
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;bias_gene.txt&quot;</span>
+            <span class="p">),</span> <span class="n">decoder</span><span class="o">.</span><span class="n">bias_d</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+                
+<div class="viewcode-block" id="BALSAM.save"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.modelhub.BALSAM.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">save_anndata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">anndata_write_kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the state of the model.</span>
+<span class="sd">        Neither the trainer optimizer state nor the trainer history are saved.</span>
+<span class="sd">        Model files are not expected to be reproducibly saved and loaded across versions</span>
+<span class="sd">        until we reach version 1.0.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dir_path</span>
+<span class="sd">            Path to a directory.</span>
+<span class="sd">        overwrite</span>
+<span class="sd">            Overwrite existing data or not. If `False` and directory</span>
+<span class="sd">            already exists at `dir_path`, error will be raised.</span>
+<span class="sd">        save_anndata</span>
+<span class="sd">            If True, also saves the anndata</span>
+<span class="sd">        anndata_write_kwargs</span>
+<span class="sd">            Kwargs for anndata write function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># save the model state dict and the trainer state dict only</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span> <span class="ow">or</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> already exists. Please provide an unexisting directory for saving.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">dir_path</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">save_anndata</span><span class="p">:</span>
+            <span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;adata.h5ad&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+        <span class="n">varnames_save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;var_names.csv&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">var_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">var_names</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">var_names</span> <span class="o">=</span> <span class="n">var_names</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">varnames_save_path</span><span class="p">,</span> <span class="n">var_names</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">model_save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;model_params.pt&quot;</span><span class="p">)</span>
+
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">model_save_path</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="DeltaTopic"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.modelhub.DeltaTopic">[docs]</a><span class="k">class</span> <span class="nc">DeltaTopic</span><span class="p">(</span><span class="n">BaseModelClass</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DeltaTopic</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">adata_seq</span><span class="p">:</span> <span class="n">AnnData</span><span class="p">,</span>
+        <span class="n">n_latent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">model_kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DeltaTopic</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_latent</span> <span class="o">=</span> <span class="n">n_latent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adata</span> <span class="o">=</span> <span class="n">adata_seq</span>
+         
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span> <span class="o">=</span> <span class="n">DeltaTopic_module</span><span class="p">(</span>
+            <span class="n">n_genes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">n_vars</span><span class="p">,</span>
+            <span class="n">n_latent</span><span class="o">=</span><span class="n">n_latent</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">model_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_summary_string</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;DeltaTopic with the following params: </span><span class="se">\n</span><span class="s2">n_latent: </span><span class="si">{}</span><span class="s2">,  n_genes: </span><span class="si">{}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_latent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">n_vars</span><span class="p">)</span>
+        
+<div class="viewcode-block" id="DeltaTopic.train"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.modelhub.DeltaTopic.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">max_epochs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+        <span class="n">use_gpu</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">train_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
+        <span class="n">validation_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="n">n_steps_kl_warmup</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_epochs_kl_warmup</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">plan_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Trains the model using amortized variational inference.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        max_epochs</span>
+<span class="sd">            Number of passes through the dataset.</span>
+<span class="sd">        lr</span>
+<span class="sd">            Learning rate for optimization.</span>
+<span class="sd">        use_gpu</span>
+<span class="sd">            Use default GPU if available (if None or True), or index of GPU to use (if int),</span>
+<span class="sd">            or name of GPU (if str, e.g., `&#39;cuda:0&#39;`), or use CPU (if False).</span>
+<span class="sd">        train_size</span>
+<span class="sd">            Size of training set in the range [0.0, 1.0].</span>
+<span class="sd">        validation_size</span>
+<span class="sd">            Size of the test set. If `None`, defaults to 1 - `train_size`. If</span>
+<span class="sd">            `train_size + validation_size &lt; 1`, the remaining cells belong to a test set.</span>
+<span class="sd">        batch_size</span>
+<span class="sd">            Minibatch size to use during training.</span>
+<span class="sd">        n_steps_kl_warmup</span>
+<span class="sd">            Number of training steps (minibatches) to scale weight on KL divergences from 0 to 1.</span>
+<span class="sd">            Only activated when `n_epochs_kl_warmup` is set to None. If `None`, defaults</span>
+<span class="sd">            to `floor(0.75 * adata.n_obs)`.</span>
+<span class="sd">        n_epochs_kl_warmup</span>
+<span class="sd">            Number of epochs to scale weight on KL divergences from 0 to 1.</span>
+<span class="sd">            Overrides `n_steps_kl_warmup` when both are not `None`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+       
+        <span class="n">n_steps_kl_warmup</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">n_steps_kl_warmup</span>
+            <span class="k">if</span> <span class="n">n_steps_kl_warmup</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="nb">int</span><span class="p">(</span><span class="mf">0.75</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">n_obs</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">update_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;lr&quot;</span><span class="p">:</span> <span class="n">lr</span><span class="p">,</span>
+            <span class="s2">&quot;n_epochs_kl_warmup&quot;</span><span class="p">:</span> <span class="n">n_epochs_kl_warmup</span><span class="p">,</span>
+            <span class="s2">&quot;n_steps_kl_warmup&quot;</span><span class="p">:</span> <span class="n">n_steps_kl_warmup</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">plan_kwargs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plan_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">update_dict</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plan_kwargs</span> <span class="o">=</span> <span class="n">update_dict</span>
+
+        <span class="k">if</span> <span class="n">max_epochs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">n_cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">n_obs</span>
+            <span class="n">max_epochs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="nb">round</span><span class="p">((</span><span class="mi">20000</span> <span class="o">/</span> <span class="n">n_cells</span><span class="p">)</span> <span class="o">*</span> <span class="mi">400</span><span class="p">),</span> <span class="mi">400</span><span class="p">])</span>
+
+        <span class="n">plan_kwargs</span> <span class="o">=</span> <span class="n">plan_kwargs</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">plan_kwargs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="n">data_splitter</span> <span class="o">=</span> <span class="n">DataSplitter</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="p">,</span>
+            <span class="n">train_size</span><span class="o">=</span><span class="n">train_size</span><span class="p">,</span>
+            <span class="n">validation_size</span><span class="o">=</span><span class="n">validation_size</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">use_gpu</span><span class="o">=</span><span class="n">use_gpu</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">training_plan</span> <span class="o">=</span> <span class="n">TrainingPlan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="o">**</span><span class="n">plan_kwargs</span><span class="p">)</span>
+        <span class="n">runner</span> <span class="o">=</span> <span class="n">TrainRunner</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">training_plan</span><span class="o">=</span><span class="n">training_plan</span><span class="p">,</span>
+            <span class="n">data_splitter</span><span class="o">=</span><span class="n">data_splitter</span><span class="p">,</span>
+            <span class="n">max_epochs</span><span class="o">=</span><span class="n">max_epochs</span><span class="p">,</span>
+            <span class="n">use_gpu</span><span class="o">=</span><span class="n">use_gpu</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">runner</span><span class="p">()</span></div>
+    
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_latent_representation</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">adata</span><span class="p">:</span> <span class="n">AnnData</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">output_softmax_z</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the latent space embedding for each dataset, i.e., spliced and unspliced</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        adatas</span>
+<span class="sd">            List of adata_spliced and adata_unspliced.</span>
+<span class="sd">        deterministic</span>
+<span class="sd">            If true, use the mean of the encoder instead of a Gaussian sample.</span>
+<span class="sd">        output_softmax_z</span>
+<span class="sd">            if true, output probability, otherwise output z.    </span>
+<span class="sd">        batch_size</span>
+<span class="sd">            Minibatch size for data loading into model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">adata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">adata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span>
+        <span class="n">scdl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_data_loader</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+        <span class="n">latent_z</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">tensors</span> <span class="ow">in</span> <span class="n">scdl</span><span class="p">:</span>
+            <span class="p">(</span>
+                <span class="n">sample_batch</span><span class="p">,</span>
+                <span class="n">sample_batch_unspliced</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">_unpack_tensors</span><span class="p">(</span><span class="n">tensors</span><span class="p">)</span>
+            <span class="n">z_dict</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">sample_from_posterior_z</span><span class="p">(</span><span class="n">sample_batch</span><span class="p">,</span> <span class="n">sample_batch_unspliced</span><span class="p">,</span> <span class="n">deterministic</span><span class="o">=</span><span class="n">deterministic</span><span class="p">,</span> <span class="n">output_softmax_z</span><span class="o">=</span><span class="n">output_softmax_z</span><span class="p">)</span>
+            <span class="n">latent_z</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z_dict</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">])</span>                
+
+        <span class="n">latent_z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">latent_z</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Deterministic: </span><span class="si">{</span><span class="n">deterministic</span><span class="si">}</span><span class="s1">, output_softmax_z: </span><span class="si">{</span><span class="n">output_softmax_z</span><span class="si">}</span><span class="s1">&#39;</span> <span class="p">)</span>
+        <span class="k">return</span> <span class="n">latent_z</span>
+        
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">save_dir</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+        <span class="n">overwrite</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;return the spike logit, slab mean, slab lnvar for rho and delta&quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">decoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">decoder</span>
+        
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">))</span> <span class="ow">or</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span>
+            
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;spike_logit_delta.txt&quot;</span>
+            <span class="p">),</span> <span class="n">decoder</span><span class="o">.</span><span class="n">spike_logit_delta</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;spike_logit_rho.txt&quot;</span>
+            <span class="p">),</span> <span class="n">decoder</span><span class="o">.</span><span class="n">spike_logit_rho</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;slab_mean_delta.txt&quot;</span>
+            <span class="p">),</span> <span class="n">decoder</span><span class="o">.</span><span class="n">slab_mean_delta</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;slab_mean_rho.txt&quot;</span>
+            <span class="p">),</span> <span class="n">decoder</span><span class="o">.</span><span class="n">slab_mean_rho</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;slab_lnvar_delta.txt&quot;</span>
+            <span class="p">),</span> <span class="n">decoder</span><span class="o">.</span><span class="n">slab_lnvar_delta</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;slab_lnvar_rho.txt&quot;</span>
+            <span class="p">),</span> <span class="n">decoder</span><span class="o">.</span><span class="n">slab_lnvar_rho</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;bias_gene.txt&quot;</span>
+            <span class="p">),</span> <span class="n">decoder</span><span class="o">.</span><span class="n">bias_gene</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        
+        
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_weights</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the latent space embedding for each dataset, i.e., spliced and unspliced</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        adatas</span>
+<span class="sd">            List of adata_spliced and adata_unspliced.</span>
+<span class="sd">       </span>
+<span class="sd">        batch_size</span>
+<span class="sd">            Minibatch size for data loading into model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">rho</span><span class="p">,</span> <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">get_rho_delta</span><span class="p">()</span>
+        
+        <span class="k">return</span> <span class="n">delta</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">rho</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_reconstruction_error</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">adata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnnData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the reconstruction error for the data.</span>
+
+<span class="sd">        This is typically written as :math:`p(x \mid z)`, the likelihood term given one posterior sample.</span>
+<span class="sd">        Note, this is not the negative likelihood, higher is better.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        adata</span>
+<span class="sd">            AnnData object with equivalent structure to initial AnnData. If `None`, defaults to the</span>
+<span class="sd">            AnnData object used to initialize the model.</span>
+<span class="sd">        batch_size</span>
+<span class="sd">            Minibatch size for data loading into model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">adata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">adata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span>
+        <span class="n">scdl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_data_loader</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        
+        <span class="n">reconstruction_loss_spliced_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">reconstruction_loss_unspliced_sum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">n_spliced</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">n_unspliced</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="k">for</span> <span class="n">tensors</span> <span class="ow">in</span> <span class="n">scdl</span><span class="p">:</span>
+            <span class="p">(</span>
+                <span class="n">sample_batch_spliced</span><span class="p">,</span>
+                <span class="n">sample_batch_unspliced</span><span class="p">,</span>
+                <span class="o">*</span><span class="n">_</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="n">_unpack_tensors</span><span class="p">(</span><span class="n">tensors</span><span class="p">)</span>
+            <span class="n">reconstruction_loss_spliced</span><span class="p">,</span> <span class="n">reconstruction_loss_unspliced</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">get_reconstruction_loss</span><span class="p">(</span><span class="n">sample_batch_spliced</span><span class="p">,</span> <span class="n">sample_batch_unspliced</span><span class="p">)</span>
+            <span class="n">reconstruction_loss_spliced_sum</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">reconstruction_loss_spliced</span><span class="p">)</span>
+            <span class="n">reconstruction_loss_unspliced_sum</span> <span class="o">+=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">reconstruction_loss_unspliced</span><span class="p">)</span>
+            <span class="n">n_spliced</span> <span class="o">+=</span> <span class="n">sample_batch_spliced</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">n_unspliced</span> <span class="o">+=</span> <span class="n">sample_batch_unspliced</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">recon_spliced</span> <span class="o">=</span> <span class="n">reconstruction_loss_spliced_sum</span><span class="o">/</span><span class="n">n_spliced</span>
+        <span class="n">recon_unspliced</span> <span class="o">=</span> <span class="n">reconstruction_loss_unspliced_sum</span><span class="o">/</span><span class="n">n_unspliced</span>
+        <span class="k">return</span> <span class="n">recon_spliced</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">recon_unspliced</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    
+<div class="viewcode-block" id="DeltaTopic.save"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.modelhub.DeltaTopic.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">save_anndata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">anndata_write_kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save the state of the model.</span>
+
+<span class="sd">        Neither the trainer optimizer state nor the trainer history are saved.</span>
+<span class="sd">        Model files are not expected to be reproducibly saved and loaded across versions</span>
+<span class="sd">        until we reach version 1.0.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dir_path</span>
+<span class="sd">            Path to a directory.</span>
+<span class="sd">        overwrite</span>
+<span class="sd">            Overwrite existing data or not. If `False` and directory</span>
+<span class="sd">            already exists at `dir_path`, error will be raised.</span>
+<span class="sd">        save_anndata</span>
+<span class="sd">            If True, also saves the anndata</span>
+<span class="sd">        anndata_write_kwargs</span>
+<span class="sd">            Kwargs for anndata write function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># save the model state dict and the trainer state dict only</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span> <span class="ow">or</span> <span class="n">overwrite</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> already exists. Please provide an unexisting directory for saving.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">dir_path</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">save_anndata</span><span class="p">:</span>
+            <span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;adata.h5ad&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+            <span class="n">varnames_save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;var_names.csv&quot;</span>
+            <span class="p">)</span>
+
+            <span class="n">var_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">var_names</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+            <span class="n">var_names</span> <span class="o">=</span> <span class="n">var_names</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">varnames_save_path</span><span class="p">,</span> <span class="n">var_names</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">model_save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;model_params.pt&quot;</span><span class="p">)</span>
+        <span class="n">attr_save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;attr.pkl&quot;</span><span class="p">)</span>
+
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">model_save_path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DeltaTopic.load"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.modelhub.DeltaTopic.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">dir_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">adata_seq</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnnData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_gpu</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiate a model from the saved output.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        adata_seq</span>
+<span class="sd">            AnnData organized in the same way as data used to train model.</span>
+<span class="sd">            It is not necessary to run :func:`~scvi.data.setup_anndata`,</span>
+<span class="sd">            as AnnData is validated against the saved `scvi` setup dictionary.</span>
+<span class="sd">            AnnData must be registered via :func:`~scvi.data.setup_anndata`.</span>
+<span class="sd">        dir_path</span>
+<span class="sd">            Path to saved outputs.</span>
+<span class="sd">        use_gpu</span>
+<span class="sd">            Load model on default GPU if available (if None or True),</span>
+<span class="sd">            or index of GPU to use (if int), or name of GPU (if str), or use CPU (if False).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Model with loaded state dictionaries.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; vae = GIMVI.load(adata_seq, adata_spatial, save_path)</span>
+<span class="sd">        &gt;&gt;&gt; vae.get_latent_representation()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;model_params.pt&quot;</span><span class="p">)</span>
+        <span class="n">setup_dict_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;attr.pkl&quot;</span><span class="p">)</span>
+        <span class="n">seq_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;adata.h5ad&quot;</span><span class="p">)</span>
+        <span class="n">path_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;adata_pathways.h5ad&quot;</span><span class="p">)</span>
+        <span class="n">seq_var_names_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="s2">&quot;var_names.csv&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">adata_seq</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">seq_data_path</span><span class="p">):</span>
+            <span class="n">adata_seq</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">seq_data_path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">adata_seq</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">seq_data_path</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Save path contains no saved anndata and no adata was passed.&quot;</span>
+            <span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path_data_path</span><span class="p">):</span>
+            <span class="n">adata_path</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">path_data_path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path_data_path</span><span class="p">):</span>
+            <span class="n">adata_path</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;no pathways saved&quot;</span><span class="p">)</span>
+
+        <span class="n">adata</span> <span class="o">=</span> <span class="n">adata_seq</span>
+        <span class="n">seq_var_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">seq_var_names_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+       
+        <span class="n">var_names</span> <span class="o">=</span> <span class="n">seq_var_names</span>
+        <span class="n">saved_var_names</span> <span class="o">=</span> <span class="n">var_names</span>
+        <span class="n">user_var_names</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">var_names</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">saved_var_names</span><span class="p">,</span> <span class="n">user_var_names</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;var_names for adata passed in does not match var_names of &quot;</span>
+                <span class="s2">&quot;adata used to train the model. For valid results, the vars &quot;</span>
+                <span class="s2">&quot;need to be the same and in the same order as the adata used to train the model.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">setup_dict_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+            <span class="n">attr_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+
+        <span class="n">scvi_setup_dicts</span> <span class="o">=</span> <span class="n">attr_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;scvi_setup_dicts_&quot;</span><span class="p">)</span>
+        <span class="n">transfer_anndata_setup</span><span class="p">(</span><span class="n">scvi_setup_dicts</span><span class="p">,</span> <span class="n">adata_seq</span><span class="p">)</span>
+      
+        <span class="c1"># get the parameters for the class init signiture</span>
+        <span class="n">init_params</span> <span class="o">=</span> <span class="n">attr_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;init_params_&quot;</span><span class="p">)</span>
+
+        <span class="c1"># new saving and loading, enable backwards compatibility</span>
+        <span class="k">if</span> <span class="s2">&quot;non_kwargs&quot;</span> <span class="ow">in</span> <span class="n">init_params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># grab all the parameters execept for kwargs (is a dict)</span>
+            <span class="n">non_kwargs</span> <span class="o">=</span> <span class="n">init_params</span><span class="p">[</span><span class="s2">&quot;non_kwargs&quot;</span><span class="p">]</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="n">init_params</span><span class="p">[</span><span class="s2">&quot;kwargs&quot;</span><span class="p">]</span>
+
+            <span class="c1"># expand out kwargs</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">j</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># grab all the parameters execept for kwargs (is a dict)</span>
+            <span class="n">non_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">init_params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">init_params</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)}</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">j</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        
+        <span class="c1"># the default init require this way of loading models</span>
+        <span class="k">if</span> <span class="n">adata_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>    
+            <span class="n">model</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">adata_seq</span><span class="p">,</span> <span class="o">**</span><span class="n">non_kwargs</span><span class="p">,</span> <span class="n">adata_pathway</span><span class="o">=</span><span class="n">adata_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">adata_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">adata_seq</span><span class="p">,</span> <span class="o">**</span><span class="n">non_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">attr_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">device</span> <span class="o">=</span> <span class="n">parse_use_gpu_arg</span><span class="p">(</span><span class="n">use_gpu</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="n">device</span><span class="p">))</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">to_device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model</span></div></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Yichen Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
