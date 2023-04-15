@@ -11,3 +11,5 @@
 # generically ignore all files with these extensions
 *.gz
 *.txt
+# ignore all files in the .gitignore directory
+*/__pycache__/*
