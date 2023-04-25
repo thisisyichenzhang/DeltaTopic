@@ -11,7 +11,7 @@ Install DeltaTopic from PyPI_ using::
 Development Version
 ^^^^^^^^^^^^^^^^^^^
 
-DeltaTopic is tested on Python 3.8. We recommend to use Miniconda_. 
+DeltaTopic requires Python 3.8 or later. We recommend to use Miniconda_. 
 
 
 To work with the latest development version, install from GitHub_ using::
