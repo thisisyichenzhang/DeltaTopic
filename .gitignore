@@ -14,3 +14,4 @@
 # ignore all files in the .gitignore directory
 *__pycache__*
 build/
+models/*
