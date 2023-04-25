@@ -36,7 +36,18 @@ python setup.py build
 python setup.py install
 ```
 
-### Training BALSAM and DeltaTopic
+### Data
+
+We obtained the original FASTQ files for pancreatic ductal adenocarcinoma (PDAC) from the [public repository](https://ngdc.cncb.ac.cn/gsa/browse/CRA001160) provided by two PDAC studies. The spliced and unspliced count matrices were quantified by [kb-python](https://www.kallistobus.tools/).
+
+```bash
+kb count -i index.idx -g t2g.txt -x 10xv2 -o ${output} \
+-c1 spliced_t2c.txt -c2 unspliced_t2c.txt \
+--workflow lamanno --filter bustools \
+${fastq1} ${fastq2}
+```
+
+### Run
 
 ```bash
 # train BALASM model on the spliced count data
@@ -46,12 +57,6 @@ BALSAM --nLV 32 --EPOCHS 100
 ```bash
 # train deltaTopic model
 DeltaTopic --nLV 32 --EPOCHS 100 
-```
-### Analysis Rmd code for reproduce figures in the paper
-
-```bash
-cd R_figures
-make all
 ```
 
 #### For full documentaions, please refer to [DeltaTopic Documentation](https://deltatopic.readthedocs.io/en/latest/)
