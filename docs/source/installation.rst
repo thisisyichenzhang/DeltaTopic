@@ -38,7 +38,7 @@ The analyis in `Zhang et al. 23 <https://www.biorxiv.org/content/10.1101/2023.03
 - goseq, fgsea
 - ggplot2, ComlexHeatmap, circlize 
 
-To run the analyis pipeline in `Zhang et al. 23 <https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract>`_, run::
+To reproduce the analyis in `Zhang et al. 23 <https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract>`_, run::
 
     cd R_figures
     make all
