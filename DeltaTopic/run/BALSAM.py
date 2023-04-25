@@ -69,5 +69,5 @@ def main():
         topics_df = pd.DataFrame(topics_np, index= model.adata.obs.index, columns = ['topic_' + str(j) for j in range(topics_np.shape[1])])
         topics_df.to_csv(os.path.join("models", model_id,"topics.csv"))
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

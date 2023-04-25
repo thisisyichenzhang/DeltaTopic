@@ -12,7 +12,7 @@ torch.backends.cudnn.benchmark = True
 
 class BALSAM_module(BaseModuleClass):
     """
-    The BETM module
+    The BALASM module
     """
 
     def __init__(
@@ -51,12 +51,7 @@ class BALSAM_module(BaseModuleClass):
                  aa: torch.Tensor,
     ) -> torch.Tensor:
         '''
-        # Dirichlet log-likelihood:
-        # lgamma(sum a) - lgamma(sum a + x)
-        # sum lgamma(a + x) - lgamma(a)
-        # @param xx [batch_size, n_genes]
-        # @param aa [batch_size, n_genes]
-        # @return log-likelihood
+        Compute the Dirichlet log-likelihood.
         '''
         reconstruction_loss = None 
         
@@ -202,7 +197,8 @@ class BALSAM_module(BaseModuleClass):
 
 class DeltaTopic_module(BaseModuleClass):
     """
-    BayesianETM module.
+    DeltaTopic module.
+    
     Parameters
     ----------
     n_genes
@@ -268,12 +264,7 @@ class DeltaTopic_module(BaseModuleClass):
                  aa: torch.Tensor,
     ) -> torch.Tensor:
         '''
-        # Dirichlet log-likelihood:
-        # lgamma(sum a) - lgamma(sum a + x)
-        # sum lgamma(a + x) - lgamma(a)
-        # @param xx [batch_size, n_genes]
-        # @param aa [batch_size, n_genes]
-        # @return log-likelihood
+        Dirichlet log-likelihood:
         '''
         reconstruction_loss = None 
         

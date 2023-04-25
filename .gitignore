@@ -12,4 +12,4 @@
 *.gz
 *.txt
 # ignore all files in the .gitignore directory
-*/__pycache__/*
+*__pycache__*

@@ -163,7 +163,7 @@ def _setup_x(adata, layer):
 def _register_anndata(adata, data_registry_dict: Dict[str, Tuple[str, str]]):
     adata.uns["deltaTopic"]["data_registry"] = data_registry_dict.copy()
 
-def setup_anndata(
+def _anndasetupta(
     adata: anndata.AnnData,
     batch_key: Optional[str] = None,
     layer: Optional[str] = None,

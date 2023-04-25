@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About &mdash; DeltaTopic  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="#" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Documentaiton for BALSAM and DeltaTopic" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            DeltaTopic
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DeltaTopic</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">About</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/about.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this heading"></a></h1>
+<p>Single-cell RNA-seq technology has been successfully applied to profile regulatory-genomic changes in studying many human disease mechanisms. Our capability to measure single-cell-level mRNA molecules has dramatically changed our research paradigm in genomics and translational medicine. A typical single-cell study implicitly assumes observed transcript levels as a static value, considering that every cell is fixed at a particular state. Recently, researchers have developed a complementary method to measure gene expression dynamics (the speed of splicing) by taking the difference between the spliced and unspliced counts in scRNA-seq profiles [&#64;La_Manno2018-vy]. Several methods have extended the original method pioneered by La Manno and coworkers. Notably, <cite>scVelo</cite> method generalizes to recover gene-level ordinary differential equations (ODEs), allowing each gene to take independent time scales [&#64;Bergen2020-kg].</p>
+<p><strong>Why is it difficult to estimate full-scale dynamics in data sets with limited snapshots?</strong> However, probabilistic inference of full-scale dynamics often poses a substantial challenge, and the inferred rate parameters may greatly vary depending on the normalization and embedding methods [&#64;Gorin2022-lz]. Although a newly-developed machine learning based on a mixture of ODE models improved the robustness and accuracy in single-cell data profiled in developmental processes [&#64;Gu2022-wp], existing velocity analysis methods rely on a critical assumption unmet by most single-cell data sets at a study design level. Most single-cell datasets, especially those collected from patient-derived cancer samples, only span over several snapshots of full developmental, evolutionary or disease progression processes. In human case-control studies, cells may not have reached steady states in the disease progression process and are likely to fail to provide enough information for most genes and pathways. Such discontinuity and sparsity in data collection somewhat force statistical inference algorithms to rely on an unrealistic steady-state assumption and interpolated data points with high uncertainty [&#64;Bergen2021-gn; &#64;Gorin2022-lz].</p>
+<p><strong>Why do we need a topic model for transcription dynamics?</strong> Nevertheless, gene expression dynamics implicated by the transcript-level difference between the spliced and unspliced counts provide a valuable perspective in single-cell data analysis, making single-cell analysis more valuable beyond conventional static analysis. To overcome the limitations of poor and incompleteness in single-cell RNA velocity analysis, we propose a new modelling framework, DeltaTopic, short for Dynamically-Encoded Latent Transcriptomic pattern Analysis by Topic Modelling. DeltaTopic combines two ideas: (1) latent topic analysis that will guide unsupervised machine learning for discovering new dynamic cell states, (2) application of first-order approximation to learn robust relationships between the spliced and unspliced counts instead of estimating a full trajectory of ODE models. For a latent topic model, we view each cell as a document and each gene as a word to make model parameters directly interpretable while keeping the Bayesian model’s capability to impute missing information. The simplified dynamic model also permits an intuitive interpretation of spliced-unspliced differences as multiplicative “delta” parameters in the model.</p>
+<p>We developed and applied our DeltaTopic approach to single-cell datasets on pancreatic ductal adenocarcinoma (PDAC), one of the most challenging cancer types with a poor prognosis. In the latent space, our model identified cancer survival-specific topics marked by a unique set of gene expression dynamics. We also find DeltaTopic further dissected sub-topics clumped together in traditional clustering methods implicating novel gene modules and cell states that are dynamically controlled along with the cancer progressions.</p>
+<p>See <a class="reference external" href="https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract">Zhang et al. (2023)</a> for a detailed exposition of the methods.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Documentaiton for BALSAM and DeltaTopic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Yichen Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

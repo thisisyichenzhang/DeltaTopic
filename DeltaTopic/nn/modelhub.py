@@ -451,7 +451,23 @@ def _unpack_tensors_BETM(tensors):
 
 class BALSAM(BaseModelClass):
     """
-
+    Bayesian Latent topic analysis with Sparse Association Matrix (BALSAM).
+    
+    Parameters
+    ----------
+    adata
+        AnnData object that has been registered via :meth:`~DeltaTopic.nn.util.setup_anndata`.
+    n_latent
+        Dimensionality of the latent space    
+    **model_kwargs
+        Keyword args for :class:`~DeltaTopic.nn.module.BALSAM_module`    
+    
+    Examples
+    --------
+    >>> adata = anndata.read_h5ad(path_to_anndata)
+    >>> DeltaTopic.nn.util.setup_anndata(adata)
+    >>> model = DeltaTopic.nn.modelhub.BALSAM(adata)
+    >>> model.train(100)
     """
 
     def __init__(
@@ -600,7 +616,8 @@ class BALSAM(BaseModelClass):
         save_dir = None, 
         overwrite = False,
     ) -> List[np.ndarray]:
-        """return the spike logit, slab mean, slab lnvar for rho"""
+        """save the spike and slab parameters of the model to the save_dir.
+        """
         
         self.module.eval()
         decoder = self.module.decoder
@@ -638,9 +655,7 @@ class BALSAM(BaseModelClass):
     ):
         """
         Save the state of the model.
-        Neither the trainer optimizer state nor the trainer history are saved.
-        Model files are not expected to be reproducibly saved and loaded across versions
-        until we reach version 1.0.
+        
         Parameters
         ----------
         dir_path
@@ -653,7 +668,7 @@ class BALSAM(BaseModelClass):
         anndata_write_kwargs
             Kwargs for anndata write function
         """
-        # save the model state dict and the trainer state dict only
+        
         if not os.path.exists(dir_path) or overwrite:
             os.makedirs(dir_path, exist_ok=overwrite)
         else:
@@ -680,8 +695,25 @@ class BALSAM(BaseModelClass):
 
 class DeltaTopic(BaseModelClass):
     """
-    DeltaTopic
-
+    Dynamically-Encoded Latent Transcriptomic pattern Analysis by Topic modelling (DeltaTopic).
+    
+    Parameters
+    ----------
+    adata
+        AnnData object that has been registered via :meth:`~DeltaTopic.nn.util.setup_anndata`.
+    n_latent
+        Dimensionality of the latent space    
+    **model_kwargs
+        Keyword args for :class:`~DeltaTopic.nn.module.DeltaTopic_module`    
+    
+    Examples
+    --------
+    >>> adata= anndata.read_h5ad(path_to_anndata_spliced)
+    >>> X_unspliced = sc.read(path_to_anndata_spliced)
+    >>> adata.obsm["unspliced_expression"] = csr_matrix(X_unspliced.X).copy()
+    >>> DeltaTopic.nn.util.setup_anndata(adata, layer="counts", unspliced_obsm_key = "unspliced_expression")
+    >>> model = DeltaTopic.nn.modelhub.DeltaTopic(adata)
+    >>> model.train(100)
     """
 
     def __init__(
@@ -795,7 +827,7 @@ class DeltaTopic(BaseModelClass):
         batch_size: int = 128,
     ) -> List[np.ndarray]:
         """
-        Return the latent space embedding for each dataset, i.e., spliced and unspliced
+        Return the latent space embedding for spliced and unspliced.
 
         Parameters
         ----------
@@ -808,6 +840,7 @@ class DeltaTopic(BaseModelClass):
         batch_size
             Minibatch size for data loading into model.
         """
+        
         if adata is None:
             adata = self.adata
         scdl = self._make_data_loader(adata, batch_size=batch_size)
@@ -833,7 +866,10 @@ class DeltaTopic(BaseModelClass):
         save_dir = None, 
         overwrite = False,
     ) -> List[np.ndarray]:
-        """return the spike logit, slab mean, slab lnvar for rho and delta"""
+        """
+        return the spike logit, slab mean, slab lnvar for rho and delta.
+        
+        """
         
         self.module.eval()
         decoder = self.module.decoder
@@ -871,25 +907,6 @@ class DeltaTopic(BaseModelClass):
             ), decoder.bias_gene.cpu().numpy())
         
         
-    @torch.no_grad()
-    def get_weights(
-        self,
-    ) -> List[np.ndarray]:
-        """
-        Return the latent space embedding for each dataset, i.e., spliced and unspliced
-
-        Parameters
-        ----------
-        adatas
-            List of adata_spliced and adata_unspliced.
-       
-        batch_size
-            Minibatch size for data loading into model.
-        """
-        self.module.eval()
-        rho, delta = self.module.decoder.get_rho_delta()
-        
-        return delta.cpu().numpy(), rho.cpu().numpy()
     
     @torch.no_grad()
     def get_reconstruction_error(
@@ -897,10 +914,9 @@ class DeltaTopic(BaseModelClass):
         adata: Optional[AnnData] = None,
         batch_size: Optional[int] = 128,
     ) -> Union[float, Dict[str, float]]:
-        r"""
+        """
         Return the reconstruction error for the data.
 
-        This is typically written as :math:`p(x \mid z)`, the likelihood term given one posterior sample.
         Note, this is not the negative likelihood, higher is better.
 
         Parameters
@@ -949,8 +965,6 @@ class DeltaTopic(BaseModelClass):
         Save the state of the model.
 
         Neither the trainer optimizer state nor the trainer history are saved.
-        Model files are not expected to be reproducibly saved and loaded across versions
-        until we reach version 1.0.
 
         Parameters
         ----------
@@ -1004,9 +1018,6 @@ class DeltaTopic(BaseModelClass):
         ----------
         adata_seq
             AnnData organized in the same way as data used to train model.
-            It is not necessary to run :func:`~scvi.data.setup_anndata`,
-            as AnnData is validated against the saved `scvi` setup dictionary.
-            AnnData must be registered via :func:`~scvi.data.setup_anndata`.
         dir_path
             Path to saved outputs.
         use_gpu
@@ -1017,10 +1028,6 @@ class DeltaTopic(BaseModelClass):
         -------
         Model with loaded state dictionaries.
 
-        Examples
-        --------
-        >>> vae = GIMVI.load(adata_seq, adata_spatial, save_path)
-        >>> vae.get_latent_representation()
         """
         model_path = os.path.join(dir_path, "model_params.pt")
         setup_dict_path = os.path.join(dir_path, "attr.pkl")
