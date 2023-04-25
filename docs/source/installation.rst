@@ -1,5 +1,13 @@
 Installation
 ------------
+
+PyPI
+^^^^
+
+Install DeltaTopic from PyPI_ using::
+
+    pip install DeltaTopic
+
 Development Version
 ^^^^^^^^^^^^^^^^^^^
 
@@ -38,5 +46,6 @@ To run the analyis pipeline in `Zhang et al. 23 <https://www.biorxiv.org/content
 If you run into issues, do not hesitate to approach us or raise a `GitHub issue`_.
 
 .. _Miniconda: http://conda.pydata.org/miniconda.html
+.. _PyPI: https://pypi.org/project/DeltaTopic
 .. _Github: https://github.com/causalpathlab/deltaTopic
 .. _`Github issue`: https://github.com/causalpathlab/deltaTopic/issues/new/choose
