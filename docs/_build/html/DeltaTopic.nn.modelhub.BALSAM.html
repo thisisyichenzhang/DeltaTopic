@@ -54,6 +54,9 @@
 <li class="toctree-l3"><a class="reference internal" href="DeltaTopic.nn.modelhub.DeltaTopic.html">DeltaTopic.nn.modelhub.DeltaTopic</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module">Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#base-components">Base components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#training-plan">Training plan</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
@@ -99,7 +102,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>adata</strong> – AnnData object that has been registered via <a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.util.setup_anndata" title="DeltaTopic.nn.util.setup_anndata"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setup_anndata()</span></code></a>.</p></li>
 <li><p><strong>n_latent</strong> – Dimensionality of the latent space</p></li>
-<li><p><strong>**model_kwargs</strong> – Keyword args for <a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.module.BALSAM_module" title="DeltaTopic.nn.module.BALSAM_module"><code class="xref py py-class docutils literal notranslate"><span class="pre">BALSAM_module</span></code></a></p></li>
+<li><p><strong>**model_kwargs</strong> – Keyword args for <a class="reference internal" href="DeltaTopic.nn.module.BALSAM_module.html#DeltaTopic.nn.module.BALSAM_module" title="DeltaTopic.nn.module.BALSAM_module"><code class="xref py py-class docutils literal notranslate"><span class="pre">BALSAM_module</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
@@ -137,7 +140,7 @@
 <td><p>Move model to device.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.modelhub.BALSAM.train" title="DeltaTopic.nn.modelhub.BALSAM.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>([max_epochs, lr, use_gpu, train_size, ...])</p></td>
-<td><p>Trains the model using amortized variational inference. :param max_epochs: Number of passes through the dataset. :param lr: Learning rate for optimization. :param use_gpu: Use default GPU if available (if None or True), or index of GPU to use (if int),                 or name of GPU (if str, e.g., <cite>'cuda:0'</cite>), or use CPU (if False). :param train_size: Size of training set in the range [0.0, 1.0]. :param validation_size: Size of the test set. If <cite>None</cite>, defaults to 1 - <cite>train_size</cite>. If                         <cite>train_size + validation_size &lt; 1</cite>, the remaining cells belong to a test set. :param batch_size: Minibatch size to use during training. :param n_steps_kl_warmup: Number of training steps (minibatches) to scale weight on KL divergences from 0 to 1. Only activated when <cite>n_epochs_kl_warmup</cite> is set to None. If <cite>None</cite>, defaults                           to <cite>floor(0.75 * adata.n_obs)</cite>. :param n_epochs_kl_warmup: Number of epochs to scale weight on KL divergences from 0 to 1. Overrides <cite>n_steps_kl_warmup</cite> when both are not <cite>None</cite>.</p></td>
+<td><p>Trains the model using amortized variational inference.</p></td>
 </tr>
 </tbody>
 </table>

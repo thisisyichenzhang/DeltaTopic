@@ -441,8 +441,8 @@ class MaskedLinearLayers(FCLayers):
 
 class DeltaTopicEncoder(nn.Module):
     """
-    Maksed latent encoder with two input heads --> one shared latent space
-    Options to incorporate categorical variables as one-hot vectors
+    Encoder for DeltaTopic model.
+    
     """
     def __init__(
         self,
@@ -522,19 +522,7 @@ class DeltaTopicEncoder(nn.Module):
     
 class DeltaTopicDecoder(nn.Module):
     """
-    The decoder for DeltaTopic model
-    - Model the topic specific post-transcription factor for each gene between spliced and unplisced transcripts 
-
-    Testing script:
-import torch
-from nn.base_components import DeltaETMDecoder
-test_decoder = DeltaETMDecoder(n_input=10, n_output=100)
-input = torch.randn(2, 10) # batch_size 2, 10 LVs
-output = test_decoder(input, 0)
-
-log_beta = test_decoder.beta(test_decoder.rho.expand([test_decoder.n_input,-1]))
-hh = test_decoder.hid(input)
-pr = torch.mm(torch.exp(hh),torch.exp(log_beta))
+    Decoder for DeltaTopic model.
 
     """
     def __init__(
@@ -635,7 +623,7 @@ pr = torch.mm(torch.exp(hh),torch.exp(log_beta))
 
 class BALSAMDecoder(nn.Module):
     """
-    Decoder for Bayesian ETM model 
+    Decoder for BALSAM model 
     """
     def __init__(
         self,
@@ -720,9 +708,9 @@ class BALSAMDecoder(nn.Module):
         return torch.sum(kl_pip + pip_hat * kl_g) # return a number sum over [N_topics, N_genes]
                               
 class BALSAMEncoder(nn.Module):
-    
     """
-    BayesianETM Encoder
+    Encoder for BALSAM model
+            
     """
     def __init__(
         self,

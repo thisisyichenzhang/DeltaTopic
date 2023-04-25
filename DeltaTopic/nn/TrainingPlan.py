@@ -8,7 +8,7 @@ from DeltaTopic.nn.base_model import BaseModuleClass
 
 class TrainingPlan(pl.LightningModule):
     """
-    Lightning module task to train scvi-tools modules.
+    Lightning module task to train deltaTopic modules.
 
     Parameters
     ----------

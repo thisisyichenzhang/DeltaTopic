@@ -582,6 +582,7 @@
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Trains the model using amortized variational inference.</span>
+<span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        max_epochs</span>
@@ -654,9 +655,10 @@
         <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">output_softmax_z</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the latent space embedding for each dataset, </span>
+<span class="sd">        Return the latent space (topic proportions) for each dataset.</span>
+<span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        adatas</span>
@@ -692,8 +694,14 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">save_dir</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
         <span class="n">overwrite</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;save the spike and slab parameters of the model to the save_dir.</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the spike and slab parameters of the model to the save_dir.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        save_dir</span>
+<span class="sd">            Save directory.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
@@ -902,9 +910,9 @@
         <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">output_softmax_z</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the latent space embedding for spliced and unspliced.</span>
+<span class="sd">        Return the latent space (topic proportions) for spliced and unspliced.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -942,10 +950,9 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">save_dir</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
         <span class="n">overwrite</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        return the spike logit, slab mean, slab lnvar for rho and delta.</span>
-<span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
@@ -983,14 +990,13 @@
                 <span class="n">save_dir</span><span class="p">,</span><span class="s2">&quot;model_parameters&quot;</span><span class="p">,</span> <span class="s2">&quot;bias_gene.txt&quot;</span>
             <span class="p">),</span> <span class="n">decoder</span><span class="o">.</span><span class="n">bias_gene</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
         
-        
-    
+
     <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">get_reconstruction_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">adata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnnData</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the reconstruction error for the data.</span>
 

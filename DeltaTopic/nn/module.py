@@ -12,7 +12,24 @@ torch.backends.cudnn.benchmark = True
 
 class BALSAM_module(BaseModuleClass):
     """
-    The BALASM module
+    BALASM module
+    
+    Parameters
+    ----------
+    n_genes
+        number of genes
+    n_latent
+        dimension of latent space
+    n_layers_encoder_individual
+        number of individual layers in the encoder
+    dim_hidden_encoder
+        dimension of the hidden layers in the encoder
+    pip0_rho
+        scaling factor for rho loss, default 0.1
+    kl_weight_beta: 
+        scaling factor for KL, default 1.0
+    log_variational
+        Log(data+1) prior to encoding for numerical stability. Not normalization.
     """
 
     def __init__(
@@ -210,11 +227,11 @@ class DeltaTopic_module(BaseModuleClass):
     dim_hidden_encoder
         dimension of the hidden layers in the encoder
     pip0_rho
-        default 0.1
+        scaling factor for rho loss, default 0.1
     pip0_delta
-        default 0.1
+        scaling factor for delta loss, default 0.1
     kl_weight_beta: 
-        default 1.0
+        scaling factor for KL, default 1.0
     log_variational
         Log(data+1) prior to encoding for numerical stability. Not normalization.
     """

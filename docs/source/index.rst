@@ -1,7 +1,7 @@
 |PyPI| |Docs|
 
 Documentaiton for BALSAM and DeltaTopic
-======================================
+=======================================
 
 **BALSAM**, short for Bayesian Latent topic analysis with Sparse Association Matrix, is a Bayesian topic modelling approach to summarize static transcriptome patterns from raw gene expression count data. **BALSAM** views cells as an admixture of gene topics, and relies on Variational AutoEncoder (VAE) and sparse-inducing priors to learn cell topics and infer the gell-topic relationship. 
 

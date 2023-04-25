@@ -28,18 +28,15 @@ Dependencies
 - `numpy <https://docs.scipy.org/>`_, `scipy <https://docs.scipy.org/>`_ 
 
 Analysis pipeline
-^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
 
-The analyis in `Zhang et al. 23 <https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract>`_ requires the following R packages:
+The analyis in `Zhang et al., 2023 <https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract>`_ requires the following R packages:
 
 - data.table, dplyr - data wrangling
 - goseq, fgsea - gene set enrichment analysis
 - ggplot2, ComlexHeatmap, circlize - visualization
 
-To reproduce the analyis in `Zhang et al. 23 <https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract>`_, follow Rmd files in R_figures folder OR run the following commands:
-
-    cd R_figures
-    make all
+To reproduce the analyis in the paper, follow Rmd files in the `project repository <https://github.com/causalpathlab/DeltaTopic/tree/main/R_figures/>`_.
 
 If you run into issues, do not hesitate to approach us or raise a `GitHub issue`_.
 

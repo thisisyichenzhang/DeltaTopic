@@ -83,9 +83,9 @@
 <span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">ReduceLROnPlateau</span>
 <span class="kn">from</span> <span class="nn">DeltaTopic.nn.base_model</span> <span class="kn">import</span> <span class="n">BaseModuleClass</span>
 
-<div class="viewcode-block" id="TrainingPlan"><a class="viewcode-back" href="../../../DeltaTopic.nn.html#DeltaTopic.nn.TrainingPlan.TrainingPlan">[docs]</a><span class="k">class</span> <span class="nc">TrainingPlan</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
+<div class="viewcode-block" id="TrainingPlan"><a class="viewcode-back" href="../../../DeltaTopic.nn.TrainingPlan.TrainingPlan.html#DeltaTopic.nn.TrainingPlan.TrainingPlan">[docs]</a><span class="k">class</span> <span class="nc">TrainingPlan</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Lightning module task to train scvi-tools modules.</span>
+<span class="sd">    Lightning module task to train deltaTopic modules.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -123,7 +123,7 @@
 <span class="sd">        `kl_weight` should not be passed here and is handled automatically.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="TrainingPlan.__init__"><a class="viewcode-back" href="../../../DeltaTopic.nn.TrainingPlan.TrainingPlan.html#DeltaTopic.nn.TrainingPlan.TrainingPlan.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">module</span><span class="p">:</span> <span class="n">BaseModuleClass</span><span class="p">,</span>
         <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
@@ -163,7 +163,7 @@
         <span class="c1"># automatic handling of kl weight</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_loss_args</span> <span class="o">=</span> <span class="n">getfullargspec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">loss</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="s2">&quot;kl_weight&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loss_args</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loss_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;kl_weight&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">kl_weight</span><span class="p">})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loss_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;kl_weight&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">kl_weight</span><span class="p">})</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">n_obs_training</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

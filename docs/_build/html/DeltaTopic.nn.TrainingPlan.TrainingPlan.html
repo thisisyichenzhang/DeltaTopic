@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeltaTopic.nn.TrainingPlan.TrainingPlan &mdash; DeltaTopic  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="DeltaTopic.nn.base_components.DeltaTopicDecoder" href="DeltaTopic.nn.base_components.DeltaTopicDecoder.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            DeltaTopic
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#module">Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#base-components">Base components</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="api.html#training-plan">Training plan</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">DeltaTopic.nn.TrainingPlan.TrainingPlan</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan"><code class="docutils literal notranslate"><span class="pre">TrainingPlan</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DeltaTopic</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">API</a></li>
+      <li class="breadcrumb-item active">DeltaTopic.nn.TrainingPlan.TrainingPlan</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/DeltaTopic.nn.TrainingPlan.TrainingPlan.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="deltatopic-nn-trainingplan-trainingplan">
+<h1>DeltaTopic.nn.TrainingPlan.TrainingPlan<a class="headerlink" href="#deltatopic-nn-trainingplan-trainingplan" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.TrainingPlan.TrainingPlan">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.TrainingPlan.</span></span><span class="sig-name descname"><span class="pre">TrainingPlan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/TrainingPlan.html#TrainingPlan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan" title="Permalink to this definition"></a></dt>
+<dd><p>Lightning module task to train deltaTopic modules.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>module</strong> – A module instance from class <code class="docutils literal notranslate"><span class="pre">BaseModuleClass</span></code>.</p></li>
+<li><p><strong>lr</strong> – Learning rate used for optimization.</p></li>
+<li><p><strong>weight_decay</strong> – Weight decay used in optimizatoin.</p></li>
+<li><p><strong>eps</strong> – eps used for optimization.</p></li>
+<li><p><strong>optimizer</strong> – One of “Adam” (<code class="xref py py-class docutils literal notranslate"><span class="pre">Adam</span></code>), “AdamW” (<code class="xref py py-class docutils literal notranslate"><span class="pre">AdamW</span></code>).</p></li>
+<li><p><strong>n_steps_kl_warmup</strong> – Number of training steps (minibatches) to scale weight on KL divergences from 0 to 1.
+Only activated when <cite>n_epochs_kl_warmup</cite> is set to None.</p></li>
+<li><p><strong>n_epochs_kl_warmup</strong> – Number of epochs to scale weight on KL divergences from 0 to 1.
+Overrides <cite>n_steps_kl_warmup</cite> when both are not <cite>None</cite>.</p></li>
+<li><p><strong>reduce_lr_on_plateau</strong> – Whether to monitor validation loss and reduce learning rate when validation set
+<cite>lr_scheduler_metric</cite> plateaus.</p></li>
+<li><p><strong>lr_factor</strong> – Factor to reduce learning rate.</p></li>
+<li><p><strong>lr_patience</strong> – Number of epochs with no improvement after which learning rate will be reduced.</p></li>
+<li><p><strong>lr_threshold</strong> – Threshold for measuring the new optimum.</p></li>
+<li><p><strong>lr_scheduler_metric</strong> – Which metric to track for learning rate reduction.</p></li>
+<li><p><strong>lr_min</strong> – Minimum learning rate allowed</p></li>
+<li><p><strong>**loss_kwargs</strong> – Keyword args to pass to the loss method of the <cite>module</cite>.
+<cite>kl_weight</cite> should not be passed here and is handled automatically.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.TrainingPlan.TrainingPlan.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.base_model.BaseModuleClass" title="DeltaTopic.nn.base_model.BaseModuleClass"><span class="pre">BaseModuleClass</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'Adam'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'AdamW'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Adam'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_steps_kl_warmup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs_kl_warmup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduce_lr_on_plateau</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_patience</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_scheduler_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'elbo_validation'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'reconstruction_loss_validation'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'kl_local_validation'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'elbo_train'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'elbo_train'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">loss_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/TrainingPlan.html#TrainingPlan.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#DeltaTopic.nn.TrainingPlan.TrainingPlan.__init__" title="DeltaTopic.nn.TrainingPlan.TrainingPlan.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(module[, lr, weight_decay, eps, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.TrainingPlan.TrainingPlan.configure_optimizers" title="DeltaTopic.nn.TrainingPlan.TrainingPlan.configure_optimizers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configure_optimizers</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.TrainingPlan.TrainingPlan.forward" title="DeltaTopic.nn.TrainingPlan.TrainingPlan.forward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Passthrough to <cite>model.forward()</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.TrainingPlan.TrainingPlan.training_epoch_end" title="DeltaTopic.nn.TrainingPlan.TrainingPlan.training_epoch_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">training_epoch_end</span></code></a>(outputs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.TrainingPlan.TrainingPlan.training_step" title="DeltaTopic.nn.TrainingPlan.TrainingPlan.training_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">training_step</span></code></a>(batch, batch_idx[, optimizer_idx])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.TrainingPlan.TrainingPlan.validation_epoch_end" title="DeltaTopic.nn.TrainingPlan.TrainingPlan.validation_epoch_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validation_epoch_end</span></code></a>(outputs)</p></td>
+<td><p>Aggregate validation step information.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.TrainingPlan.TrainingPlan.validation_step" title="DeltaTopic.nn.TrainingPlan.TrainingPlan.validation_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validation_step</span></code></a>(batch, batch_idx)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.TrainingPlan.TrainingPlan.kl_weight" title="DeltaTopic.nn.TrainingPlan.TrainingPlan.kl_weight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kl_weight</span></code></a></p></td>
+<td><p>Scaling factor on KL divergence during training.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.TrainingPlan.TrainingPlan.n_obs_training" title="DeltaTopic.nn.TrainingPlan.TrainingPlan.n_obs_training"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_obs_training</span></code></a></p></td>
+<td><p>Number of observations in the training set.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="DeltaTopic.nn.base_components.DeltaTopicDecoder.html" class="btn btn-neutral float-left" title="DeltaTopic.nn.base_components.DeltaTopicDecoder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="references.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Yichen Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

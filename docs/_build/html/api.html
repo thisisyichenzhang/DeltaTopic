@@ -51,6 +51,22 @@
 <li class="toctree-l3"><a class="reference internal" href="DeltaTopic.nn.modelhub.DeltaTopic.html">DeltaTopic.nn.modelhub.DeltaTopic</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#module">Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="DeltaTopic.nn.module.BALSAM_module.html">DeltaTopic.nn.module.BALSAM_module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DeltaTopic.nn.module.DeltaTopic_module.html">DeltaTopic.nn.module.DeltaTopic_module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#base-components">Base components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="DeltaTopic.nn.base_components.BALSAMEncoder.html">DeltaTopic.nn.base_components.BALSAMEncoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DeltaTopic.nn.base_components.BALSAMDecoder.html">DeltaTopic.nn.base_components.BALSAMDecoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DeltaTopic.nn.base_components.DeltaTopicEncoder.html">DeltaTopic.nn.base_components.DeltaTopicEncoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DeltaTopic.nn.base_components.DeltaTopicDecoder.html">DeltaTopic.nn.base_components.DeltaTopicDecoder</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#training-plan">Training plan</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="DeltaTopic.nn.TrainingPlan.TrainingPlan.html">DeltaTopic.nn.TrainingPlan.TrainingPlan</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
@@ -88,6 +104,7 @@
 <h1>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h1>
 <section id="models">
 <h2>Models<a class="headerlink" href="#models" title="Permalink to this heading"></a></h2>
+<p>A ready-to-run class for training and inference, defines module and TrainingPlan.</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.modelhub.BALSAM.html#DeltaTopic.nn.modelhub.BALSAM" title="DeltaTopic.nn.modelhub.BALSAM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeltaTopic.nn.modelhub.BALSAM</span></code></a></p></td>
@@ -95,6 +112,51 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="DeltaTopic.nn.modelhub.DeltaTopic.html#DeltaTopic.nn.modelhub.DeltaTopic" title="DeltaTopic.nn.modelhub.DeltaTopic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeltaTopic.nn.modelhub.DeltaTopic</span></code></a></p></td>
 <td><p>Dynamically-Encoded Latent Transcriptomic pattern Analysis by Topic modelling (DeltaTopic).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module">
+<h2>Module<a class="headerlink" href="#module" title="Permalink to this heading"></a></h2>
+<p>A generic pytorch module, defines the inference and generation step, and loss function.</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.module.BALSAM_module.html#DeltaTopic.nn.module.BALSAM_module" title="DeltaTopic.nn.module.BALSAM_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeltaTopic.nn.module.BALSAM_module</span></code></a></p></td>
+<td><p>BALASM module</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="DeltaTopic.nn.module.DeltaTopic_module.html#DeltaTopic.nn.module.DeltaTopic_module" title="DeltaTopic.nn.module.DeltaTopic_module"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeltaTopic.nn.module.DeltaTopic_module</span></code></a></p></td>
+<td><p>DeltaTopic module.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="base-components">
+<h2>Base components<a class="headerlink" href="#base-components" title="Permalink to this heading"></a></h2>
+<p>Building blocks for the modules, defines encoder and decoder.</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.base_components.BALSAMEncoder.html#DeltaTopic.nn.base_components.BALSAMEncoder" title="DeltaTopic.nn.base_components.BALSAMEncoder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeltaTopic.nn.base_components.BALSAMEncoder</span></code></a></p></td>
+<td><p>Encoder for BALSAM model</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="DeltaTopic.nn.base_components.BALSAMDecoder.html#DeltaTopic.nn.base_components.BALSAMDecoder" title="DeltaTopic.nn.base_components.BALSAMDecoder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeltaTopic.nn.base_components.BALSAMDecoder</span></code></a></p></td>
+<td><p>Decoder for BALSAM model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.base_components.DeltaTopicEncoder.html#DeltaTopic.nn.base_components.DeltaTopicEncoder" title="DeltaTopic.nn.base_components.DeltaTopicEncoder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeltaTopic.nn.base_components.DeltaTopicEncoder</span></code></a></p></td>
+<td><p>Encoder for DeltaTopic model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="DeltaTopic.nn.base_components.DeltaTopicDecoder.html#DeltaTopic.nn.base_components.DeltaTopicDecoder" title="DeltaTopic.nn.base_components.DeltaTopicDecoder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeltaTopic.nn.base_components.DeltaTopicDecoder</span></code></a></p></td>
+<td><p>Decoder for DeltaTopic model.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="training-plan">
+<h2>Training plan<a class="headerlink" href="#training-plan" title="Permalink to this heading"></a></h2>
+<p>A Pytorch lightning wrappper, defines the training/validation step, optimizers, and data loaders.</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.TrainingPlan.TrainingPlan.html#DeltaTopic.nn.TrainingPlan.TrainingPlan" title="DeltaTopic.nn.TrainingPlan.TrainingPlan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DeltaTopic.nn.TrainingPlan.TrainingPlan</span></code></a></p></td>
+<td><p>Lightning module task to train deltaTopic modules.</p></td>
 </tr>
 </tbody>
 </table>

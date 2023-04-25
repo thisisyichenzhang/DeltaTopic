@@ -505,6 +505,7 @@ class BALSAM(BaseModelClass):
     ):
         """
         Trains the model using amortized variational inference.
+        
         Parameters
         ----------
         max_epochs
@@ -577,9 +578,10 @@ class BALSAM(BaseModelClass):
         deterministic: bool = True,
         output_softmax_z: bool = True,
         batch_size: int = 128,
-    ) -> List[np.ndarray]:
+    ):
         """
-        Return the latent space embedding for each dataset, 
+        Return the latent space (topic proportions) for each dataset.
+        
         Parameters
         ----------
         adatas
@@ -615,8 +617,14 @@ class BALSAM(BaseModelClass):
         self,
         save_dir = None, 
         overwrite = False,
-    ) -> List[np.ndarray]:
-        """save the spike and slab parameters of the model to the save_dir.
+    ):
+        """
+        Return the spike and slab parameters of the model to the save_dir.
+        
+        Parameters
+        ----------
+        save_dir
+            Save directory.
         """
         
         self.module.eval()
@@ -825,9 +833,9 @@ class DeltaTopic(BaseModelClass):
         deterministic: bool = True,
         output_softmax_z: bool = True,
         batch_size: int = 128,
-    ) -> List[np.ndarray]:
+    ):
         """
-        Return the latent space embedding for spliced and unspliced.
+        Return the latent space (topic proportions) for spliced and unspliced.
 
         Parameters
         ----------
@@ -865,10 +873,9 @@ class DeltaTopic(BaseModelClass):
         self,
         save_dir = None, 
         overwrite = False,
-    ) -> List[np.ndarray]:
+    ):
         """
         return the spike logit, slab mean, slab lnvar for rho and delta.
-        
         """
         
         self.module.eval()
@@ -906,14 +913,13 @@ class DeltaTopic(BaseModelClass):
                 save_dir,"model_parameters", "bias_gene.txt"
             ), decoder.bias_gene.cpu().numpy())
         
-        
-    
+
     @torch.no_grad()
     def get_reconstruction_error(
         self,
         adata: Optional[AnnData] = None,
         batch_size: Optional[int] = 128,
-    ) -> Union[float, Dict[str, float]]:
+    ):
         """
         Return the reconstruction error for the data.
 

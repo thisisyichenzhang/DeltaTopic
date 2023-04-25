@@ -23,6 +23,7 @@ extensions = ["sphinx.ext.autodoc",
               "sphinx.ext.viewcode", 
               "sphinx.ext.autosummary",
               "sphinx.ext.napoleon",
+              "sphinx_toolbox.decorators",
 ]
 
 # Generate the API documentation when building
