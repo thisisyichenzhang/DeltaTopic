@@ -1,11 +1,10 @@
-import os
 from setuptools import setup, find_packages
 
 setup(
     name='DeltaTopic',
     packages=find_packages(),
     author='Yichen Zhang',
-    version='0.0.1',
+    version='0.0.2',
     description="Packages to implement BALSAM and DeltaTopic as described in the paper: Unraveling dynamically-encoded latent transcriptomic patterns in pancreatic cancer cells by topic modelling",
     url="https://github.com/causalpathlab/deltaTopic",
     entry_points={'console_scripts':
@@ -18,6 +17,6 @@ setup(
                       'numpy==1.21.5', 
                       'anndata==0.7.8',
                       'pytorch_lightning==1.9.0', 
-                      'scanp==1.9.3', 
+                      'scanpy==1.9.3', 
                       'scipy ==1.8.0']
 )
