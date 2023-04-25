@@ -629,7 +629,7 @@ if drop_last == False, iterate over all batches.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>adata</strong> – AnnData object that has been registered via <code class="xref py py-meth docutils literal notranslate"><span class="pre">setup_anndata()</span></code>.</p></li>
+<li><p><strong>adata</strong> – AnnData object that has been registered via <a class="reference internal" href="#DeltaTopic.nn.util.setup_anndata" title="DeltaTopic.nn.util.setup_anndata"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setup_anndata()</span></code></a>.</p></li>
 <li><p><strong>n_latent</strong> – Dimensionality of the latent space</p></li>
 <li><p><strong>**model_kwargs</strong> – Keyword args for <a class="reference internal" href="#DeltaTopic.nn.module.BALSAM_module" title="DeltaTopic.nn.module.BALSAM_module"><code class="xref py py-class docutils literal notranslate"><span class="pre">BALSAM_module</span></code></a></p></li>
 </ul>
@@ -712,7 +712,7 @@ Overrides <cite>n_steps_kl_warmup</cite> when both are not <cite>None</cite>.</p
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>adata</strong> – AnnData object that has been registered via <code class="xref py py-meth docutils literal notranslate"><span class="pre">setup_anndata()</span></code>.</p></li>
+<li><p><strong>adata</strong> – AnnData object that has been registered via <a class="reference internal" href="#DeltaTopic.nn.util.setup_anndata" title="DeltaTopic.nn.util.setup_anndata"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setup_anndata()</span></code></a>.</p></li>
 <li><p><strong>n_latent</strong> – Dimensionality of the latent space</p></li>
 <li><p><strong>**model_kwargs</strong> – Keyword args for <a class="reference internal" href="#DeltaTopic.nn.module.DeltaTopic_module" title="DeltaTopic.nn.module.DeltaTopic_module"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeltaTopic_module</span></code></a></p></li>
 </ul>
@@ -1280,6 +1280,11 @@ or name of GPU (if str, e.g., <cite>‘cuda:0’</cite>), or use CPU (if False).
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="DeltaTopic.nn.util.setup_anndata">
+<span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.util.</span></span><span class="sig-name descname"><span class="pre">setup_anndata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unspliced_obsm_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unspliced_names_uns_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">anndata.AnnData</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/DeltaTopic/nn/util.html#setup_anndata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.util.setup_anndata" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="DeltaTopic.nn.util.validate_data_split">
