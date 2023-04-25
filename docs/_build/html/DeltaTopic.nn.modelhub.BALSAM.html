@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeltaTopic.nn.modelhub.BALSAM &mdash; DeltaTopic  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DeltaTopic.nn.modelhub.DeltaTopic" href="DeltaTopic.nn.modelhub.DeltaTopic.html" />
+    <link rel="prev" title="API" href="api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            DeltaTopic
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="api.html#models">Models</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">DeltaTopic.nn.modelhub.BALSAM</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.modelhub.BALSAM"><code class="docutils literal notranslate"><span class="pre">BALSAM</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="DeltaTopic.nn.modelhub.DeltaTopic.html">DeltaTopic.nn.modelhub.DeltaTopic</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DeltaTopic</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="api.html">API</a></li>
+      <li class="breadcrumb-item active">DeltaTopic.nn.modelhub.BALSAM</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/DeltaTopic.nn.modelhub.BALSAM.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="deltatopic-nn-modelhub-balsam">
+<h1>DeltaTopic.nn.modelhub.BALSAM<a class="headerlink" href="#deltatopic-nn-modelhub-balsam" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.BALSAM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.modelhub.</span></span><span class="sig-name descname"><span class="pre">BALSAM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata_seq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_latent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">model_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/modelhub.html#BALSAM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.modelhub.BALSAM" title="Permalink to this definition"></a></dt>
+<dd><p>Bayesian Latent topic analysis with Sparse Association Matrix (BALSAM).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>adata</strong> – AnnData object that has been registered via <a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.util.setup_anndata" title="DeltaTopic.nn.util.setup_anndata"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setup_anndata()</span></code></a>.</p></li>
+<li><p><strong>n_latent</strong> – Dimensionality of the latent space</p></li>
+<li><p><strong>**model_kwargs</strong> – Keyword args for <a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.module.BALSAM_module" title="DeltaTopic.nn.module.BALSAM_module"><code class="xref py py-class docutils literal notranslate"><span class="pre">BALSAM_module</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adata</span> <span class="o">=</span> <span class="n">anndata</span><span class="o">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="n">path_to_anndata</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DeltaTopic</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">setup_anndata</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">DeltaTopic</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">modelhub</span><span class="o">.</span><span class="n">BALSAM</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.modelhub.BALSAM.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata_seq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">anndata.AnnData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_latent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">model_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/modelhub.html#BALSAM.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.modelhub.BALSAM.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#DeltaTopic.nn.modelhub.BALSAM.__init__" title="DeltaTopic.nn.modelhub.BALSAM.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(adata_seq[, n_latent])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.modelhub.BALSAM.get_latent_representation" title="DeltaTopic.nn.modelhub.BALSAM.get_latent_representation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_latent_representation</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.modelhub.BALSAM.get_parameters" title="DeltaTopic.nn.modelhub.BALSAM.get_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_parameters</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code>(dir_path[, adata, use_gpu])</p></td>
+<td><p>Instantiate a model from the saved output.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.modelhub.BALSAM.save" title="DeltaTopic.nn.modelhub.BALSAM.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(dir_path[, overwrite, save_anndata])</p></td>
+<td><p>Save the state of the model.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_device</span></code>(device)</p></td>
+<td><p>Move model to device.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="DeltaTopic.nn.html#DeltaTopic.nn.modelhub.BALSAM.train" title="DeltaTopic.nn.modelhub.BALSAM.train"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code></a>([max_epochs, lr, use_gpu, train_size, ...])</p></td>
+<td><p>Trains the model using amortized variational inference. :param max_epochs: Number of passes through the dataset. :param lr: Learning rate for optimization. :param use_gpu: Use default GPU if available (if None or True), or index of GPU to use (if int),                 or name of GPU (if str, e.g., <cite>'cuda:0'</cite>), or use CPU (if False). :param train_size: Size of training set in the range [0.0, 1.0]. :param validation_size: Size of the test set. If <cite>None</cite>, defaults to 1 - <cite>train_size</cite>. If                         <cite>train_size + validation_size &lt; 1</cite>, the remaining cells belong to a test set. :param batch_size: Minibatch size to use during training. :param n_steps_kl_warmup: Number of training steps (minibatches) to scale weight on KL divergences from 0 to 1. Only activated when <cite>n_epochs_kl_warmup</cite> is set to None. If <cite>None</cite>, defaults                           to <cite>floor(0.75 * adata.n_obs)</cite>. :param n_epochs_kl_warmup: Number of epochs to scale weight on KL divergences from 0 to 1. Overrides <cite>n_steps_kl_warmup</cite> when both are not <cite>None</cite>.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">device</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">history</span></code></p></td>
+<td><p>Returns computed metrics during training.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_trained</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">test_indices</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_indices</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">validation_indices</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api.html" class="btn btn-neutral float-left" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="DeltaTopic.nn.modelhub.DeltaTopic.html" class="btn btn-neutral float-right" title="DeltaTopic.nn.modelhub.DeltaTopic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Yichen Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
