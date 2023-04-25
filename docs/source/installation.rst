@@ -1,6 +1,8 @@
 Installation
 ------------
 
+DeltaTopic requires Python 3.8 or later. We recommend to use Miniconda_. 
+
 PyPI
 ^^^^
 
@@ -11,9 +13,6 @@ Install DeltaTopic from PyPI_ using::
 Development Version
 ^^^^^^^^^^^^^^^^^^^
 
-DeltaTopic requires Python 3.8 or later. We recommend to use Miniconda_. 
-
-
 To work with the latest development version, install from GitHub_ using::
 
     git clone git clone https://github.com/causalpathlab/deltaTopic.git && deltaTopic
@@ -23,22 +22,21 @@ To work with the latest development version, install from GitHub_ using::
 Dependencies
 ^^^^^^^^^^^^
 
-- `torch <https://pytorch.org/>`_
-- `pytroch-lightning <https://pytorch-lightning.readthedocs.io/en/latest/>`_
+- `torch <https://pytorch.org/>`_, `pytroch-lightning <https://pytorch-lightning.readthedocs.io/en/latest/>`_ - deep learning framework.
 - `anndata <https://anndata.readthedocs.io/>`_ - annotated data object.
 - `scanpy <https://scanpy.readthedocs.io/>`_ - toolkit for single-cell analysis.
-- `numpy <https://docs.scipy.org/>`_, `scipy <https://docs.scipy.org/>`_
+- `numpy <https://docs.scipy.org/>`_, `scipy <https://docs.scipy.org/>`_ 
 
 Analysis pipeline
 ^^^^^^^^^^^^
 
 The analyis in `Zhang et al. 23 <https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract>`_ requires the following R packages:
 
-- data.table, dplyr
-- goseq, fgsea
-- ggplot2, ComlexHeatmap, circlize 
+- data.table, dplyr - data wrangling
+- goseq, fgsea - gene set enrichment analysis
+- ggplot2, ComlexHeatmap, circlize - visualization
 
-To reproduce the analyis in `Zhang et al. 23 <https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract>`_, run::
+To reproduce the analyis in `Zhang et al. 23 <https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract>`_, follow Rmd files in R_figures folder OR run the following commands:
 
     cd R_figures
     make all
