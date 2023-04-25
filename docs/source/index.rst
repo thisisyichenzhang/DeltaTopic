@@ -1,3 +1,5 @@
+|PyPI| |Docs|
+
 Documentaiton for BALSAM and DeltaTopic
 ======================================
 
@@ -21,3 +23,9 @@ Documentaiton for BALSAM and DeltaTopic
    :hidden:
 
    getting_started
+
+.. |PyPI| image:: https://badge.fury.io/py/DeltaTopic.svg
+   :target: https://pypi.org/project/DeltaTopic/
+
+.. |Docs| image:: https://readthedocs.org/projects/deltatopic/badge/?version=latest
+   :target: https://deltatopic.readthedocs.io
