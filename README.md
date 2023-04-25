@@ -20,7 +20,6 @@ Building a comprehensive topic model has become an important research tool in si
 
 DeltaTopic requires Python 3.8 or later. We recommend to use [Miniconda](http://conda.pydata.org/miniconda.html).
 
-* PyPI
 
 Install DeltaTopic from [PyPI](https://pypi.org/project/DeltaTopic) using:
 
@@ -28,7 +27,6 @@ Install DeltaTopic from [PyPI](https://pypi.org/project/DeltaTopic) using:
 pip install DeltaTopic
 ```
 
-* Development Version
   
 To work with the latest development version, install from [GitHub](https://github.com/causalpathlab/deltaTopic) using:
 
