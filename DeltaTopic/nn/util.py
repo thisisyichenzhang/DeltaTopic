@@ -249,6 +249,7 @@ class BaseModelClass(ABC):
 
     @property
     def device(self):
+        """Device model is on."""
         device = list(set(p.device for p in self.module.parameters()))
         if len(device) > 1:
             raise RuntimeError("Model tensors on multiple devices.")
@@ -317,18 +318,22 @@ class BaseModelClass(ABC):
 
     @train_indices.setter
     def train_indices(self, value):
+        """indices for training set."""
         self.train_indices_ = value
 
     @test_indices.setter
     def test_indices(self, value):
+        """indices for test set."""
         self.test_indices_ = value
 
     @validation_indices.setter
     def validation_indices(self, value):
+        """indices for validation set."""
         self.validation_indices_ = value
 
     @is_trained.setter
     def is_trained(self, value):
+        """Flag to indicate whether model is trained."""
         self.is_trained_ = value
 
     @property

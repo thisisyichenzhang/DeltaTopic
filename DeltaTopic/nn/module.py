@@ -112,6 +112,8 @@ class BALSAM_module(BaseModuleClass):
         deterministic: bool = True,
         output_softmax_z: bool = True, 
     ):
+        """Sample from the posterior z
+        """
         inference_out = self.inference(x)
         if deterministic:
             z = inference_out["qz_m"]
@@ -128,7 +130,8 @@ class BALSAM_module(BaseModuleClass):
         x: torch.Tensor,
     ) -> torch.Tensor:
         """
-        Returns the 
+        Returns the reconstruction loss for a batch of data. 
+        
         Parameters
         ----------
         x
@@ -162,27 +165,7 @@ class BALSAM_module(BaseModuleClass):
     ) -> Tuple[torch.Tensor, torch.Tensor]:
 
         """
-        Return the reconstruction loss and the Kullback divergences.
-        Parameters
-        ----------
-        x
-            tensor of values with shape ``(batch_size, n_input)``
-            or ``(batch_size, n_input_fish)`` depending on the mode
-        local_l_mean
-            tensor of means of the prior distribution of latent variable l
-            with shape (batch_size, 1)
-        local_l_var
-            tensor of variances of the prior distribution of latent variable l
-            with shape (batch_size, 1)
-        batch_index
-            array that indicates which batch the cells belong to with shape ``batch_size``
-        y
-            tensor of cell-types labels with shape (batch_size, n_labels)
-        mode
-            indicates which head/tail to use in the joint network
-        Returns
-        -------
-        the reconstruction loss and the Kullback divergences
+        Agrregates the likelihood and KL divergences to form the loss function.
         """
         kl_weight_beta = self.kl_weight_beta
         x = tensors[_CONSTANTS.X_KEY]
@@ -281,7 +264,7 @@ class DeltaTopic_module(BaseModuleClass):
                  aa: torch.Tensor,
     ) -> torch.Tensor:
         '''
-        Dirichlet log-likelihood:
+        Return the Dirichlet log-likelihood for a batch.
         '''
         reconstruction_loss = None 
         
@@ -325,6 +308,10 @@ class DeltaTopic_module(BaseModuleClass):
         deterministic: bool = True,
         output_softmax_z: bool = True, 
     ):
+        """
+        sample from the posterior of latent space z
+        """
+        
         inference_out = self.inference(x,y)
         if deterministic: # average of the two means WITHOUT sampling
             z = inference_out["q_m"]
@@ -342,17 +329,14 @@ class DeltaTopic_module(BaseModuleClass):
         y: torch.Tensor,
     ) -> torch.Tensor:
         """
-        Returns the 
+        Returns the reconstruction loss for the given batch.
 
         Parameters
         ----------
         x
             tensor of values with shape ``(batch_size, n_input)``
-        
-        Returns
-        -------
-        type
-            tensor of means of the scaled frequencies
+        y  
+            tensor of values with shape ``(batch_size, n_input)``
 
         """
         inference_out = self.inference(x, y)
@@ -382,30 +366,7 @@ class DeltaTopic_module(BaseModuleClass):
     ) -> Tuple[torch.Tensor, torch.Tensor]:
 
         """
-        Return the reconstruction loss and the Kullback divergences.
-
-        Parameters
-        ----------
-        x
-            tensor of values with shape ``(batch_size, n_input)``
-            or ``(batch_size, n_input_fish)`` depending on the mode
-        local_l_mean
-            tensor of means of the prior distribution of latent variable l
-            with shape (batch_size, 1)
-        local_l_var
-            tensor of variances of the prior distribution of latent variable l
-            with shape (batch_size, 1)
-        batch_index
-            array that indicates which batch the cells belong to with shape ``batch_size``
-        y
-            tensor of cell-types labels with shape (batch_size, n_labels)
-        mode
-            indicates which head/tail to use in the joint network
-
-
-        Returns
-        -------
-        the reconstruction loss and the Kullback divergences
+        Aggregate the kl and likelihood to form the loss.
 
         """
         kl_weight_beta = self.kl_weight_beta

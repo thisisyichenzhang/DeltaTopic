@@ -19,7 +19,7 @@ A generic pytorch module, defines the inference and generation step, and loss fu
 .. autosummary::
    :toctree: .
    :nosignatures:
-   
+
    DeltaTopic.nn.module.BALSAM_module
    DeltaTopic.nn.module.DeltaTopic_module
    

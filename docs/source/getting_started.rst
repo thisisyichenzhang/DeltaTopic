@@ -14,8 +14,8 @@ Read your data file, for example, a h5ad file, using `scanpy`::
 
 Register spliced and unspliced counts::    
     
-    adata.layers["counts"] = csr_matrix(adata.X).copy()
-    adata.obsm["unspliced_expression"] = csr_matrix(adata_unspliced.X).copy()
+    adata.layers["counts"] = adata.X.copy()
+    adata.obsm["unspliced_expression"] = adata_unspliced.X.copy()
 
 Setup anndata::    
     
