@@ -1,2 +1,2 @@
 # theme
-furo
+sphinx-rtd-theme

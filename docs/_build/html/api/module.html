@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module &mdash; DeltaTopic  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Base components" href="base_components.html" />
+    <link rel="prev" title="Model" href="model.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DeltaTopic
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="model.html">Model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#DeltaTopic.nn.module.BALSAM_module"><code class="docutils literal notranslate"><span class="pre">BALSAM_module</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.module.BALSAM_module.dir_llik"><code class="docutils literal notranslate"><span class="pre">BALSAM_module.dir_llik()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.module.BALSAM_module.generative"><code class="docutils literal notranslate"><span class="pre">BALSAM_module.generative()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.module.BALSAM_module.get_reconstruction_loss"><code class="docutils literal notranslate"><span class="pre">BALSAM_module.get_reconstruction_loss()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.module.BALSAM_module.inference"><code class="docutils literal notranslate"><span class="pre">BALSAM_module.inference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.module.BALSAM_module.loss"><code class="docutils literal notranslate"><span class="pre">BALSAM_module.loss()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.module.BALSAM_module.sample_from_posterior_z"><code class="docutils literal notranslate"><span class="pre">BALSAM_module.sample_from_posterior_z()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#DeltaTopic.nn.module.DeltaTopic_module"><code class="docutils literal notranslate"><span class="pre">DeltaTopic_module</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.module.DeltaTopic_module.dir_llik"><code class="docutils literal notranslate"><span class="pre">DeltaTopic_module.dir_llik()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.module.DeltaTopic_module.generative"><code class="docutils literal notranslate"><span class="pre">DeltaTopic_module.generative()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.module.DeltaTopic_module.get_reconstruction_loss"><code class="docutils literal notranslate"><span class="pre">DeltaTopic_module.get_reconstruction_loss()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.module.DeltaTopic_module.inference"><code class="docutils literal notranslate"><span class="pre">DeltaTopic_module.inference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.module.DeltaTopic_module.loss"><code class="docutils literal notranslate"><span class="pre">DeltaTopic_module.loss()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.module.DeltaTopic_module.sample_from_posterior_z"><code class="docutils literal notranslate"><span class="pre">DeltaTopic_module.sample_from_posterior_z()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="base_components.html">Base components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TrainingPlan.html">TrainingPlan</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DeltaTopic</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API</a></li>
+      <li class="breadcrumb-item active">Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/module.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module">
+<h1>Module<a class="headerlink" href="#module" title="Permalink to this heading"></a></h1>
+<p>A generic pytorch module, defines the inference and generation step, and loss function.</p>
+<span class="target" id="module-DeltaTopic.nn.module"></span><p>Main module.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.module.</span></span><span class="sig-name descname"><span class="pre">BALSAM_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#BALSAM_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModuleClass</span></code></p>
+<p>BALASM module</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_genes</strong> – number of genes</p></li>
+<li><p><strong>n_latent</strong> – dimension of latent space</p></li>
+<li><p><strong>n_layers_encoder_individual</strong> – number of individual layers in the encoder</p></li>
+<li><p><strong>dim_hidden_encoder</strong> – dimension of the hidden layers in the encoder</p></li>
+<li><p><strong>pip0_rho</strong> – scaling factor for rho loss, default 0.1</p></li>
+<li><p><strong>kl_weight_beta</strong> – scaling factor for KL, default 1.0</p></li>
+<li><p><strong>log_variational</strong> – Log(data+1) prior to encoding for numerical stability. Not normalization.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module.dir_llik">
+<span class="sig-name descname"><span class="pre">dir_llik</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#BALSAM_module.dir_llik"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module.dir_llik" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the Dirichlet log-likelihood.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module.generative">
+<span class="sig-name descname"><span class="pre">generative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#BALSAM_module.generative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module.generative" title="Permalink to this definition"></a></dt>
+<dd><p>Run the generative model.</p>
+<p>This function should return the parameters associated with the likelihood of the data.
+This is typically written as <span class="math notranslate nohighlight">\(p(x|z)\)</span>.</p>
+<p>This function should return a dictionary with str keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module.get_reconstruction_loss">
+<span class="sig-name descname"><span class="pre">get_reconstruction_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#BALSAM_module.get_reconstruction_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module.get_reconstruction_loss" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the reconstruction loss for a batch of data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> – tensor of values with shape <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">n_input)</span></code></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>tensor of means of the scaled frequencies</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#BALSAM_module.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module.inference" title="Permalink to this definition"></a></dt>
+<dd><p>Run the inference (recognition) model.</p>
+<p>In the case of variational inference, this function will perform steps related to
+computing variational distribution parameters. In a VAE, this will involve running
+data through encoder networks.</p>
+<p>This function should return a dictionary with str keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inference_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generative_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#BALSAM_module.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module.loss" title="Permalink to this definition"></a></dt>
+<dd><p>Agrregates the likelihood and KL divergences to form the loss function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.BALSAM_module.sample_from_posterior_z">
+<span class="sig-name descname"><span class="pre">sample_from_posterior_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_softmax_z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#BALSAM_module.sample_from_posterior_z"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.BALSAM_module.sample_from_posterior_z" title="Permalink to this definition"></a></dt>
+<dd><p>Sample from the posterior z</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.module.</span></span><span class="sig-name descname"><span class="pre">DeltaTopic_module</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#DeltaTopic_module"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModuleClass</span></code></p>
+<p>DeltaTopic module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_genes</strong> – number of genes</p></li>
+<li><p><strong>n_latent</strong> – dimension of latent space</p></li>
+<li><p><strong>n_layers_encoder_individual</strong> – number of individual layers in the encoder</p></li>
+<li><p><strong>dim_hidden_encoder</strong> – dimension of the hidden layers in the encoder</p></li>
+<li><p><strong>pip0_rho</strong> – scaling factor for rho loss, default 0.1</p></li>
+<li><p><strong>pip0_delta</strong> – scaling factor for delta loss, default 0.1</p></li>
+<li><p><strong>kl_weight_beta</strong> – scaling factor for KL, default 1.0</p></li>
+<li><p><strong>log_variational</strong> – Log(data+1) prior to encoding for numerical stability. Not normalization.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module.dir_llik">
+<span class="sig-name descname"><span class="pre">dir_llik</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#DeltaTopic_module.dir_llik"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module.dir_llik" title="Permalink to this definition"></a></dt>
+<dd><p>Return the Dirichlet log-likelihood for a batch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module.generative">
+<span class="sig-name descname"><span class="pre">generative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#DeltaTopic_module.generative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module.generative" title="Permalink to this definition"></a></dt>
+<dd><p>Run the generative model.</p>
+<p>This function should return the parameters associated with the likelihood of the data.
+This is typically written as <span class="math notranslate nohighlight">\(p(x|z)\)</span>.</p>
+<p>This function should return a dictionary with str keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module.get_reconstruction_loss">
+<span class="sig-name descname"><span class="pre">get_reconstruction_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#DeltaTopic_module.get_reconstruction_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module.get_reconstruction_loss" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the reconstruction loss for the given batch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – tensor of values with shape <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">n_input)</span></code></p></li>
+<li><p><strong>y</strong> – tensor of values with shape <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">n_input)</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module.inference">
+<span class="sig-name descname"><span class="pre">inference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#DeltaTopic_module.inference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module.inference" title="Permalink to this definition"></a></dt>
+<dd><p>Run the inference (recognition) model.</p>
+<p>In the case of variational inference, this function will perform steps related to
+computing variational distribution parameters. In a VAE, this will involve running
+data through encoder networks.</p>
+<p>This function should return a dictionary with str keys and <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> values.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module.loss">
+<span class="sig-name descname"><span class="pre">loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inference_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generative_outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kl_weight_beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.Tensor</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#DeltaTopic_module.loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module.loss" title="Permalink to this definition"></a></dt>
+<dd><p>Aggregate the kl and likelihood to form the loss.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.module.DeltaTopic_module.sample_from_posterior_z">
+<span class="sig-name descname"><span class="pre">sample_from_posterior_z</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_softmax_z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/module.html#DeltaTopic_module.sample_from_posterior_z"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.module.DeltaTopic_module.sample_from_posterior_z" title="Permalink to this definition"></a></dt>
+<dd><p>sample from the posterior of latent space z</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="model.html" class="btn btn-neutral float-left" title="Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="base_components.html" class="btn btn-neutral float-right" title="Base components" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Yichen Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

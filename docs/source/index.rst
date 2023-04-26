@@ -14,7 +14,7 @@ Documentaiton for BALSAM and DeltaTopic
 
    about
    installation
-   api
+   API <api/index>
    references
 
 .. toctree::
