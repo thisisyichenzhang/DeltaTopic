@@ -31,7 +31,7 @@ pip install DeltaTopic
 To work with the latest development version, install from [GitHub](https://github.com/causalpathlab/deltaTopic) using:
 
 ```bash
-git clone git clone https://github.com/causalpathlab/deltaTopic.git && deltaTopic
+git clone https://github.com/causalpathlab/deltaTopic.git
 python setup.py build
 python setup.py install
 ```
