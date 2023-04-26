@@ -1,5 +1,5 @@
-Getting Started
----------------
+Quick Start
+-----------
 
 Here, you will be briefly guided through the basics of how to use **BALSAM** and **DeltaTopic**. 
 
@@ -22,8 +22,9 @@ Setup anndata::
     from DeltaTopic.nn.util import setup_anndata
     setup_anndata(adata, layer="counts", unspliced_obsm_key = "unspliced_expression")
 
-Note: if you are training BALSAM only, you can skip the additional step to register unspliced counts.
-
+.. note::
+   if you are training BALSAM only, you can skip the additional step to read register unspliced counts.
+ 
 Training
 ''''''''
 

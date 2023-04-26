@@ -24,11 +24,15 @@ author = 'Yichen Zhang'
 needs_sphinx = "4.3"  # Nicer param docs
 
 
-extensions = ["sphinx.ext.autodoc", 
-              "sphinx.ext.viewcode", 
-              "sphinx.ext.autosummary",
-              "sphinx.ext.napoleon",
+extensions = ['sphinx.ext.autodoc', 
+              'sphinx.ext.viewcode', 
+              'sphinx.ext.autosummary',
+              'sphinx.ext.napoleon',
+              'sphinxcontrib.bibtex', # bib citation
 ]
+bibtex_bibfiles = ['deltaTopic.bib']
+#bibtex_default_style = 'author_year'
+
 
 # Generate the API documentation when building
 autosummary_generate = False

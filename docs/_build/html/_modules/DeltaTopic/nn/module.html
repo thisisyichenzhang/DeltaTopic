@@ -47,7 +47,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Quick Start</a></li>
 </ul>
 
         </div>
@@ -87,7 +87,7 @@
 
 <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cudnn</span><span class="o">.</span><span class="n">benchmark</span> <span class="o">=</span> <span class="kc">True</span>
 
-<div class="viewcode-block" id="BALSAM_module"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.BALSAM_module">[docs]</a><span class="k">class</span> <span class="nc">BALSAM_module</span><span class="p">(</span><span class="n">BaseModuleClass</span><span class="p">):</span>
+<div class="viewcode-block" id="BALSAM_module"><a class="viewcode-back" href="../../../DeltaTopic.nn.module.BALSAM_module.html#DeltaTopic.nn.module.BALSAM_module">[docs]</a><span class="k">class</span> <span class="nc">BALSAM_module</span><span class="p">(</span><span class="n">BaseModuleClass</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    BALASM module</span>
 <span class="sd">    </span>
@@ -140,7 +140,7 @@
                                     <span class="n">pip0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pip0_rho</span><span class="p">,</span>
                                     <span class="p">)</span></div>
 
-<div class="viewcode-block" id="BALSAM_module.dir_llik"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.BALSAM_module.dir_llik">[docs]</a>    <span class="k">def</span> <span class="nf">dir_llik</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+    <span class="k">def</span> <span class="nf">dir_llik</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                  <span class="n">xx</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> 
                  <span class="n">aa</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
@@ -157,7 +157,7 @@
                             <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">xx</span><span class="p">)),</span>
                             <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#[n_batch</span>
         <span class="n">reconstruction_loss</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="c1">#[n_batch</span>
-        <span class="k">return</span> <span class="n">reconstruction_loss</span></div>
+        <span class="k">return</span> <span class="n">reconstruction_loss</span>
 
 
     <span class="k">def</span> <span class="nf">_get_inference_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensors</span><span class="p">):</span>
@@ -167,23 +167,23 @@
         <span class="n">z</span> <span class="o">=</span> <span class="n">inference_outputs</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BALSAM_module.inference"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.BALSAM_module.inference">[docs]</a>    <span class="nd">@auto_move_data</span>
+    <span class="nd">@auto_move_data</span>
     <span class="k">def</span> <span class="nf">inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="n">x_</span> <span class="o">=</span> <span class="n">x</span>
 
         <span class="n">qz_m</span><span class="p">,</span> <span class="n">qz_v</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_encoder</span><span class="p">(</span><span class="n">x_</span><span class="p">)</span>
         
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">qz_m</span><span class="o">=</span><span class="n">qz_m</span><span class="p">,</span> <span class="n">qz_v</span><span class="o">=</span><span class="n">qz_v</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">qz_m</span><span class="o">=</span><span class="n">qz_m</span><span class="p">,</span> <span class="n">qz_v</span><span class="o">=</span><span class="n">qz_v</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="BALSAM_module.generative"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.BALSAM_module.generative">[docs]</a>    <span class="nd">@auto_move_data</span>
+    <span class="nd">@auto_move_data</span>
     <span class="k">def</span> <span class="nf">generative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
         <span class="n">rho</span><span class="p">,</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">theta</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rho</span> <span class="o">=</span> <span class="n">rho</span><span class="p">,</span> <span class="n">rho_kl</span> <span class="o">=</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rho</span> <span class="o">=</span> <span class="n">rho</span><span class="p">,</span> <span class="n">rho_kl</span> <span class="o">=</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="p">)</span>
     
-<div class="viewcode-block" id="BALSAM_module.sample_from_posterior_z"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.BALSAM_module.sample_from_posterior_z">[docs]</a>    <span class="k">def</span> <span class="nf">sample_from_posterior_z</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">sample_from_posterior_z</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> 
         <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
         <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -199,9 +199,9 @@
         <span class="k">if</span> <span class="n">output_softmax_z</span><span class="p">:</span>
             <span class="n">generative_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generative</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">generative_outputs</span><span class="p">[</span><span class="s2">&quot;theta&quot;</span><span class="p">]</span>      
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
     
-<div class="viewcode-block" id="BALSAM_module.get_reconstruction_loss"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.BALSAM_module.get_reconstruction_loss">[docs]</a>    <span class="nd">@auto_move_data</span>
+    <span class="nd">@auto_move_data</span>
     <span class="k">def</span> <span class="nf">get_reconstruction_loss</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
@@ -230,9 +230,9 @@
         
         <span class="n">reconstruction_loss</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_llik</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">aa</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">reconstruction_loss</span></div>
+        <span class="k">return</span> <span class="n">reconstruction_loss</span>
 
-<div class="viewcode-block" id="BALSAM_module.loss"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.BALSAM_module.loss">[docs]</a>    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">tensors</span><span class="p">,</span>
         <span class="n">inference_outputs</span><span class="p">,</span>
@@ -270,9 +270,9 @@
                             <span class="n">reconstruction_loss_unspliced</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> 
                             <span class="n">kl_beta</span> <span class="o">=</span> <span class="n">kl_divergence_beta</span><span class="p">,</span> 
                             <span class="n">kl_rho</span> <span class="o">=</span> <span class="n">rho_kl</span><span class="p">,</span> 
-                            <span class="n">kl_delta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> </div></div>
+                            <span class="n">kl_delta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> </div>
 
-<div class="viewcode-block" id="DeltaTopic_module"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.DeltaTopic_module">[docs]</a><span class="k">class</span> <span class="nc">DeltaTopic_module</span><span class="p">(</span><span class="n">BaseModuleClass</span><span class="p">):</span>
+<div class="viewcode-block" id="DeltaTopic_module"><a class="viewcode-back" href="../../../DeltaTopic.nn.module.DeltaTopic_module.html#DeltaTopic.nn.module.DeltaTopic_module">[docs]</a><span class="k">class</span> <span class="nc">DeltaTopic_module</span><span class="p">(</span><span class="n">BaseModuleClass</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    DeltaTopic module.</span>
 <span class="sd">    </span>
@@ -336,7 +336,7 @@
                                           <span class="n">pip0_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pip0_delta</span><span class="p">,</span>
                                         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="DeltaTopic_module.dir_llik"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.DeltaTopic_module.dir_llik">[docs]</a>    <span class="k">def</span> <span class="nf">dir_llik</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+    <span class="k">def</span> <span class="nf">dir_llik</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                  <span class="n">xx</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> 
                  <span class="n">aa</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
@@ -353,7 +353,7 @@
                             <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">xx</span><span class="p">)),</span>
                             <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#[n_batch</span>
         <span class="n">reconstruction_loss</span> <span class="o">=</span> <span class="n">term1</span> <span class="o">+</span> <span class="n">term2</span> <span class="c1">#[n_batch</span>
-        <span class="k">return</span> <span class="n">reconstruction_loss</span></div>
+        <span class="k">return</span> <span class="n">reconstruction_loss</span>
 
 
     <span class="k">def</span> <span class="nf">_get_inference_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tensors</span><span class="p">):</span>
@@ -363,22 +363,22 @@
         <span class="n">z</span> <span class="o">=</span> <span class="n">inference_outputs</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DeltaTopic_module.inference"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.DeltaTopic_module.inference">[docs]</a>    <span class="nd">@auto_move_data</span>
+    <span class="nd">@auto_move_data</span>
     <span class="k">def</span> <span class="nf">inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
         <span class="n">x_</span> <span class="o">=</span> <span class="n">x</span>
         <span class="n">y_</span> <span class="o">=</span> <span class="n">y</span>
 
         <span class="n">q_m</span><span class="p">,</span> <span class="n">q_v</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_encoder</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">y_</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">,</span> <span class="n">q_m</span> <span class="o">=</span> <span class="n">q_m</span><span class="p">,</span> <span class="n">q_v</span> <span class="o">=</span> <span class="n">q_v</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">,</span> <span class="n">q_m</span> <span class="o">=</span> <span class="n">q_m</span><span class="p">,</span> <span class="n">q_v</span> <span class="o">=</span> <span class="n">q_v</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DeltaTopic_module.generative"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.DeltaTopic_module.generative">[docs]</a>    <span class="nd">@auto_move_data</span>
+    <span class="nd">@auto_move_data</span>
     <span class="k">def</span> <span class="nf">generative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 
         <span class="n">rho</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">delta_kl</span><span class="p">,</span> <span class="n">theta</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decoder</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rho</span> <span class="o">=</span> <span class="n">rho</span><span class="p">,</span> <span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">,</span> <span class="n">rho_kl</span> <span class="o">=</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">delta_kl</span> <span class="o">=</span> <span class="n">delta_kl</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">rho</span> <span class="o">=</span> <span class="n">rho</span><span class="p">,</span> <span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">,</span> <span class="n">rho_kl</span> <span class="o">=</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">delta_kl</span> <span class="o">=</span> <span class="n">delta_kl</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span><span class="p">)</span>
     
-<div class="viewcode-block" id="DeltaTopic_module.sample_from_posterior_z"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.DeltaTopic_module.sample_from_posterior_z">[docs]</a>    <span class="k">def</span> <span class="nf">sample_from_posterior_z</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">sample_from_posterior_z</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> 
         <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
         <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
@@ -397,9 +397,9 @@
         <span class="k">if</span> <span class="n">output_softmax_z</span><span class="p">:</span>
             <span class="n">generative_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generative</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">generative_outputs</span><span class="p">[</span><span class="s2">&quot;theta&quot;</span><span class="p">]</span>      
-        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
     
-<div class="viewcode-block" id="DeltaTopic_module.get_reconstruction_loss"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.DeltaTopic_module.get_reconstruction_loss">[docs]</a>    <span class="nd">@auto_move_data</span>
+    <span class="nd">@auto_move_data</span>
     <span class="k">def</span> <span class="nf">get_reconstruction_loss</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
@@ -431,9 +431,9 @@
         
         <span class="n">reconstruction_loss_spliced</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_llik</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">aa_spliced</span><span class="p">)</span>
         <span class="n">reconstruction_loss_unspliced</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">dir_llik</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">aa_unspliced</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">reconstruction_loss_spliced</span><span class="p">,</span> <span class="n">reconstruction_loss_unspliced</span></div>
+        <span class="k">return</span> <span class="n">reconstruction_loss_spliced</span><span class="p">,</span> <span class="n">reconstruction_loss_unspliced</span>
 
-<div class="viewcode-block" id="DeltaTopic_module.loss"><a class="viewcode-back" href="../../../api/module.html#DeltaTopic.nn.module.DeltaTopic_module.loss">[docs]</a>    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">tensors</span><span class="p">,</span>
         <span class="n">inference_outputs</span><span class="p">,</span>
@@ -477,7 +477,7 @@
                             <span class="n">reconstruction_loss_unspliced</span><span class="o">=</span><span class="n">reconstruction_loss_unspliced</span><span class="p">,</span> 
                             <span class="n">kl_beta</span> <span class="o">=</span> <span class="n">kl_divergence_beta</span><span class="p">,</span> 
                             <span class="n">kl_rho</span> <span class="o">=</span> <span class="n">rho_kl</span><span class="p">,</span> 
-                            <span class="n">kl_delta</span> <span class="o">=</span> <span class="n">delta_kl</span><span class="p">)</span></div></div>
+                            <span class="n">kl_delta</span> <span class="o">=</span> <span class="n">delta_kl</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

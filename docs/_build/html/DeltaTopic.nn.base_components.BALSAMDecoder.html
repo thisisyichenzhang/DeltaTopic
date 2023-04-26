@@ -48,7 +48,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Quick Start</a></li>
 </ul>
 
         </div>
@@ -80,7 +80,17 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">BALSAMDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder" title="Permalink to this definition"></a></dt>
-<dd><p>Decoder for BALSAM model</p>
+<dd><p>Decoder network for BALSAM model, a generative network with spike and slab prior for beta parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_input</strong> (<em>int</em>) – The input dimension of the decoder, e.g., number of topics.</p></li>
+<li><p><strong>n_output</strong> (<em>int</em>) – The output dimension of decoder, e.g., tumber of genes.</p></li>
+<li><p><strong>pip0</strong> (<em>float</em>) – The prior probability of spike in the spike and slab prior.</p></li>
+<li><p><strong>v0</strong> (<em>float</em>) – The prior variance of slab in the spike and slab prior.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pip0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder.__init__" title="Permalink to this definition"></a></dt>
@@ -92,20 +102,20 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#DeltaTopic.nn.base_components.BALSAMDecoder.__init__" title="DeltaTopic.nn.base_components.BALSAMDecoder.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(n_input, n_output[, pip0, v0])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code>(z)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/base_components.html#DeltaTopic.nn.base_components.BALSAMDecoder.forward" title="DeltaTopic.nn.base_components.BALSAMDecoder.forward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code></a>(z)</p></td>
+<td><p>forward pass of the decoder network.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_beta</span></code>(spike_logit, slab_mean, slab_lnvar, ...)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/base_components.html#DeltaTopic.nn.base_components.BALSAMDecoder.get_beta" title="DeltaTopic.nn.base_components.BALSAMDecoder.get_beta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_beta</span></code></a>(spike_logit, slab_mean, slab_lnvar, ...)</p></td>
+<td><p>Sample beta using the repameterization trick</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_rho</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/base_components.html#DeltaTopic.nn.base_components.BALSAMDecoder.get_rho" title="DeltaTopic.nn.base_components.BALSAMDecoder.get_rho"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_rho</span></code></a>()</p></td>
+<td><p>A helper function to get rho.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">soft_max</span></code>(z)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/base_components.html#DeltaTopic.nn.base_components.BALSAMDecoder.soft_max" title="DeltaTopic.nn.base_components.BALSAMDecoder.soft_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">soft_max</span></code></a>(z)</p></td>
+<td><p>softmax function</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse_kl_loss</span></code>(logit_0, lnvar_0, ...)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/base_components.html#DeltaTopic.nn.base_components.BALSAMDecoder.sparse_kl_loss" title="DeltaTopic.nn.base_components.BALSAMDecoder.sparse_kl_loss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse_kl_loss</span></code></a>(logit_0, lnvar_0, ...)</p></td>
+<td><p>Compute the KL divergence between spike and slab prior and the posterior.</p></td>
 </tr>
 </tbody>
 </table>

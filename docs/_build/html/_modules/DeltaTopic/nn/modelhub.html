@@ -47,7 +47,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Quick Start</a></li>
 </ul>
 
         </div>
@@ -230,16 +230,16 @@
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the latent space (topic proportions) for each dataset.</span>
+<span class="sd">        Return the latent space (topic proportions).</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        adatas</span>
-<span class="sd">            List of adata_spliced and adata_unspliced.</span>
+<span class="sd">            adata registered with setup_anndata.</span>
 <span class="sd">        deterministic</span>
-<span class="sd">            If true, use the mean of the encoder instead of a Gaussian sample.</span>
+<span class="sd">            If true, use the mean of the encoder instead of a stochastic sample</span>
 <span class="sd">        output_softmax_z</span>
-<span class="sd">            if true, output probability, otherwise output z.    </span>
+<span class="sd">            If true, output probability, otherwise output z (unnormalized probability).    </span>
 <span class="sd">        batch_size</span>
 <span class="sd">            Minibatch size for data loading into model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -269,12 +269,14 @@
         <span class="n">overwrite</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the spike and slab parameters of the model to the save_dir.</span>
+<span class="sd">        Save the spike and slab parameters to the specificed directory.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        save_dir</span>
 <span class="sd">            Save directory.</span>
+<span class="sd">        overwrite</span>
+<span class="sd">            If true, overwrite the existing files.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
@@ -312,7 +314,7 @@
         <span class="o">**</span><span class="n">anndata_write_kwargs</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Save the state of the model.</span>
+<span class="sd">        Save model parameters to the specified directory.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -368,7 +370,7 @@
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; adata= anndata.read_h5ad(path_to_anndata_spliced)</span>
 <span class="sd">    &gt;&gt;&gt; X_unspliced = sc.read(path_to_anndata_spliced)</span>
-<span class="sd">    &gt;&gt;&gt; adata.obsm[&quot;unspliced_expression&quot;] = csr_matrix(X_unspliced.X).copy()</span>
+<span class="sd">    &gt;&gt;&gt; adata.obsm[&quot;unspliced_expression&quot;] = (X_unspliced.X.copy()</span>
 <span class="sd">    &gt;&gt;&gt; DeltaTopic.nn.util.setup_anndata(adata, layer=&quot;counts&quot;, unspliced_obsm_key = &quot;unspliced_expression&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; model = DeltaTopic.nn.modelhub.DeltaTopic(adata)</span>
 <span class="sd">    &gt;&gt;&gt; model.train(100)</span>
@@ -492,7 +494,7 @@
 <span class="sd">        adatas</span>
 <span class="sd">            List of adata_spliced and adata_unspliced.</span>
 <span class="sd">        deterministic</span>
-<span class="sd">            If true, use the mean of the encoder instead of a Gaussian sample.</span>
+<span class="sd">            If true, use the mean of the encoder instead of a stochastic sample.</span>
 <span class="sd">        output_softmax_z</span>
 <span class="sd">            if true, output probability, otherwise output z.    </span>
 <span class="sd">        batch_size</span>
@@ -525,7 +527,14 @@
         <span class="n">overwrite</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        return the spike logit, slab mean, slab lnvar for rho and delta.</span>
+<span class="sd">        Save the spike and slab parameters to the specified directory.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        save_dir</span>
+<span class="sd">            Directory to save the parameters.</span>
+<span class="sd">        overwrite</span>
+<span class="sd">            If true, overwrite the existing parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
@@ -573,7 +582,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the reconstruction error for the data.</span>
 
-<span class="sd">        Note, this is not the negative likelihood, higher is better.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

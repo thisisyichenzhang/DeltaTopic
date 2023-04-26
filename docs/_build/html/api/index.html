@@ -47,7 +47,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="model.html">Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="module.html">Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="base_components.html">Base components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TrainingPlan.html">TrainingPlan</a></li>
 </ul>
@@ -56,7 +55,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Quick Start</a></li>
 </ul>
 
         </div>
@@ -85,16 +84,16 @@
              
   <section id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p>Model is a generic class for training and inference, which builds model from base_components and TrainingPlan.</p></li>
+<li><p>Base components contain basic components for building neural network, such as inference networks (encoders), generative netwoeks(decoders), and loss function.</p></li>
+<li><p>TrainingPlan is a class for efficient training, which specifies dataloader, loss aggregation, optimizer, training and validation process.</p></li>
+</ul>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Model</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="model.html#DeltaTopic.nn.modelhub.BALSAM"><code class="docutils literal notranslate"><span class="pre">BALSAM</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="model.html#DeltaTopic.nn.modelhub.DeltaTopic"><code class="docutils literal notranslate"><span class="pre">DeltaTopic</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module.html">Module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module.html#DeltaTopic.nn.module.BALSAM_module"><code class="docutils literal notranslate"><span class="pre">BALSAM_module</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module.html#DeltaTopic.nn.module.DeltaTopic_module"><code class="docutils literal notranslate"><span class="pre">DeltaTopic_module</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="base_components.html">Base components</a><ul>

@@ -153,16 +153,16 @@ class BALSAM(BaseModelClass):
         batch_size: int = 128,
     ):
         """
-        Return the latent space (topic proportions) for each dataset.
+        Return the latent space (topic proportions).
         
         Parameters
         ----------
         adatas
-            List of adata_spliced and adata_unspliced.
+            adata registered with setup_anndata.
         deterministic
-            If true, use the mean of the encoder instead of a Gaussian sample.
+            If true, use the mean of the encoder instead of a stochastic sample
         output_softmax_z
-            if true, output probability, otherwise output z.    
+            If true, output probability, otherwise output z (unnormalized probability).    
         batch_size
             Minibatch size for data loading into model.
         """
@@ -192,12 +192,14 @@ class BALSAM(BaseModelClass):
         overwrite = False,
     ):
         """
-        Return the spike and slab parameters of the model to the save_dir.
+        Save the spike and slab parameters to the specificed directory.
         
         Parameters
         ----------
         save_dir
             Save directory.
+        overwrite
+            If true, overwrite the existing files.
         """
         
         self.module.eval()
@@ -235,7 +237,7 @@ class BALSAM(BaseModelClass):
         **anndata_write_kwargs,
     ):
         """
-        Save the state of the model.
+        Save model parameters to the specified directory.
         
         Parameters
         ----------
@@ -291,7 +293,7 @@ class DeltaTopic(BaseModelClass):
     --------
     >>> adata= anndata.read_h5ad(path_to_anndata_spliced)
     >>> X_unspliced = sc.read(path_to_anndata_spliced)
-    >>> adata.obsm["unspliced_expression"] = csr_matrix(X_unspliced.X).copy()
+    >>> adata.obsm["unspliced_expression"] = (X_unspliced.X.copy()
     >>> DeltaTopic.nn.util.setup_anndata(adata, layer="counts", unspliced_obsm_key = "unspliced_expression")
     >>> model = DeltaTopic.nn.modelhub.DeltaTopic(adata)
     >>> model.train(100)
@@ -415,7 +417,7 @@ class DeltaTopic(BaseModelClass):
         adatas
             List of adata_spliced and adata_unspliced.
         deterministic
-            If true, use the mean of the encoder instead of a Gaussian sample.
+            If true, use the mean of the encoder instead of a stochastic sample.
         output_softmax_z
             if true, output probability, otherwise output z.    
         batch_size
@@ -448,7 +450,14 @@ class DeltaTopic(BaseModelClass):
         overwrite = False,
     ):
         """
-        return the spike logit, slab mean, slab lnvar for rho and delta.
+        Save the spike and slab parameters to the specified directory.
+        
+        Parameters
+        ----------
+        save_dir
+            Directory to save the parameters.
+        overwrite
+            If true, overwrite the existing parameters.
         """
         
         self.module.eval()
@@ -496,7 +505,6 @@ class DeltaTopic(BaseModelClass):
         """
         Return the reconstruction error for the data.
 
-        Note, this is not the negative likelihood, higher is better.
 
         Parameters
         ----------

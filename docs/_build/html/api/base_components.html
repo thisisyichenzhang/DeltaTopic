@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="TrainingPlan" href="TrainingPlan.html" />
-    <link rel="prev" title="Module" href="module.html" /> 
+    <link rel="prev" title="Model" href="model.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,12 +47,31 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="model.html">Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="module.html">Module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Base components</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#DeltaTopic.nn.base_components.BALSAMDecoder"><code class="docutils literal notranslate"><span class="pre">BALSAMDecoder</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#DeltaTopic.nn.base_components.BALSAMEncoder"><code class="docutils literal notranslate"><span class="pre">BALSAMEncoder</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder"><code class="docutils literal notranslate"><span class="pre">DeltaTopicDecoder</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#DeltaTopic.nn.base_components.DeltaTopicEncoder"><code class="docutils literal notranslate"><span class="pre">DeltaTopicEncoder</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#DeltaTopic.nn.base_components.BALSAMDecoder"><code class="docutils literal notranslate"><span class="pre">BALSAMDecoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.base_components.BALSAMDecoder.forward"><code class="docutils literal notranslate"><span class="pre">BALSAMDecoder.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.base_components.BALSAMDecoder.get_beta"><code class="docutils literal notranslate"><span class="pre">BALSAMDecoder.get_beta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.base_components.BALSAMDecoder.get_rho"><code class="docutils literal notranslate"><span class="pre">BALSAMDecoder.get_rho()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.base_components.BALSAMDecoder.soft_max"><code class="docutils literal notranslate"><span class="pre">BALSAMDecoder.soft_max()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.base_components.BALSAMDecoder.sparse_kl_loss"><code class="docutils literal notranslate"><span class="pre">BALSAMDecoder.sparse_kl_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#DeltaTopic.nn.base_components.BALSAMEncoder"><code class="docutils literal notranslate"><span class="pre">BALSAMEncoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.base_components.BALSAMEncoder.forward"><code class="docutils literal notranslate"><span class="pre">BALSAMEncoder.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder"><code class="docutils literal notranslate"><span class="pre">DeltaTopicDecoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.forward"><code class="docutils literal notranslate"><span class="pre">DeltaTopicDecoder.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.get_beta"><code class="docutils literal notranslate"><span class="pre">DeltaTopicDecoder.get_beta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.get_rho_delta"><code class="docutils literal notranslate"><span class="pre">DeltaTopicDecoder.get_rho_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.soft_max"><code class="docutils literal notranslate"><span class="pre">DeltaTopicDecoder.soft_max()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.sparse_kl_loss"><code class="docutils literal notranslate"><span class="pre">DeltaTopicDecoder.sparse_kl_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#DeltaTopic.nn.base_components.DeltaTopicEncoder"><code class="docutils literal notranslate"><span class="pre">DeltaTopicEncoder</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#DeltaTopic.nn.base_components.DeltaTopicEncoder.forward"><code class="docutils literal notranslate"><span class="pre">DeltaTopicEncoder.forward()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="TrainingPlan.html">TrainingPlan</a></li>
@@ -62,7 +81,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Quick Start</a></li>
 </ul>
 
         </div>
@@ -93,33 +112,225 @@
   <section id="base-components">
 <h1>Base components<a class="headerlink" href="#base-components" title="Permalink to this heading"></a></h1>
 <p>Building blocks for the modules, defines encoder and decoder.</p>
-<span class="target" id="module-DeltaTopic.nn.base_components"></span><p>base components for VAE, ETM, pathway-guided connection</p>
-<dl class="py class">
+<span class="target" id="module-DeltaTopic.nn.base_components"></span><dl class="py class">
 <dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">BALSAMDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
-<p>Decoder for BALSAM model</p>
+<p>Decoder network for BALSAM model, a generative network with spike and slab prior for beta parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_input</strong> (<em>int</em>) – The input dimension of the decoder, e.g., number of topics.</p></li>
+<li><p><strong>n_output</strong> (<em>int</em>) – The output dimension of decoder, e.g., tumber of genes.</p></li>
+<li><p><strong>pip0</strong> (<em>float</em>) – The prior probability of spike in the spike and slab prior.</p></li>
+<li><p><strong>v0</strong> (<em>float</em>) – The prior variance of slab in the spike and slab prior.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder.forward" title="Permalink to this definition"></a></dt>
+<dd><p>forward pass of the decoder network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>z</strong> (<em>torch.Tensor</em>) – The input tensor of the decoder, e.g., the latent representation from the encoder.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder.get_beta">
+<span class="sig-name descname"><span class="pre">get_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spike_logit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_mean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_lnvar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias_d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder.get_beta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder.get_beta" title="Permalink to this definition"></a></dt>
+<dd><p>Sample beta using the repameterization trick</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spike_logit</strong> (<em>torch.Tensor</em>) – The logit of spike probability.</p></li>
+<li><p><strong>slab_mean</strong> (<em>torch.Tensor</em>) – The mean of slab.</p></li>
+<li><p><strong>slab_lnvar</strong> (<em>torch.Tensor</em>) – The log variance of slab.</p></li>
+<li><p><strong>bias_d</strong> (<em>torch.Tensor</em>) – The bias term in the GLM model.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder.get_rho">
+<span class="sig-name descname"><span class="pre">get_rho</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder.get_rho"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder.get_rho" title="Permalink to this definition"></a></dt>
+<dd><p>A helper function to get rho.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder.soft_max">
+<span class="sig-name descname"><span class="pre">soft_max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder.soft_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder.soft_max" title="Permalink to this definition"></a></dt>
+<dd><p>softmax function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>z</strong> (<em>torch.Tensor</em>) – The input tensor.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMDecoder.sparse_kl_loss">
+<span class="sig-name descname"><span class="pre">sparse_kl_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logit_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lnvar_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spike_logit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_lnvar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#BALSAMDecoder.sparse_kl_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMDecoder.sparse_kl_loss" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the KL divergence between spike and slab prior and the posterior.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logit_0</strong> (<em>torch.Tensor</em>) – The logit prior of spike probability.</p></li>
+<li><p><strong>lnvar_0</strong> (<em>torch.Tensor</em>) – The log variance prior of slab.</p></li>
+<li><p><strong>spike_logit</strong> (<em>torch.Tensor</em>) – The logit of spike probability.</p></li>
+<li><p><strong>slab_mean</strong> (<em>torch.Tensor</em>) – The mean of slab.</p></li>
+<li><p><strong>slab_lnvar</strong> (<em>torch.Tensor</em>) – The log variance of slab.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMEncoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">BALSAMEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#BALSAMEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMEncoder" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
-<p>Encoder for BALSAM model</p>
+<p>Encoder for BALSAM model, encodes the input data into a latent topic representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_input</strong> (<em>int</em>) – The number of input features.</p></li>
+<li><p><strong>n_output</strong> (<em>int</em>) – The number of output features.</p></li>
+<li><p><strong>n_hidden</strong> (<em>int</em>) – The number of hidden units.</p></li>
+<li><p><strong>n_layers_individual</strong> (<em>int</em>) – The number of layers in the network.</p></li>
+<li><p><strong>use_batch_norm</strong> (<em>bool</em>) – Whether to use batch normalization.</p></li>
+<li><p><strong>log_variational</strong> (<em>bool</em>) – Whether to apply log(1+x) to the input.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.BALSAMEncoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cat_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#BALSAMEncoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.BALSAMEncoder.forward" title="Permalink to this definition"></a></dt>
+<dd><p>forward pass of the encoder</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">DeltaTopicDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
-<p>Decoder for DeltaTopic model.</p>
+<p>Decoder network for DeltaTopic, a generative network with spike and slab prior for rho and delta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_input</strong> – The dimensionality of the input</p></li>
+<li><p><strong>n_output</strong> – The dimensionality of the output</p></li>
+<li><p><strong>pip0_rho</strong> – posterior inclusion probability prior for rho</p></li>
+<li><p><strong>pip0_delta</strong> – posterior inclusion probability prior for delta</p></li>
+<li><p><strong>v0_rho</strong> – variance for rho slab</p></li>
+<li><p><strong>vo_delta</strong> – variance for delta slab</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.forward" title="Permalink to this definition"></a></dt>
+<dd><p>forward pass for DeltaTopicDecoder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>z</strong> – the input the of the decoder, e.g., latent variable from DeltaTopicEncoder</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder.get_beta">
+<span class="sig-name descname"><span class="pre">get_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spike_logit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_mean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_lnvar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias_gene</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder.get_beta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.get_beta" title="Permalink to this definition"></a></dt>
+<dd><p>Get a spike and slab sample using reparameterization trick</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spike_logit</strong> – logit of spike probability</p></li>
+<li><p><strong>slab_mean</strong> – mean of slab</p></li>
+<li><p><strong>slab_lnvar</strong> – log variance of slab</p></li>
+<li><p><strong>bias_gene</strong> – gene-level bias</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder.get_rho_delta">
+<span class="sig-name descname"><span class="pre">get_rho_delta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder.get_rho_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.get_rho_delta" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function to get rho and delta</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder.soft_max">
+<span class="sig-name descname"><span class="pre">soft_max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder.soft_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.soft_max" title="Permalink to this definition"></a></dt>
+<dd><p>softmax function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>z</strong> – input tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder.sparse_kl_loss">
+<span class="sig-name descname"><span class="pre">sparse_kl_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logit_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lnvar_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spike_logit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slab_lnvar</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder.sparse_kl_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.sparse_kl_loss" title="Permalink to this definition"></a></dt>
+<dd><p>Compute KL divergence between spike and slab piors and posteriors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>logit_0</strong> – logit of spike probability (prior)</p></li>
+<li><p><strong>lnvar_0</strong> – log variance of slab (prior)</p></li>
+<li><p><strong>spike_logit</strong> – logit of spike probability (posterior)</p></li>
+<li><p><strong>slab_mean</strong> – mean of slab (posterior)</p></li>
+<li><p><strong>slab_lnvar</strong> – log variance of slab (posterior)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicEncoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">DeltaTopicEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#DeltaTopicEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicEncoder" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
-<p>Encoder for DeltaTopic model.</p>
+<p>A two-headed encoder that maps the two inputs into a shared latent space through a stack of individual and shared fully-connected layers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_input_list</strong> – List of the dimension of two input tensors</p></li>
+<li><p><strong>n_output</strong> – The dimensionality of the output</p></li>
+<li><p><strong>mask</strong> – The mask to apply to the first layer (experimental)</p></li>
+<li><p><strong>mask_first</strong> – Transpose the mask if set to false (experimental)</p></li>
+<li><p><strong>n_hidden</strong> – The number of nodes per hidden layer</p></li>
+<li><p><strong>n_layers_individual</strong> – The number of fully-connected hidden layers for the individual encoder</p></li>
+<li><p><strong>n_layers_shared</strong> – The number of fully-connected hidden layers for the shared encoder</p></li>
+<li><p><strong>dropout_rate</strong> – Dropout rate to apply to each of the hidden layers</p></li>
+<li><p><strong>use_batch_norm</strong> – Whether to have <cite>BatchNorm</cite> layers or not</p></li>
+<li><p><strong>log_variational</strong> – Whether to apply log(1+x) transformation to the input</p></li>
+<li><p><strong>combine_method</strong> – the method to combine the two latent space, either “add” or “concatenate”</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicEncoder.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">cat_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/DeltaTopic/nn/base_components.html#DeltaTopicEncoder.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicEncoder.forward" title="Permalink to this definition"></a></dt>
+<dd><p>Forward pass for DeltaTopicEncoder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – First input tensor, e.g., spliced RNA count</p></li>
+<li><p><strong>y</strong> – Second input tensorm, e.g., unsplice RNA count</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -128,7 +339,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="module.html" class="btn btn-neutral float-left" title="Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="model.html" class="btn btn-neutral float-left" title="Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="TrainingPlan.html" class="btn btn-neutral float-right" title="TrainingPlan" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-"""base components for VAE, ETM, pathway-guided connection"""
 import collections
 from typing import Iterable, List
 import torch
@@ -441,9 +439,34 @@ class MaskedLinearLayers(FCLayers):
 
 class DeltaTopicEncoder(nn.Module):
     """
-    Encoder for DeltaTopic model.
-    
+    A two-headed encoder that maps the two inputs into a shared latent space through a stack of individual and shared fully-connected layers.
+
+    Parameters
+    ----------
+    n_input_list
+        List of the dimension of two input tensors
+    n_output
+        The dimensionality of the output
+    mask
+        The mask to apply to the first layer (experimental)
+    mask_first
+        Transpose the mask if set to false (experimental)
+    n_hidden
+        The number of nodes per hidden layer
+    n_layers_individual
+        The number of fully-connected hidden layers for the individual encoder
+    n_layers_shared
+        The number of fully-connected hidden layers for the shared encoder
+    dropout_rate
+        Dropout rate to apply to each of the hidden layers
+    use_batch_norm
+        Whether to have `BatchNorm` layers or not
+    log_variational
+        Whether to apply log(1+x) transformation to the input
+    combine_method
+        the method to combine the two latent space, either "add" or "concatenate"
     """
+    
     def __init__(
         self,
         n_input_list: List[int],
@@ -498,7 +521,17 @@ class DeltaTopicEncoder(nn.Module):
         self.var_encoder = nn.Linear(n_hidden, n_output)
 
     def forward(self, x: torch.Tensor, y: torch.Tensor, *cat_list: int):
+        '''
+        Forward pass for DeltaTopicEncoder
         
+        Parameters
+        ----------
+        x
+            First input tensor, e.g., spliced RNA count
+        y   
+            Second input tensorm, e.g., unsplice RNA count
+    
+        '''
         if self.log_variational:
             x_ = torch.log(1 + x)
             y_ = torch.log(1 + y)
@@ -522,8 +555,22 @@ class DeltaTopicEncoder(nn.Module):
     
 class DeltaTopicDecoder(nn.Module):
     """
-    Decoder for DeltaTopic model.
+    Decoder network for DeltaTopic, a generative network with spike and slab prior for rho and delta.
 
+    Parameters
+    ----------
+    n_input
+        The dimensionality of the input
+    n_output
+        The dimensionality of the output
+    pip0_rho
+        posterior inclusion probability prior for rho
+    pip0_delta
+        posterior inclusion probability prior for delta
+    v0_rho
+        variance for rho slab
+    vo_delta
+        variance for delta slab            
     """
     def __init__(
         self,
@@ -562,6 +609,14 @@ class DeltaTopicDecoder(nn.Module):
         self,
         z: torch.Tensor,
     ):
+        '''
+        forward pass for DeltaTopicDecoder
+        
+        Parameters
+        ----------
+        z
+            the input the of the decoder, e.g., latent variable from DeltaTopicEncoder
+        '''
         theta = self.soft_max(z)
         rho = self.get_beta(self.spike_logit_rho, self.slab_mean_rho, self.slab_lnvar_rho, self.bias_gene)
         rho_kl = self.sparse_kl_loss(self.logit_0_rho, self.lnvar_0_rho, self.spike_logit_rho, self.slab_mean_rho, self.slab_lnvar_rho)
@@ -574,6 +629,9 @@ class DeltaTopicDecoder(nn.Module):
     def get_rho_delta(
         self,
     ):
+        '''
+        Helper function to get rho and delta
+        '''
         rho = self.get_beta(self.spike_logit_rho, self.slab_mean_rho, self.slab_lnvar_rho, self.bias_gene)
         delta = self.get_beta(self.spike_logit_delta, self.slab_mean_delta, self.slab_lnvar_delta, self.bias_gene)
         
@@ -585,6 +643,20 @@ class DeltaTopicDecoder(nn.Module):
         slab_lnvar: torch.Tensor,
         bias_gene: torch.Tensor, 
     ): 
+        '''
+        Get a spike and slab sample using reparameterization trick
+        
+        Parameters
+        ----------
+        spike_logit
+            logit of spike probability
+        slab_mean
+            mean of slab
+        slab_lnvar
+            log variance of slab
+        bias_gene
+            gene-level bias
+        '''
         pip = torch.sigmoid(spike_logit)
         mean = slab_mean * pip
         var = pip * (1 - pip) * torch.square(slab_mean)
@@ -595,7 +667,15 @@ class DeltaTopicDecoder(nn.Module):
     
     def soft_max(self, 
                  z: torch.Tensor,
-    ):    
+    ):  
+        '''
+        softmax function
+        
+        Parameters
+        ----------
+        z
+            input tensor
+        '''  
         return torch.exp(self.log_softmax(z))
     
     def sparse_kl_loss(
@@ -605,7 +685,23 @@ class DeltaTopicDecoder(nn.Module):
         spike_logit,
         slab_mean,
         slab_lnvar,
-    ):                           
+    ):  
+        '''
+        Compute KL divergence between spike and slab piors and posteriors
+        
+        Parameters
+        ----------
+        logit_0
+            logit of spike probability (prior)
+        lnvar_0
+            log variance of slab (prior)
+        spike_logit
+            logit of spike probability (posterior)
+        slab_mean
+            mean of slab (posterior)            
+        slab_lnvar
+            log variance of slab (posterior)        
+        '''                         
         ## PIP KL between p and p0
         ## p * ln(p / p0) + (1-p) * ln(1-p/1-p0)
         ## = p * ln(p / 1-p) + ln(1-p) +
@@ -623,7 +719,18 @@ class DeltaTopicDecoder(nn.Module):
 
 class BALSAMDecoder(nn.Module):
     """
-    Decoder for BALSAM model 
+    Decoder network for BALSAM model, a generative network with spike and slab prior for beta parameter.
+    
+    Parameters
+    ----------
+    n_input: int
+        The input dimension of the decoder, e.g., number of topics.
+    n_output: int
+        The output dimension of decoder, e.g., tumber of genes.
+    pip0: float
+        The prior probability of spike in the spike and slab prior.
+    v0: float
+        The prior variance of slab in the spike and slab prior.
     """
     def __init__(
         self,
@@ -652,6 +759,14 @@ class BALSAMDecoder(nn.Module):
         self,
         z: torch.Tensor,
     ):
+        '''
+        forward pass of the decoder network.
+        
+        Parameters
+        ----------
+        z: torch.Tensor
+            The input tensor of the decoder, e.g., the latent representation from the encoder.
+        '''
         theta = self.soft_max(z)
         rho = self.get_beta(self.spike_logit, self.slab_mean, self.slab_lnvar, self.bias_d)
         rho_kl = self.sparse_kl_loss(self.logit_0, self.lnvar_0, self.spike_logit, self.slab_mean, self.slab_lnvar)
@@ -661,6 +776,9 @@ class BALSAMDecoder(nn.Module):
     def get_rho(
         self,
     ):
+        '''
+        A helper function to get rho.
+        '''
         rho = self.get_beta(self.spike_logit, self.slab_mean, self.slab_lnvar, self.bias_d)
         
         return rho
@@ -671,6 +789,20 @@ class BALSAMDecoder(nn.Module):
         slab_lnvar: torch.Tensor,
         bias_d: torch.Tensor,
     ): 
+        '''
+        Sample beta using the repameterization trick
+        
+        Parameters
+        ----------
+        spike_logit: torch.Tensor
+            The logit of spike probability.
+        slab_mean: torch.Tensor
+            The mean of slab.
+        slab_lnvar: torch.Tensor
+            The log variance of slab.
+        bias_d: torch.Tensor
+            The bias term in the GLM model.    
+        '''
         pip = torch.sigmoid(spike_logit)
         mean = slab_mean * pip
         var = pip * (1 - pip) * torch.square(slab_mean)
@@ -681,7 +813,15 @@ class BALSAMDecoder(nn.Module):
     
     def soft_max(self, 
                  z: torch.Tensor,
-    ):    
+    ):  
+        ''' 
+        softmax function
+        
+        Parameters
+        ----------
+        z: torch.Tensor
+            The input tensor.
+        ''' 
         return torch.exp(self.log_softmax(z))
     
     def sparse_kl_loss(
@@ -691,7 +831,23 @@ class BALSAMDecoder(nn.Module):
         spike_logit,
         slab_mean,
         slab_lnvar,
-    ):                           
+    ):  
+        '''
+        Compute the KL divergence between spike and slab prior and the posterior.
+        
+        Parameters
+        ----------
+        logit_0: torch.Tensor
+            The logit prior of spike probability.
+        lnvar_0: torch.Tensor
+            The log variance prior of slab. 
+        spike_logit: torch.Tensor
+            The logit of spike probability.
+        slab_mean: torch.Tensor
+            The mean of slab.
+        slab_lnvar: torch.Tensor
+            The log variance of slab.        
+        '''                         
         ## PIP KL between p and p0
         ## p * ln(p / p0) + (1-p) * ln(1-p/1-p0)
         ## = p * ln(p / 1-p) + ln(1-p) +
@@ -709,8 +865,22 @@ class BALSAMDecoder(nn.Module):
                               
 class BALSAMEncoder(nn.Module):
     """
-    Encoder for BALSAM model
-            
+    Encoder for BALSAM model, encodes the input data into a latent topic representation.
+    
+    Parameters
+    ----------
+    n_input: int
+        The number of input features.
+    n_output: int
+        The number of output features.
+    n_hidden: int
+        The number of hidden units.
+    n_layers_individual: int
+        The number of layers in the network.
+    use_batch_norm: bool
+        Whether to use batch normalization.
+    log_variational: bool
+        Whether to apply log(1+x) to the input.         
     """
     def __init__(
         self,
@@ -738,7 +908,9 @@ class BALSAMEncoder(nn.Module):
         self.var_encoder = nn.Linear(n_hidden, n_output)
 
     def forward(self, x: torch.Tensor, *cat_list: int):
-        
+        '''
+        forward pass of the encoder
+        '''
         if self.log_variational:
             x_ = torch.log(1 + x)
     

@@ -48,7 +48,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Quick Start</a></li>
 </ul>
 
         </div>
@@ -86,14 +86,14 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>adata</strong> – AnnData object that has been registered via <code class="xref py py-meth docutils literal notranslate"><span class="pre">setup_anndata()</span></code>.</p></li>
 <li><p><strong>n_latent</strong> – Dimensionality of the latent space</p></li>
-<li><p><strong>**model_kwargs</strong> – Keyword args for <a class="reference internal" href="api/module.html#DeltaTopic.nn.module.DeltaTopic_module" title="DeltaTopic.nn.module.DeltaTopic_module"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeltaTopic_module</span></code></a></p></li>
+<li><p><strong>**model_kwargs</strong> – Keyword args for <a class="reference internal" href="DeltaTopic.nn.module.DeltaTopic_module.html#DeltaTopic.nn.module.DeltaTopic_module" title="DeltaTopic.nn.module.DeltaTopic_module"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeltaTopic_module</span></code></a></p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">adata</span><span class="o">=</span> <span class="n">anndata</span><span class="o">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="n">path_to_anndata_spliced</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X_unspliced</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_anndata_spliced</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s2">&quot;unspliced_expression&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">X_unspliced</span><span class="o">.</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s2">&quot;unspliced_expression&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_unspliced</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DeltaTopic</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">setup_anndata</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;counts&quot;</span><span class="p">,</span> <span class="n">unspliced_obsm_key</span> <span class="o">=</span> <span class="s2">&quot;unspliced_expression&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">DeltaTopic</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">modelhub</span><span class="o">.</span><span class="n">DeltaTopic</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>

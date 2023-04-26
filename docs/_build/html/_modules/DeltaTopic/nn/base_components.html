@@ -47,7 +47,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Quick Start</a></li>
 </ul>
 
         </div>
@@ -75,9 +75,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for DeltaTopic.nn.base_components</h1><div class="highlight"><pre>
-<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;base components for VAE, ETM, pathway-guided connection&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">collections</span>
+<span></span><span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span> <span class="k">as</span> <span class="n">nn</span>
@@ -518,9 +516,34 @@
 
 <div class="viewcode-block" id="DeltaTopicEncoder"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicEncoder">[docs]</a><span class="k">class</span> <span class="nc">DeltaTopicEncoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Encoder for DeltaTopic model.</span>
-<span class="sd">    </span>
+<span class="sd">    A two-headed encoder that maps the two inputs into a shared latent space through a stack of individual and shared fully-connected layers.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_input_list</span>
+<span class="sd">        List of the dimension of two input tensors</span>
+<span class="sd">    n_output</span>
+<span class="sd">        The dimensionality of the output</span>
+<span class="sd">    mask</span>
+<span class="sd">        The mask to apply to the first layer (experimental)</span>
+<span class="sd">    mask_first</span>
+<span class="sd">        Transpose the mask if set to false (experimental)</span>
+<span class="sd">    n_hidden</span>
+<span class="sd">        The number of nodes per hidden layer</span>
+<span class="sd">    n_layers_individual</span>
+<span class="sd">        The number of fully-connected hidden layers for the individual encoder</span>
+<span class="sd">    n_layers_shared</span>
+<span class="sd">        The number of fully-connected hidden layers for the shared encoder</span>
+<span class="sd">    dropout_rate</span>
+<span class="sd">        Dropout rate to apply to each of the hidden layers</span>
+<span class="sd">    use_batch_norm</span>
+<span class="sd">        Whether to have `BatchNorm` layers or not</span>
+<span class="sd">    log_variational</span>
+<span class="sd">        Whether to apply log(1+x) transformation to the input</span>
+<span class="sd">    combine_method</span>
+<span class="sd">        the method to combine the two latent space, either &quot;add&quot; or &quot;concatenate&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    
 <div class="viewcode-block" id="DeltaTopicEncoder.__init__"><a class="viewcode-back" href="../../../DeltaTopic.nn.base_components.DeltaTopicEncoder.html#DeltaTopic.nn.base_components.DeltaTopicEncoder.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">n_input_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
@@ -574,8 +597,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mean_encoder</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_output</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var_encoder</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_output</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">*</span><span class="n">cat_list</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-        
+<div class="viewcode-block" id="DeltaTopicEncoder.forward"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicEncoder.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">*</span><span class="n">cat_list</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Forward pass for DeltaTopicEncoder</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x</span>
+<span class="sd">            First input tensor, e.g., spliced RNA count</span>
+<span class="sd">        y   </span>
+<span class="sd">            Second input tensorm, e.g., unsplice RNA count</span>
+<span class="sd">    </span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_variational</span><span class="p">:</span>
             <span class="n">x_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
             <span class="n">y_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span>
@@ -595,12 +628,26 @@
         <span class="n">q_v</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var_encoder</span><span class="p">(</span><span class="n">q</span><span class="p">),</span> <span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
         <span class="n">latent</span> <span class="o">=</span> <span class="n">reparameterize_gaussian</span><span class="p">(</span><span class="n">q_m</span><span class="p">,</span> <span class="n">q_v</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">q_m</span><span class="p">,</span> <span class="n">q_v</span><span class="p">,</span> <span class="n">latent</span></div>
+        <span class="k">return</span> <span class="n">q_m</span><span class="p">,</span> <span class="n">q_v</span><span class="p">,</span> <span class="n">latent</span></div></div>
     
 <div class="viewcode-block" id="DeltaTopicDecoder"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicDecoder">[docs]</a><span class="k">class</span> <span class="nc">DeltaTopicDecoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Decoder for DeltaTopic model.</span>
+<span class="sd">    Decoder network for DeltaTopic, a generative network with spike and slab prior for rho and delta.</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_input</span>
+<span class="sd">        The dimensionality of the input</span>
+<span class="sd">    n_output</span>
+<span class="sd">        The dimensionality of the output</span>
+<span class="sd">    pip0_rho</span>
+<span class="sd">        posterior inclusion probability prior for rho</span>
+<span class="sd">    pip0_delta</span>
+<span class="sd">        posterior inclusion probability prior for delta</span>
+<span class="sd">    v0_rho</span>
+<span class="sd">        variance for rho slab</span>
+<span class="sd">    vo_delta</span>
+<span class="sd">        variance for delta slab            </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="DeltaTopicDecoder.__init__"><a class="viewcode-back" href="../../../DeltaTopic.nn.base_components.DeltaTopicDecoder.html#DeltaTopic.nn.base_components.DeltaTopicDecoder.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -635,10 +682,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">log_softmax</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LogSoftmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></div>
     
     
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+<div class="viewcode-block" id="DeltaTopicDecoder.forward"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicDecoder.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">z</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        forward pass for DeltaTopicDecoder</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        z</span>
+<span class="sd">            the input the of the decoder, e.g., latent variable from DeltaTopicEncoder</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soft_max</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
         <span class="n">rho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_beta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spike_logit_rho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_mean_rho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_lnvar_rho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias_gene</span><span class="p">)</span>
         <span class="n">rho_kl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sparse_kl_loss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logit_0_rho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lnvar_0_rho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spike_logit_rho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_mean_rho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_lnvar_rho</span><span class="p">)</span>
@@ -646,43 +701,84 @@
         <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_beta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spike_logit_delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_mean_delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_lnvar_delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias_gene</span><span class="p">)</span>
         <span class="n">delta_kl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sparse_kl_loss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logit_0_delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lnvar_0_delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spike_logit_delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_mean_delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_lnvar_delta</span><span class="p">)</span>
         
-        <span class="k">return</span> <span class="n">rho</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">delta_kl</span><span class="p">,</span> <span class="n">theta</span> 
+        <span class="k">return</span> <span class="n">rho</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">delta_kl</span><span class="p">,</span> <span class="n">theta</span> </div>
     
-    <span class="k">def</span> <span class="nf">get_rho_delta</span><span class="p">(</span>
+<div class="viewcode-block" id="DeltaTopicDecoder.get_rho_delta"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicDecoder.get_rho_delta">[docs]</a>    <span class="k">def</span> <span class="nf">get_rho_delta</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Helper function to get rho and delta</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">rho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_beta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spike_logit_rho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_mean_rho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_lnvar_rho</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias_gene</span><span class="p">)</span>
         <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_beta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spike_logit_delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_mean_delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_lnvar_delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias_gene</span><span class="p">)</span>
         
-        <span class="k">return</span> <span class="n">rho</span><span class="p">,</span> <span class="n">delta</span> 
+        <span class="k">return</span> <span class="n">rho</span><span class="p">,</span> <span class="n">delta</span> </div>
     
-    <span class="k">def</span> <span class="nf">get_beta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+<div class="viewcode-block" id="DeltaTopicDecoder.get_beta"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicDecoder.get_beta">[docs]</a>    <span class="k">def</span> <span class="nf">get_beta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
         <span class="n">spike_logit</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
         <span class="n">slab_mean</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> 
         <span class="n">slab_lnvar</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
         <span class="n">bias_gene</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> 
     <span class="p">):</span> 
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get a spike and slab sample using reparameterization trick</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        spike_logit</span>
+<span class="sd">            logit of spike probability</span>
+<span class="sd">        slab_mean</span>
+<span class="sd">            mean of slab</span>
+<span class="sd">        slab_lnvar</span>
+<span class="sd">            log variance of slab</span>
+<span class="sd">        bias_gene</span>
+<span class="sd">            gene-level bias</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">pip</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">spike_logit</span><span class="p">)</span>
         <span class="n">mean</span> <span class="o">=</span> <span class="n">slab_mean</span> <span class="o">*</span> <span class="n">pip</span>
         <span class="n">var</span> <span class="o">=</span> <span class="n">pip</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pip</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">slab_mean</span><span class="p">)</span>
         <span class="n">var</span> <span class="o">=</span> <span class="n">var</span> <span class="o">+</span> <span class="n">pip</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">slab_lnvar</span><span class="p">)</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">mean</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">)</span> <span class="o">-</span> <span class="n">bias_gene</span>
+        <span class="k">return</span> <span class="n">mean</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">)</span> <span class="o">-</span> <span class="n">bias_gene</span></div>
     
-    <span class="k">def</span> <span class="nf">soft_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+<div class="viewcode-block" id="DeltaTopicDecoder.soft_max"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicDecoder.soft_max">[docs]</a>    <span class="k">def</span> <span class="nf">soft_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                  <span class="n">z</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
-    <span class="p">):</span>    
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+    <span class="p">):</span>  
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        softmax function</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        z</span>
+<span class="sd">            input tensor</span>
+<span class="sd">        &#39;&#39;&#39;</span>  
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">z</span><span class="p">))</span></div>
     
-    <span class="k">def</span> <span class="nf">sparse_kl_loss</span><span class="p">(</span>
+<div class="viewcode-block" id="DeltaTopicDecoder.sparse_kl_loss"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicDecoder.sparse_kl_loss">[docs]</a>    <span class="k">def</span> <span class="nf">sparse_kl_loss</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">logit_0</span><span class="p">,</span> 
         <span class="n">lnvar_0</span><span class="p">,</span>
         <span class="n">spike_logit</span><span class="p">,</span>
         <span class="n">slab_mean</span><span class="p">,</span>
         <span class="n">slab_lnvar</span><span class="p">,</span>
-    <span class="p">):</span>                           
+    <span class="p">):</span>  
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute KL divergence between spike and slab piors and posteriors</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        logit_0</span>
+<span class="sd">            logit of spike probability (prior)</span>
+<span class="sd">        lnvar_0</span>
+<span class="sd">            log variance of slab (prior)</span>
+<span class="sd">        spike_logit</span>
+<span class="sd">            logit of spike probability (posterior)</span>
+<span class="sd">        slab_mean</span>
+<span class="sd">            mean of slab (posterior)            </span>
+<span class="sd">        slab_lnvar</span>
+<span class="sd">            log variance of slab (posterior)        </span>
+<span class="sd">        &#39;&#39;&#39;</span>                         
         <span class="c1">## PIP KL between p and p0</span>
         <span class="c1">## p * ln(p / p0) + (1-p) * ln(1-p/1-p0)</span>
         <span class="c1">## = p * ln(p / 1-p) + ln(1-p) +</span>
@@ -696,11 +792,22 @@
         <span class="n">sq_term</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">lnvar_0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">slab_mean</span><span class="p">)</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">slab_lnvar</span><span class="p">))</span>
         <span class="n">kl_g</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">slab_lnvar</span> <span class="o">-</span> <span class="n">lnvar_0</span> <span class="o">-</span> <span class="n">sq_term</span><span class="p">)</span>
         <span class="c1">## Combine both logit and Gaussian KL</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kl_pip</span> <span class="o">+</span> <span class="n">pip_hat</span> <span class="o">*</span> <span class="n">kl_g</span><span class="p">)</span> <span class="c1"># return a number sum over [N_topics, N_genes]</span></div>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kl_pip</span> <span class="o">+</span> <span class="n">pip_hat</span> <span class="o">*</span> <span class="n">kl_g</span><span class="p">)</span> <span class="c1"># return a number sum over [N_topics, N_genes]</span></div></div>
 
 <div class="viewcode-block" id="BALSAMDecoder"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.BALSAMDecoder">[docs]</a><span class="k">class</span> <span class="nc">BALSAMDecoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Decoder for BALSAM model </span>
+<span class="sd">    Decoder network for BALSAM model, a generative network with spike and slab prior for beta parameter.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_input: int</span>
+<span class="sd">        The input dimension of the decoder, e.g., number of topics.</span>
+<span class="sd">    n_output: int</span>
+<span class="sd">        The output dimension of decoder, e.g., tumber of genes.</span>
+<span class="sd">    pip0: float</span>
+<span class="sd">        The prior probability of spike in the spike and slab prior.</span>
+<span class="sd">    v0: float</span>
+<span class="sd">        The prior variance of slab in the spike and slab prior.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="BALSAMDecoder.__init__"><a class="viewcode-back" href="../../../DeltaTopic.nn.base_components.BALSAMDecoder.html#DeltaTopic.nn.base_components.BALSAMDecoder.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -725,50 +832,99 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">log_softmax</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LogSoftmax</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></div>
     
     
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+<div class="viewcode-block" id="BALSAMDecoder.forward"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.BALSAMDecoder.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">z</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        forward pass of the decoder network.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        z: torch.Tensor</span>
+<span class="sd">            The input tensor of the decoder, e.g., the latent representation from the encoder.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soft_max</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
         <span class="n">rho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_beta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spike_logit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_lnvar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias_d</span><span class="p">)</span>
         <span class="n">rho_kl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sparse_kl_loss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logit_0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lnvar_0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spike_logit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_lnvar</span><span class="p">)</span>
         
-        <span class="k">return</span> <span class="n">rho</span><span class="p">,</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">theta</span> 
+        <span class="k">return</span> <span class="n">rho</span><span class="p">,</span> <span class="n">rho_kl</span><span class="p">,</span> <span class="n">theta</span> </div>
     
-    <span class="k">def</span> <span class="nf">get_rho</span><span class="p">(</span>
+<div class="viewcode-block" id="BALSAMDecoder.get_rho"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.BALSAMDecoder.get_rho">[docs]</a>    <span class="k">def</span> <span class="nf">get_rho</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        A helper function to get rho.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">rho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_beta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spike_logit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slab_lnvar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias_d</span><span class="p">)</span>
         
-        <span class="k">return</span> <span class="n">rho</span>
+        <span class="k">return</span> <span class="n">rho</span></div>
     
-    <span class="k">def</span> <span class="nf">get_beta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+<div class="viewcode-block" id="BALSAMDecoder.get_beta"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.BALSAMDecoder.get_beta">[docs]</a>    <span class="k">def</span> <span class="nf">get_beta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
         <span class="n">spike_logit</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
         <span class="n">slab_mean</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> 
         <span class="n">slab_lnvar</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
         <span class="n">bias_d</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
     <span class="p">):</span> 
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sample beta using the repameterization trick</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        spike_logit: torch.Tensor</span>
+<span class="sd">            The logit of spike probability.</span>
+<span class="sd">        slab_mean: torch.Tensor</span>
+<span class="sd">            The mean of slab.</span>
+<span class="sd">        slab_lnvar: torch.Tensor</span>
+<span class="sd">            The log variance of slab.</span>
+<span class="sd">        bias_d: torch.Tensor</span>
+<span class="sd">            The bias term in the GLM model.    </span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">pip</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">spike_logit</span><span class="p">)</span>
         <span class="n">mean</span> <span class="o">=</span> <span class="n">slab_mean</span> <span class="o">*</span> <span class="n">pip</span>
         <span class="n">var</span> <span class="o">=</span> <span class="n">pip</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pip</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">slab_mean</span><span class="p">)</span>
         <span class="n">var</span> <span class="o">=</span> <span class="n">var</span> <span class="o">+</span> <span class="n">pip</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">slab_lnvar</span><span class="p">)</span>
         <span class="n">eps</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn_like</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">mean</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">)</span> <span class="o">-</span> <span class="n">bias_d</span>
+        <span class="k">return</span> <span class="n">mean</span> <span class="o">+</span> <span class="n">eps</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">)</span> <span class="o">-</span> <span class="n">bias_d</span></div>
     
-    <span class="k">def</span> <span class="nf">soft_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+<div class="viewcode-block" id="BALSAMDecoder.soft_max"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.BALSAMDecoder.soft_max">[docs]</a>    <span class="k">def</span> <span class="nf">soft_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                  <span class="n">z</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
-    <span class="p">):</span>    
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+    <span class="p">):</span>  
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        softmax function</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        z: torch.Tensor</span>
+<span class="sd">            The input tensor.</span>
+<span class="sd">        &#39;&#39;&#39;</span> 
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">z</span><span class="p">))</span></div>
     
-    <span class="k">def</span> <span class="nf">sparse_kl_loss</span><span class="p">(</span>
+<div class="viewcode-block" id="BALSAMDecoder.sparse_kl_loss"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.BALSAMDecoder.sparse_kl_loss">[docs]</a>    <span class="k">def</span> <span class="nf">sparse_kl_loss</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">logit_0</span><span class="p">,</span> 
         <span class="n">lnvar_0</span><span class="p">,</span>
         <span class="n">spike_logit</span><span class="p">,</span>
         <span class="n">slab_mean</span><span class="p">,</span>
         <span class="n">slab_lnvar</span><span class="p">,</span>
-    <span class="p">):</span>                           
+    <span class="p">):</span>  
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute the KL divergence between spike and slab prior and the posterior.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        logit_0: torch.Tensor</span>
+<span class="sd">            The logit prior of spike probability.</span>
+<span class="sd">        lnvar_0: torch.Tensor</span>
+<span class="sd">            The log variance prior of slab. </span>
+<span class="sd">        spike_logit: torch.Tensor</span>
+<span class="sd">            The logit of spike probability.</span>
+<span class="sd">        slab_mean: torch.Tensor</span>
+<span class="sd">            The mean of slab.</span>
+<span class="sd">        slab_lnvar: torch.Tensor</span>
+<span class="sd">            The log variance of slab.        </span>
+<span class="sd">        &#39;&#39;&#39;</span>                         
         <span class="c1">## PIP KL between p and p0</span>
         <span class="c1">## p * ln(p / p0) + (1-p) * ln(1-p/1-p0)</span>
         <span class="c1">## = p * ln(p / 1-p) + ln(1-p) +</span>
@@ -782,12 +938,26 @@
         <span class="n">sq_term</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">lnvar_0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">slab_mean</span><span class="p">)</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">slab_lnvar</span><span class="p">))</span>
         <span class="n">kl_g</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">slab_lnvar</span> <span class="o">-</span> <span class="n">lnvar_0</span> <span class="o">-</span> <span class="n">sq_term</span><span class="p">)</span>
         <span class="c1">## Combine both logit and Gaussian KL</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kl_pip</span> <span class="o">+</span> <span class="n">pip_hat</span> <span class="o">*</span> <span class="n">kl_g</span><span class="p">)</span> <span class="c1"># return a number sum over [N_topics, N_genes]</span></div>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">kl_pip</span> <span class="o">+</span> <span class="n">pip_hat</span> <span class="o">*</span> <span class="n">kl_g</span><span class="p">)</span> <span class="c1"># return a number sum over [N_topics, N_genes]</span></div></div>
                               
 <div class="viewcode-block" id="BALSAMEncoder"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.BALSAMEncoder">[docs]</a><span class="k">class</span> <span class="nc">BALSAMEncoder</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Encoder for BALSAM model</span>
-<span class="sd">            </span>
+<span class="sd">    Encoder for BALSAM model, encodes the input data into a latent topic representation.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_input: int</span>
+<span class="sd">        The number of input features.</span>
+<span class="sd">    n_output: int</span>
+<span class="sd">        The number of output features.</span>
+<span class="sd">    n_hidden: int</span>
+<span class="sd">        The number of hidden units.</span>
+<span class="sd">    n_layers_individual: int</span>
+<span class="sd">        The number of layers in the network.</span>
+<span class="sd">    use_batch_norm: bool</span>
+<span class="sd">        Whether to use batch normalization.</span>
+<span class="sd">    log_variational: bool</span>
+<span class="sd">        Whether to apply log(1+x) to the input.         </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="BALSAMEncoder.__init__"><a class="viewcode-back" href="../../../DeltaTopic.nn.base_components.BALSAMEncoder.html#DeltaTopic.nn.base_components.BALSAMEncoder.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -814,8 +984,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mean_encoder</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_output</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var_encoder</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">n_output</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">*</span><span class="n">cat_list</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-        
+<div class="viewcode-block" id="BALSAMEncoder.forward"><a class="viewcode-back" href="../../../api/base_components.html#DeltaTopic.nn.base_components.BALSAMEncoder.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">*</span><span class="n">cat_list</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        forward pass of the encoder</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_variational</span><span class="p">:</span>
             <span class="n">x_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
     
@@ -824,7 +996,7 @@
         <span class="n">q_v</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var_encoder</span><span class="p">(</span><span class="n">q</span><span class="p">),</span> <span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
         <span class="n">latent</span> <span class="o">=</span> <span class="n">reparameterize_gaussian</span><span class="p">(</span><span class="n">q_m</span><span class="p">,</span> <span class="n">q_v</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">q_m</span><span class="p">,</span> <span class="n">q_v</span><span class="p">,</span> <span class="n">latent</span></div>
+        <span class="k">return</span> <span class="n">q_m</span><span class="p">,</span> <span class="n">q_v</span><span class="p">,</span> <span class="n">latent</span></div></div>
 </pre></div>
 
            </div>

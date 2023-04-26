@@ -48,7 +48,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Quick Start</a></li>
 </ul>
 
         </div>
@@ -80,7 +80,19 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DeltaTopic.nn.base_components.</span></span><span class="sig-name descname"><span class="pre">DeltaTopicDecoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder" title="Permalink to this definition"></a></dt>
-<dd><p>Decoder for DeltaTopic model.</p>
+<dd><p>Decoder network for DeltaTopic, a generative network with spike and slab prior for rho and delta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_input</strong> – The dimensionality of the input</p></li>
+<li><p><strong>n_output</strong> – The dimensionality of the output</p></li>
+<li><p><strong>pip0_rho</strong> – posterior inclusion probability prior for rho</p></li>
+<li><p><strong>pip0_delta</strong> – posterior inclusion probability prior for delta</p></li>
+<li><p><strong>v0_rho</strong> – variance for rho slab</p></li>
+<li><p><strong>vo_delta</strong> – variance for delta slab</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="DeltaTopic.nn.base_components.DeltaTopicDecoder.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_output</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pip0_rho</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pip0_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0_rho</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0_delta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DeltaTopic/nn/base_components.html#DeltaTopicDecoder.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.__init__" title="Permalink to this definition"></a></dt>
@@ -92,20 +104,20 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#DeltaTopic.nn.base_components.DeltaTopicDecoder.__init__" title="DeltaTopic.nn.base_components.DeltaTopicDecoder.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(n_input, n_output[, pip0_rho, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code>(z)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicDecoder.forward" title="DeltaTopic.nn.base_components.DeltaTopicDecoder.forward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code></a>(z)</p></td>
+<td><p>forward pass for DeltaTopicDecoder</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_beta</span></code>(spike_logit, slab_mean, slab_lnvar, ...)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicDecoder.get_beta" title="DeltaTopic.nn.base_components.DeltaTopicDecoder.get_beta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_beta</span></code></a>(spike_logit, slab_mean, slab_lnvar, ...)</p></td>
+<td><p>Get a spike and slab sample using reparameterization trick</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_rho_delta</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicDecoder.get_rho_delta" title="DeltaTopic.nn.base_components.DeltaTopicDecoder.get_rho_delta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_rho_delta</span></code></a>()</p></td>
+<td><p>Helper function to get rho and delta</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">soft_max</span></code>(z)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicDecoder.soft_max" title="DeltaTopic.nn.base_components.DeltaTopicDecoder.soft_max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">soft_max</span></code></a>(z)</p></td>
+<td><p>softmax function</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse_kl_loss</span></code>(logit_0, lnvar_0, ...)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/base_components.html#DeltaTopic.nn.base_components.DeltaTopicDecoder.sparse_kl_loss" title="DeltaTopic.nn.base_components.DeltaTopicDecoder.sparse_kl_loss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sparse_kl_loss</span></code></a>(logit_0, lnvar_0, ...)</p></td>
+<td><p>Compute KL divergence between spike and slab piors and posteriors</p></td>
 </tr>
 </tbody>
 </table>
