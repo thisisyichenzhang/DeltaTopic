@@ -18,6 +18,5 @@ setup(
                       'anndata==0.7.8',
                       'pytorch_lightning==1.9.0', 
                       'scanpy==1.9.3', 
-                      'scipy==1.8.0',
-                      'furo']
+                      'scipy==1.8.0']
 )
