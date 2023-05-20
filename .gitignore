@@ -1,5 +1,6 @@
 # ignore all data files and logs
-/data/
+data/
+!data/toy_data.h5ad
 # ignore all output files
 /R_figures/output/*
 # ignore Rmd output files
@@ -16,3 +17,8 @@
 build/
 models/*
 !docs/requirements.txt
+wandb/
+*.pdf
+*.png
+run_benchmark.sh
+sim_benchmark.ipynb
