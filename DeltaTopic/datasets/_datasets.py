@@ -4,7 +4,7 @@ from scanpy import read
 
 url_datadir = "https://github.com/causalpathlab/DeltaTopic/tree/benchmark_dev/"
 
-def toy_data(file_path: Union[str, Path] = "datasets/toy_data.h5ad"):
+def toy_data(file_path: Union[str, Path] = "DeltaTopic/datasets/toy_data.h5ad"):
     """toy_example.
 
     Arguments
