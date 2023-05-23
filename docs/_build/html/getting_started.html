@@ -42,7 +42,6 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Main</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
@@ -92,6 +91,14 @@
 <span class="n">adata_unspliced</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename_unspliced</span><span class="p">)</span>
 </pre></div>
 </div>
+<dl class="simple">
+<dt>OR from a numpy array::</dt><dd><p>from scipy.sparse import csr_matrix
+import anndata as ad
+adata = ad.AnnData(csr_matrix(X_spliced))
+adata.layers[“counts”] = adata.X.copy()
+adata.obsm[“unspliced_expression”] = csr_matrix(X_unspliced)</p>
+</dd>
+</dl>
 <p>Register spliced and unspliced counts:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s2">&quot;unspliced_expression&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata_unspliced</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -104,7 +111,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>if you are training BALSAM only, you can skip the additional step to read register unspliced counts.</p>
+<p>if you are training BALSAM only, you can skip the additional step to read and register unspliced counts.</p>
 </div>
 </section>
 <section id="training">
@@ -112,12 +119,12 @@
 <p>Import the model and train:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">DeltaTopic.nn.modelhub</span> <span class="kn">import</span> <span class="n">BALSAM</span><span class="p">,</span> <span class="n">DeltaTopic</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">DeltaTopic</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">n_latent</span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">400</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Save model states and output the latent space:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">SavePATH</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">SavePATH</span><span class="p">)</span> <span class="c1">#&quot;./saved_model/&quot;</span>
 <span class="n">model</span><span class="o">.</span><span class="n">get_parameters</span><span class="p">(</span><span class="n">save_dir</span> <span class="o">=</span> <span class="n">SavePath</span><span class="p">)</span> <span class="c1"># spike and slab parameters</span>
 <span class="n">topics_np</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_latent_representation</span><span class="p">()</span> <span class="c1"># latent topic proportions</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">topics_np</span><span class="p">)</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">SaveFILENAME</span><span class="p">)</span>

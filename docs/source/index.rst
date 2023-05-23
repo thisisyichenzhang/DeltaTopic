@@ -3,9 +3,9 @@
 Documentaiton for BALSAM and DeltaTopic
 =======================================
 
-**BALSAM**, short for **Ba**yesian **L**atent topic analysis with **S**parse **A**ssociation **M**atrix, is a Bayesian topic modelling approach to summarize static transcriptome patterns from raw gene expression count data. BALSAM views cells as an admixture of gene topics, and relies on Variational AutoEncoder (VAE) and sparse-inducing priors to learn cell topics and infer the gell-topic relationship. 
+**BALSAM**, short for Bayesian Latent topic analysis with Sparse Association Matrix, is a Bayesian topic modelling approach to summarize static transcriptome patterns from raw gene expression count data. BALSAM views cells as an admixture of gene topics, and relies on Variational AutoEncoder (VAE) and sparse-inducing priors to learn cell topics and infer the gell-topic relationship. 
 
-**DeltaTopic**, short for **D**ynamically- **E**ncoded **L**atent Transcriptomic pattern Analysis by **Topic** modeling, is a extension of BALSAM model to ascertain common cellular topic space and topic-specific relationships between the unspliced and spliced data. The detailed description of both methods in preprint `Zhang et al <https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract>`_.
+DeltaTopic, short for Dynamically- Encoded Latent Transcriptomic pattern Analysis by Topic modeling, is a extension of BALSAM model to ascertain common cellular topic space and topic-specific relationships between the unspliced and spliced data. The detailed description of both methods in `Zhang et al <https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract>`_.
 
 .. toctree::
    :caption: Main
