@@ -4,7 +4,7 @@ setup(
     name='DeltaTopic',
     packages=find_packages(),
     author='Yichen Zhang',
-    version='0.0.2',
+    version='0.1.0',
     description="Packages to implement BALSAM and DeltaTopic as described in the paper: Unraveling dynamically-encoded latent transcriptomic patterns in pancreatic cancer cells by topic modelling",
     url="https://github.com/causalpathlab/deltaTopic",
     entry_points={'console_scripts':
