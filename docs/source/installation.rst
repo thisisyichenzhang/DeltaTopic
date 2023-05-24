@@ -15,9 +15,7 @@ Development Version
 
 To work with the latest development version, install from GitHub_ using::
 
-    git clone git clone https://github.com/causalpathlab/deltaTopic.git && deltaTopic
-    python setup.py build
-    python setup.py install
+    python3 -m pip install git+https://github.com/causalpathlab/DeltaTopic
 
 Dependencies
 ^^^^^^^^^^^^
@@ -25,7 +23,7 @@ Dependencies
 - `torch <https://pytorch.org/>`_, `pytroch-lightning <https://pytorch-lightning.readthedocs.io/en/latest/>`_ - deep learning framework.
 - `anndata <https://anndata.readthedocs.io/>`_ - annotated data object.
 - `scanpy <https://scanpy.readthedocs.io/>`_ - toolkit for single-cell analysis.
-- `numpy <https://docs.scipy.org/>`_, `scipy <https://docs.scipy.org/>`_ 
+- `numpy <https://docs.scipy.org/>`_, `scipy <https://docs.scipy.org/>`_ - scientific computing.
 
 Analysis pipeline
 ^^^^^^^^^^^^^^^^^
