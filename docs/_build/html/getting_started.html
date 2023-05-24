@@ -11,13 +11,17 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DeltaTopic Basics" href="notebooks/toy_example.html" />
     <link rel="prev" title="References" href="references.html" /> 
 </head>
 
@@ -42,6 +46,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Main</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About DeltaTopic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
@@ -54,6 +59,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/toy_example.html">DeltaTopic Basics</a></li>
 </ul>
 
         </div>
@@ -91,14 +97,14 @@
 <span class="n">adata_unspliced</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename_unspliced</span><span class="p">)</span>
 </pre></div>
 </div>
-<dl class="simple">
-<dt>OR from a numpy array::</dt><dd><p>from scipy.sparse import csr_matrix
-import anndata as ad
-adata = ad.AnnData(csr_matrix(X_spliced))
-adata.layers[“counts”] = adata.X.copy()
-adata.obsm[“unspliced_expression”] = csr_matrix(X_unspliced)</p>
-</dd>
-</dl>
+<p>OR from a numpy array:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span>
+<span class="kn">import</span> <span class="nn">anndata</span> <span class="k">as</span> <span class="nn">ad</span>
+<span class="n">adata</span> <span class="o">=</span> <span class="n">ad</span><span class="o">.</span><span class="n">AnnData</span><span class="p">(</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">X_spliced</span><span class="p">))</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s2">&quot;unspliced_expression&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">X_unspliced</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>Register spliced and unspliced counts:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s2">&quot;counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s2">&quot;unspliced_expression&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata_unspliced</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -117,7 +123,7 @@ adata.obsm[“unspliced_expression”] = csr_matrix(X_unspliced)</p>
 <section id="training">
 <h2>Training<a class="headerlink" href="#training" title="Permalink to this heading"></a></h2>
 <p>Import the model and train:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">DeltaTopic.nn.modelhub</span> <span class="kn">import</span> <span class="n">BALSAM</span><span class="p">,</span> <span class="n">DeltaTopic</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">DeltaTopic.nn.modelhub</span> <span class="kn">import</span> <span class="n">DeltaTopic</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">DeltaTopic</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">n_latent</span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
 </pre></div>
@@ -133,7 +139,7 @@ adata.obsm[“unspliced_expression”] = csr_matrix(X_unspliced)</p>
 </section>
 <section id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this heading"></a></h2>
-<p>Finally, perform your favorite analyis on the latent space and topic loading. For an example of analyis used in the paper, please refer to the Rmd files in the <a class="reference external" href="https://github.com/causalpathlab/DeltaTopic/tree/main/R_figures/">project repository</a>.</p>
+<p>Finally, perform favorite analyis on the latent space and topic loading. For an example of analyis used in the paper, please refer to the Rmd files in the <a class="reference external" href="https://github.com/causalpathlab/DeltaTopic/tree/main/R_figures/">project repository</a>.</p>
 </section>
 </section>
 
@@ -142,6 +148,7 @@ adata.obsm[“unspliced_expression”] = csr_matrix(X_unspliced)</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="references.html" class="btn btn-neutral float-left" title="References" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="notebooks/toy_example.html" class="btn btn-neutral float-right" title="DeltaTopic Basics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
