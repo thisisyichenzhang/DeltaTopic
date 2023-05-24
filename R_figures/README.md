@@ -20,3 +20,6 @@
 
 ### Figure 4
 [_Fig4_vector_filed.Rmd](_Fig4_vector_filed.Rmd) - Vector field plot of the DeltaTopic weights
+
+### Figure 5
+[_Fig5_benchmark.R](_Fig5_benchmark.R) - Benchmark of topic models, PCA and NMF-based methods on label prediction and gene activity prediction

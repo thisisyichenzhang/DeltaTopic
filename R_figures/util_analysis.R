@@ -9,19 +9,23 @@ require(patchwork)
 require(ggplot2)
 require(grkmisc) # Truncates, trims, and wraps strings. Built for ggplot2 plots with long string labels.
 
-
 read_and_parse <- function(directory, filename = "common_colmax.csv") {
   # Read in the csv file
-    filename <- paste0(directory, "/output/", filename)
-  if (file.exists(filename)) {
-    dt <- data.table::fread(filename)
-    if(filename == paste0(directory, "/output/", "nmi_values.txt")){
-        dt[, model:=c("theta", "PCA", "PCA-concat"),]
-    }  
-  } else {
+  filename <- paste0(directory, "/output/", filename)
+  
+  if (!file.exists(filename)) {
     print(paste("File does not exist:", filename))
-    stop()
+    return(NULL)
   }
+  
+  dt <- data.table::fread(filename)
+  
+  if(filename == paste0(directory, "/output/", "nmi_values.txt")){
+    dt[, model:=c("theta", "PCA", "PCA-concat"),]
+  } else if (filename == paste0(directory, "/output/", "nmi_values_new.txt")){
+    dt[, model:=c("theta", "PCA", "PCA-concat", "PCA-concat-S","PCA-concat-U","LIGER", "LIGER-S","LIGER-U", "NMF"),]  
+  }
+
   # Parse directory name
   parsed <- str_match(directory, "models/([^_/]+)_ep2000_nlv([0-9]+)_simseed([0-9]+)_seed([0-9]+)_N([0-9]+)_G([0-9]+)_T([0-9]+)_topk([0-9]+)_pip([0-9.]+).*")[, -1]
   
@@ -30,6 +34,7 @@ read_and_parse <- function(directory, filename = "common_colmax.csv") {
   
   return(dt)
 }
+
 
 # hypergeom test with set cutoffs
 run.hyper.test <- function(gene.weights, geneset.dt, k=500, min.weight=1e-9) {
