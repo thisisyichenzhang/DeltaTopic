@@ -13,6 +13,7 @@ Read your data file, for example, a h5ad file, using `scanpy`::
     adata_unspliced = sc.read(filename_unspliced)
 
 OR from a numpy array::
+    
     from scipy.sparse import csr_matrix
     import anndata as ad
     adata = ad.AnnData(csr_matrix(X_spliced))
@@ -37,7 +38,7 @@ Training
 
 Import the model and train::
 
-    from DeltaTopic.nn.modelhub import BALSAM, DeltaTopic
+    from DeltaTopic.nn.modelhub import DeltaTopic
     model = DeltaTopic(adata, n_latent = 32)
     model.train(400)
 
@@ -52,4 +53,4 @@ Save model states and output the latent space::
 Analysis
 ''''''''
 
-Finally, perform your favorite analyis on the latent space and topic loading. For an example of analyis used in the paper, please refer to the Rmd files in the `project repository <https://github.com/causalpathlab/DeltaTopic/tree/main/R_figures/>`_.
+Finally, perform favorite analyis on the latent space and topic loading. For an example of analyis used in the paper, please refer to the Rmd files in the `project repository <https://github.com/causalpathlab/DeltaTopic/tree/main/R_figures/>`_.
