@@ -8,7 +8,7 @@
 
 ## DeltaTopic: Dynamically-Encoded Latent Transcriptomic pattern Analysis by Topic modeling
 
-This is a project repository for our paper
+This is a project repository for the paper
 
 - Y Zhang, M Khalilitousi, YP Park, [Unraveling dynamically-encoded latent transcriptomic patterns in pancreatic cancer cells by topic modelling](https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract).
 
@@ -19,7 +19,6 @@ Building a comprehensive topic model has become an important research tool in si
 ### Installation
 
 DeltaTopic requires Python 3.8 or later. We recommend to use [Miniconda](http://conda.pydata.org/miniconda.html).
-
 
 Install DeltaTopic from [PyPI](https://pypi.org/project/DeltaTopic) using:
 
@@ -34,27 +33,4 @@ To work with the latest development version, install from [GitHub](https://githu
 python3 -m pip install git+https://github.com/causalpathlab/DeltaTopic
 ```
 
-### Data
-
-We obtained the original FASTQ files for pancreatic ductal adenocarcinoma (PDAC) from the [public repository](https://ngdc.cncb.ac.cn/gsa/browse/CRA001160) provided by two PDAC studies. The spliced and unspliced count matrices were quantified by [kb-python](https://www.kallistobus.tools/).
-
-```bash
-kb count -i index.idx -g t2g.txt -x 10xv2 -o ${output} \
--c1 spliced_t2c.txt -c2 unspliced_t2c.txt \
---workflow lamanno --filter bustools \
-${fastq1} ${fastq2}
-```
-
-### Run
-
-```bash
-# train BALASM model on the spliced count data
-BALSAM --nLV 32 --EPOCHS 100 
-```
-
-```bash
-# train deltaTopic model
-DeltaTopic --nLV 32 --EPOCHS 100 
-```
-
-#### For full documentaions, please refer to [DeltaTopic Documentation](https://deltatopic.readthedocs.io/en/latest/)
+#### For full documentaions, please refer to [Documentation](https://deltatopic.readthedocs.io/en/latest/)

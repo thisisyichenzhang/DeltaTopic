@@ -199,6 +199,9 @@ def process_liger_object(liger_object, adata):
     V_unspliced = liger_object.adata_list[1].varm['V']
     V_df_unspliced = pd.DataFrame(V_unspliced, index=liger_object.adata_list[1].var.index)
 
+    V_W = liger_object.adata_list[0].varm['W']
+    V_df_W = pd.DataFrame(V_W, index=liger_object.adata_list[0].var.index)
+    
     # Create full_df and join with V_df_spliced and V_df_unspliced
     full_df = pd.DataFrame(index = adata.var.index)
     full_df['gene_order'] = range(adata.var.index.shape[0])
@@ -209,16 +212,18 @@ def process_liger_object(liger_object, adata):
     df_unspliced = full_df.join(V_df_unspliced, how='outer')
     df_unspliced = df_unspliced.fillna(0)
 
+    df_W = full_df.join(V_df_W, how='outer')
+    df_W = df_W.fillna(0)
     # Sort by gene order
     sorted_df_spliced = df_spliced.sort_values(by='gene_order')
     sorted_df_unspliced = df_unspliced.sort_values(by='gene_order')
-    
-    return sorted_df_spliced, sorted_df_unspliced
+    sorted_df_W = df_W.sort_values(by='gene_order')
+    return sorted_df_spliced, sorted_df_unspliced, sorted_df_W
 
-df_W_liger_spliced, df_W_liger_unspliced = process_liger_object(liger_object, adata)
+df_W_liger_spliced, df_W_liger_unspliced, sorted_df_W = process_liger_object(liger_object, adata)
 weight_liger_S = df_W_liger_spliced.iloc[:, 1:].T
 weight_liger_U = df_W_liger_unspliced.iloc[:, 1:].T
-
+weight_liger_W = sorted_df_W.iloc[:, 1:].T
 
 # In[60]:
 
@@ -241,6 +246,7 @@ weights = {
     "liger_concat_S": weight_liger_S,
     "liger_concat_U": weight_liger_U,
     "nmf_spliced":H_nmf,
+    "liger_concat_W": weight_liger_W,
 }
 betas = {
     "unspliced": rho,

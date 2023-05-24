@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeltaTopic Basics &mdash; DeltaTopic  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Quick Start" href="../getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DeltaTopic
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Main</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About DeltaTopic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">DeltaTopic Basics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Data-Prepraration">Data Prepraration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Model-Training">Model Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Analysis">Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Estimate-topic-proportions">Estimate topic proportions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Compute-the-expected-weight-from-spike-and-slab-parameters">Compute the expected weight from spike and slab parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DeltaTopic</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">DeltaTopic Basics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/notebooks/toy_example.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="DeltaTopic-Basics">
+<h1>DeltaTopic Basics<a class="headerlink" href="#DeltaTopic-Basics" title="Permalink to this heading"></a></h1>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>!python3 -m pip install DeltaTopic
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Requirement already satisfied: DeltaTopic in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (0.0.2)
+Requirement already satisfied: scanpy==1.9.3 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from DeltaTopic) (1.9.3)
+Requirement already satisfied: scipy==1.8.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from DeltaTopic) (1.8.0)
+Requirement already satisfied: anndata==0.7.8 in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from DeltaTopic) (0.7.8)
+Requirement already satisfied: pandas==1.4.1 in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from DeltaTopic) (1.4.1)
+Requirement already satisfied: numpy==1.21.5 in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from DeltaTopic) (1.21.5)
+Requirement already satisfied: pytorch-lightning==1.9.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from DeltaTopic) (1.9.0)
+Requirement already satisfied: h5py==3.6.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from DeltaTopic) (3.6.0)
+Requirement already satisfied: torch==2.0.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from DeltaTopic) (2.0.0)
+Requirement already satisfied: xlrd&lt;2.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from anndata==0.7.8-&gt;DeltaTopic) (1.2.0)
+Requirement already satisfied: natsort in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from anndata==0.7.8-&gt;DeltaTopic) (8.3.1)
+Requirement already satisfied: packaging&gt;=20 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from anndata==0.7.8-&gt;DeltaTopic) (21.3)
+Requirement already satisfied: python-dateutil&gt;=2.8.1 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from pandas==1.4.1-&gt;DeltaTopic) (2.8.2)
+Requirement already satisfied: pytz&gt;=2020.1 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from pandas==1.4.1-&gt;DeltaTopic) (2022.1)
+Requirement already satisfied: typing-extensions&gt;=4.0.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from pytorch-lightning==1.9.0-&gt;DeltaTopic) (4.1.1)
+Requirement already satisfied: PyYAML&gt;=5.4 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from pytorch-lightning==1.9.0-&gt;DeltaTopic) (6.0)
+Requirement already satisfied: lightning-utilities&gt;=0.4.2 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from pytorch-lightning==1.9.0-&gt;DeltaTopic) (0.8.0)
+Requirement already satisfied: tqdm&gt;=4.57.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from pytorch-lightning==1.9.0-&gt;DeltaTopic) (4.65.0)
+Requirement already satisfied: fsspec[http]&gt;2021.06.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from pytorch-lightning==1.9.0-&gt;DeltaTopic) (2023.4.0)
+Requirement already satisfied: torchmetrics&gt;=0.7.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from pytorch-lightning==1.9.0-&gt;DeltaTopic) (0.11.4)
+Requirement already satisfied: scikit-learn&gt;=0.22 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from scanpy==1.9.3-&gt;DeltaTopic) (1.2.2)
+Requirement already satisfied: networkx&gt;=2.3 in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from scanpy==1.9.3-&gt;DeltaTopic) (3.1)
+Requirement already satisfied: numba&gt;=0.41.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from scanpy==1.9.3-&gt;DeltaTopic) (0.56.4)
+Requirement already satisfied: matplotlib&gt;=3.4 in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from scanpy==1.9.3-&gt;DeltaTopic) (3.7.1)
+Requirement already satisfied: session-info in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from scanpy==1.9.3-&gt;DeltaTopic) (1.0.0)
+Requirement already satisfied: statsmodels&gt;=0.10.0rc2 in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from scanpy==1.9.3-&gt;DeltaTopic) (0.14.0)
+Requirement already satisfied: joblib in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from scanpy==1.9.3-&gt;DeltaTopic) (1.2.0)
+Requirement already satisfied: seaborn in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from scanpy==1.9.3-&gt;DeltaTopic) (0.12.2)
+Requirement already satisfied: patsy in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from scanpy==1.9.3-&gt;DeltaTopic) (0.5.2)
+Requirement already satisfied: umap-learn&gt;=0.3.10 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from scanpy==1.9.3-&gt;DeltaTopic) (0.5.3)
+Requirement already satisfied: jinja2 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (3.0.3)
+Requirement already satisfied: sympy in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (1.11.1)
+Requirement already satisfied: nvidia-cusolver-cu11==11.4.0.1 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (11.4.0.1)
+Requirement already satisfied: nvidia-nccl-cu11==2.14.3 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (2.14.3)
+Requirement already satisfied: nvidia-nvtx-cu11==11.7.91 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (11.7.91)
+Requirement already satisfied: triton==2.0.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (2.0.0)
+Requirement already satisfied: nvidia-curand-cu11==10.2.10.91 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (10.2.10.91)
+Requirement already satisfied: nvidia-cudnn-cu11==8.5.0.96 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (8.5.0.96)
+Requirement already satisfied: filelock in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (3.6.0)
+Requirement already satisfied: nvidia-cuda-runtime-cu11==11.7.99 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (11.7.99)
+Requirement already satisfied: nvidia-cufft-cu11==10.9.0.58 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (10.9.0.58)
+Requirement already satisfied: nvidia-cusparse-cu11==11.7.4.91 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (11.7.4.91)
+Requirement already satisfied: nvidia-cublas-cu11==11.10.3.66 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (11.10.3.66)
+Requirement already satisfied: nvidia-cuda-cupti-cu11==11.7.101 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (11.7.101)
+Requirement already satisfied: nvidia-cuda-nvrtc-cu11==11.7.99 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from torch==2.0.0-&gt;DeltaTopic) (11.7.99)
+Requirement already satisfied: wheel in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from nvidia-cublas-cu11==11.10.3.66-&gt;torch==2.0.0-&gt;DeltaTopic) (0.38.4)
+Requirement already satisfied: setuptools in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from nvidia-cublas-cu11==11.10.3.66-&gt;torch==2.0.0-&gt;DeltaTopic) (66.0.0)
+Requirement already satisfied: cmake in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from triton==2.0.0-&gt;torch==2.0.0-&gt;DeltaTopic) (3.26.3)
+Requirement already satisfied: lit in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from triton==2.0.0-&gt;torch==2.0.0-&gt;DeltaTopic) (16.0.2)
+Requirement already satisfied: aiohttp!=4.0.0a0,!=4.0.0a1 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from fsspec[http]&gt;2021.06.0-&gt;pytorch-lightning==1.9.0-&gt;DeltaTopic) (3.8.4)
+Requirement already satisfied: requests in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from fsspec[http]&gt;2021.06.0-&gt;pytorch-lightning==1.9.0-&gt;DeltaTopic) (2.28.2)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from matplotlib&gt;=3.4-&gt;scanpy==1.9.3-&gt;DeltaTopic) (4.31.2)
+Requirement already satisfied: importlib-resources&gt;=3.2.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from matplotlib&gt;=3.4-&gt;scanpy==1.9.3-&gt;DeltaTopic) (5.4.0)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from matplotlib&gt;=3.4-&gt;scanpy==1.9.3-&gt;DeltaTopic) (3.0.7)
+Requirement already satisfied: cycler&gt;=0.10 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from matplotlib&gt;=3.4-&gt;scanpy==1.9.3-&gt;DeltaTopic) (0.11.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from matplotlib&gt;=3.4-&gt;scanpy==1.9.3-&gt;DeltaTopic) (1.4.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from matplotlib&gt;=3.4-&gt;scanpy==1.9.3-&gt;DeltaTopic) (1.0.7)
+Requirement already satisfied: pillow&gt;=6.2.0 in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from matplotlib&gt;=3.4-&gt;scanpy==1.9.3-&gt;DeltaTopic) (9.5.0)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from numba&gt;=0.41.0-&gt;scanpy==1.9.3-&gt;DeltaTopic) (0.39.1)
+Requirement already satisfied: importlib-metadata in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from numba&gt;=0.41.0-&gt;scanpy==1.9.3-&gt;DeltaTopic) (6.3.0)
+Requirement already satisfied: six&gt;=1.5 in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from python-dateutil&gt;=2.8.1-&gt;pandas==1.4.1-&gt;DeltaTopic) (1.16.0)
+Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from scikit-learn&gt;=0.22-&gt;scanpy==1.9.3-&gt;DeltaTopic) (3.1.0)
+Requirement already satisfied: pynndescent&gt;=0.5 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from umap-learn&gt;=0.3.10-&gt;scanpy==1.9.3-&gt;DeltaTopic) (0.5.10)
+Requirement already satisfied: MarkupSafe&gt;=2.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from jinja2-&gt;torch==2.0.0-&gt;DeltaTopic) (2.1.0)
+Requirement already satisfied: stdlib-list in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from session-info-&gt;scanpy==1.9.3-&gt;DeltaTopic) (0.8.0)
+Requirement already satisfied: mpmath&gt;=0.19 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from sympy-&gt;torch==2.0.0-&gt;DeltaTopic) (1.3.0)
+Requirement already satisfied: async-timeout&lt;5.0,&gt;=4.0.0a3 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1-&gt;fsspec[http]&gt;2021.06.0-&gt;pytorch-lightning==1.9.0-&gt;DeltaTopic) (4.0.2)
+Requirement already satisfied: attrs&gt;=17.3.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1-&gt;fsspec[http]&gt;2021.06.0-&gt;pytorch-lightning==1.9.0-&gt;DeltaTopic) (21.4.0)
+Requirement already satisfied: aiosignal&gt;=1.1.2 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1-&gt;fsspec[http]&gt;2021.06.0-&gt;pytorch-lightning==1.9.0-&gt;DeltaTopic) (1.3.1)
+Requirement already satisfied: frozenlist&gt;=1.1.1 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1-&gt;fsspec[http]&gt;2021.06.0-&gt;pytorch-lightning==1.9.0-&gt;DeltaTopic) (1.3.3)
+Requirement already satisfied: charset-normalizer&lt;4.0,&gt;=2.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1-&gt;fsspec[http]&gt;2021.06.0-&gt;pytorch-lightning==1.9.0-&gt;DeltaTopic) (3.1.0)
+Requirement already satisfied: multidict&lt;7.0,&gt;=4.5 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1-&gt;fsspec[http]&gt;2021.06.0-&gt;pytorch-lightning==1.9.0-&gt;DeltaTopic) (6.0.4)
+Requirement already satisfied: yarl&lt;2.0,&gt;=1.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from aiohttp!=4.0.0a0,!=4.0.0a1-&gt;fsspec[http]&gt;2021.06.0-&gt;pytorch-lightning==1.9.0-&gt;DeltaTopic) (1.9.2)
+Requirement already satisfied: zipp&gt;=3.1.0 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from importlib-resources&gt;=3.2.0-&gt;matplotlib&gt;=3.4-&gt;scanpy==1.9.3-&gt;DeltaTopic) (3.7.0)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages (from requests-&gt;fsspec[http]&gt;2021.06.0-&gt;pytorch-lightning==1.9.0-&gt;DeltaTopic) (1.26.15)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from requests-&gt;fsspec[http]&gt;2021.06.0-&gt;pytorch-lightning==1.9.0-&gt;DeltaTopic) (2022.12.7)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/BCCRC.CA/yzhang/.local/share/r-miniconda/envs/DeltaTopic/lib/python3.8/site-packages (from requests-&gt;fsspec[http]&gt;2021.06.0-&gt;pytorch-lightning==1.9.0-&gt;DeltaTopic) (3.4)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import os
+import pandas as pd
+import numpy as np
+import DeltaTopic.datasets as dt
+from DeltaTopic.nn.util import setup_anndata
+from DeltaTopic.nn.modelhub import DeltaTopic
+</pre></div>
+</div>
+</div>
+<section id="Data-Prepraration">
+<h2>Data Prepraration<a class="headerlink" href="#Data-Prepraration" title="Permalink to this heading"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>adata = dt.toy_data()
+setup_anndata(adata, layer=&quot;counts&quot;, unspliced_obsm_key = &quot;unspliced_expression&quot;)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Model-Training">
+<h2>Model Training<a class="headerlink" href="#Model-Training" title="Permalink to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>model = DeltaTopic(adata, n_latent = 8)
+model.train(10)
+
+SavePATH = &quot;./my_model_DIR/&quot;
+model_id = &quot;my_model&quot;
+model.save(os.path.join(SavePATH, model_id), overwrite=True, save_anndata=False)
+print(f&quot;Model saved at:&quot;, os.path.join(SavePATH, model_id))
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/BCCRC.CA/yzhang/.local/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/accelerator_connector.py:467: LightningDeprecationWarning: Setting `Trainer(gpus=[0])` is deprecated in v1.7 and will be removed in v2.0. Please use `Trainer(accelerator=&#39;gpu&#39;, devices=[0])` instead.
+  rank_zero_deprecation(
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+You are using a CUDA device (&#39;NVIDIA GeForce RTX 3080&#39;) that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision(&#39;medium&#39; | &#39;high&#39;)` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0,1]
+
+  | Name   | Type              | Params
+---------------------------------------------
+0 | module | DeltaTopic_module | 1.6 M
+---------------------------------------------
+1.6 M     Trainable params
+4         Non-trainable params
+1.6 M     Total params
+6.380     Total estimated model params size (MB)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Epoch 9: 100%|██████████| 71/71 [00:01&lt;00:00, 62.20it/s, loss=5.32e+04, v_num=1]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+`Trainer.fit` stopped: `max_epochs=10` reached.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Epoch 9: 100%|██████████| 71/71 [00:01&lt;00:00, 62.04it/s, loss=5.32e+04, v_num=1]
+Model saved at: ./my_model_DIR/my_model
+</pre></div></div>
+</div>
+</section>
+<section id="Analysis">
+<h2>Analysis<a class="headerlink" href="#Analysis" title="Permalink to this heading"></a></h2>
+<section id="Estimate-topic-proportions">
+<h3>Estimate topic proportions<a class="headerlink" href="#Estimate-topic-proportions" title="Permalink to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>topics_np = model.get_latent_representation() # save latent topic proportions
+pd.DataFrame(topics_np).to_csv(os.path.join(&#39;topics.csv&#39;))
+topics_np.shape
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Deterministic: True, output_softmax_z: True
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(10000, 8)
+</pre></div></div>
+</div>
+</section>
+<section id="Compute-the-expected-weight-from-spike-and-slab-parameters">
+<h3>Compute the expected weight from spike and slab parameters<a class="headerlink" href="#Compute-the-expected-weight-from-spike-and-slab-parameters" title="Permalink to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># save spike and slab parameters from the model
+model.get_parameters(save_dir = os.path.join(SavePATH, model_id))
+
+spike_logit_rho = np.loadtxt(os.path.join(SavePATH, model_id, &quot;model_parameters&quot;, &quot;spike_logit_rho.txt&quot;))
+slab_mean_rho = np.loadtxt(os.path.join(SavePATH, model_id, &quot;model_parameters&quot;, &quot;spike_logit_rho.txt&quot;))
+pip_rho = 1/np.exp(-spike_logit_rho)
+weight_rho = slab_mean_rho * pip_rho
+
+spike_logit_delta = np.loadtxt(os.path.join(SavePATH, model_id, &quot;model_parameters&quot;, &quot;spike_logit_delta.txt&quot;))
+slab_mean_delta = np.loadtxt(os.path.join(SavePATH, model_id, &quot;model_parameters&quot;, &quot;spike_logit_delta.txt&quot;))
+pip_delta = 1/np.exp(-spike_logit_delta)
+weight_delta = slab_mean_delta * pip_delta
+
+print(weight_rho.shape)
+print(weight_delta.shape)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(8, 5000)
+(8, 5000)
+</pre></div></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../getting_started.html" class="btn btn-neutral float-left" title="Quick Start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Yichen Zhang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

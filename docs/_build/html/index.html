@@ -4,21 +4,24 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Documentaiton for BALSAM and DeltaTopic &mdash; DeltaTopic  documentation</title>
+  <title>Topic models for single-cell genomics - BALSAM and DeltaTopic &mdash; DeltaTopic  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation" href="installation.html" /> 
+    <link rel="next" title="About DeltaTopic" href="about.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,6 +45,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Main</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About DeltaTopic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
@@ -49,6 +53,7 @@
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/toy_example.html">DeltaTopic Basics</a></li>
 </ul>
 
         </div>
@@ -65,7 +70,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Documentaiton for BALSAM and DeltaTopic</li>
+      <li class="breadcrumb-item active">Topic models for single-cell genomics - BALSAM and DeltaTopic</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -76,21 +81,32 @@
            <div itemprop="articleBody">
              
   <p><a class="reference external" href="https://pypi.org/project/DeltaTopic/"><img alt="PyPI" src="https://badge.fury.io/py/DeltaTopic.svg" /></a> <a class="reference external" href="https://deltatopic.readthedocs.io"><img alt="Docs" src="https://readthedocs.org/projects/deltatopic/badge/?version=latest" /></a></p>
-<section id="documentaiton-for-balsam-and-deltatopic">
-<h1>Documentaiton for BALSAM and DeltaTopic<a class="headerlink" href="#documentaiton-for-balsam-and-deltatopic" title="Permalink to this heading"></a></h1>
+<section id="topic-models-for-single-cell-genomics-balsam-and-deltatopic">
+<h1>Topic models for single-cell genomics - BALSAM and DeltaTopic<a class="headerlink" href="#topic-models-for-single-cell-genomics-balsam-and-deltatopic" title="Permalink to this heading"></a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">Key Contributor(s)</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://twitter.com/YichenZhang15">Yichen Zhang</a>: Developer</p></li>
+</ul>
+</aside>
+<p>This is a documentation for the BALSAM and DeltaTopic models, proposed in <a class="reference external" href="https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract">Zhang et al.</a>.</p>
 <p><strong>BALSAM</strong>, short for Bayesian Latent topic analysis with Sparse Association Matrix, is a Bayesian topic modelling approach to summarize static transcriptome patterns from raw gene expression count data. BALSAM views cells as an admixture of gene topics, and relies on Variational AutoEncoder (VAE) and sparse-inducing priors to learn cell topics and infer the gell-topic relationship.</p>
-<p>DeltaTopic, short for Dynamically- Encoded Latent Transcriptomic pattern Analysis by Topic modeling, is a extension of BALSAM model to ascertain common cellular topic space and topic-specific relationships between the unspliced and spliced data. The detailed description of both methods in <a class="reference external" href="https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract">Zhang et al</a>.</p>
+<p><strong>DeltaTopic</strong>, short for Dynamically- Encoded Latent Transcriptomic pattern Analysis by Topic modeling, is a extension of BALSAM model to ascertain common cellular topic space and topic-specific relationships between the unspliced and spliced data.</p>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
+<p>Zhang <em>et al.</em> (2023), Unraveling dynamically-encoded latent transcriptomic patterns in pancreatic cancer cells by topic modelling, <a class="reference external" href="https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract">preprint</a>.</p>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
 </div>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="about.html" class="btn btn-neutral float-right" title="About DeltaTopic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

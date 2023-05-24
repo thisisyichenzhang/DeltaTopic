@@ -29,6 +29,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.autosummary',
               'sphinx.ext.napoleon',
               'sphinxcontrib.bibtex', # bib citation
+              "nbsphinx", # jupyter notebook
 ]
 bibtex_bibfiles = ['deltaTopic.bib']
 #bibtex_default_style = 'author_year'
