@@ -14,7 +14,7 @@ setup(
     install_requires=['pandas==1.4.1',
                       'torch==2.0.0', 
                       'h5py==3.6.0', 
-                      'numpy==1.21.5', 
+                      'numpy==1.21.0', 
                       'anndata==0.7.8',
                       'pytorch_lightning==1.9.0', 
                       'scanpy==1.9.3', 
