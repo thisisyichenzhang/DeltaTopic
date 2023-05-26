@@ -3,7 +3,7 @@
 
 [badge-pypi]: https://badge.fury.io/py/DeltaTopic.svg
 [link-pypi]: https://pypi.org/project/DeltaTopic/
-[badge-docs]: https://readthedocs.org/projects/deltatopic/badge/?version=latest
+[badge-docs]: https://readthedocs.org/projects/deltatopic/badge/
 [link-docs]: https://deltatopic.readthedocs.io
 
 ## DeltaTopic: Dynamically-Encoded Latent Transcriptomic pattern Analysis by Topic modeling
