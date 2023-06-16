@@ -9,7 +9,7 @@
 ## DeltaTopic: Dynamically-Encoded Latent Transcriptomic pattern Analysis by Topic modelling
 
 <div align="center">
-    <img src="images/DeltaTopic_GraphicAbstract.png" alt="Logo" width="500" height="500">
+    <img src="images/DeltaTopic_GraphicAbstract.png" alt="Logo" width="1000" height="500">
 </div>
 
 ###
