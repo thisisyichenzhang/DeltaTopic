@@ -19,7 +19,6 @@ models/*
 !docs/requirements.txt
 wandb/
 *.pdf
-*.png
 run_benchmark.sh
 *.sh
 sim_benchmark.ipynb

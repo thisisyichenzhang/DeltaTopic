@@ -3,14 +3,19 @@
 
 [badge-pypi]: https://badge.fury.io/py/DeltaTopic.svg
 [link-pypi]: https://pypi.org/project/DeltaTopic/
-[badge-docs]: https://readthedocs.org/projects/deltatopic/badge/
+[badge-docs]: https://readthedocs.org/projects/deltatopic/badge/?version=latest
 [link-docs]: https://deltatopic.readthedocs.io
 
-## DeltaTopic: Dynamically-Encoded Latent Transcriptomic pattern Analysis by Topic modeling
+## DeltaTopic: Dynamically-Encoded Latent Transcriptomic pattern Analysis by Topic modelling
 
+<div align="center">
+    <img src="images/DeltaTopic_GraphicAbstract.png" alt="Logo" width="500" height="500">
+</div>
+
+###
 This is a project repository for the paper
 
-- Y Zhang, M Khalilitousi, YP Park, [Unraveling dynamically-encoded latent transcriptomic patterns in pancreatic cancer cells by topic modelling](https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract).
+- Zhang, Y., Khalilitousi, M. and Park, Y.P., [Unraveling dynamically-encoded latent transcriptomic patterns in pancreatic cancer cells by topic modelling](https://www.biorxiv.org/content/10.1101/2023.03.11.532182v1.abstract), Cell Genomics, 2023.
 
 ### Summary
 
@@ -18,7 +23,7 @@ Building a comprehensive topic model has become an important research tool in si
 
 ### Installation
 
-DeltaTopic requires Python 3.8 or later. We recommend to use [Miniconda](http://conda.pydata.org/miniconda.html).
+DeltaTopic requires Python 3.8 or later. We recommend using [Miniconda](http://conda.pydata.org/miniconda.html).
 
 Install DeltaTopic from [PyPI](https://pypi.org/project/DeltaTopic) using:
 
@@ -33,4 +38,4 @@ To work with the latest development version, install from [GitHub](https://githu
 python3 -m pip install git+https://github.com/causalpathlab/DeltaTopic
 ```
 
-#### For full documentaions, please refer to [Documentation](https://deltatopic.readthedocs.io/en/latest/)
+#### For full documentaion, please refer to [Documentation](https://deltatopic.readthedocs.io/en/latest/)
